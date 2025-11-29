@@ -1,4 +1,4 @@
-<div class="container mx-auto">
+<div class="container">
     <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-8 md:p-10 flex flex-col md:flex-row items-start mx-auto">
         <div class="flex-shrink-0 mb-4 md:mb-0 md:mr-8">
             <div class="bg-green-100 rounded-full p-3">

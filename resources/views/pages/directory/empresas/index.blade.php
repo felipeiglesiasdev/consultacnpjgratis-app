@@ -20,11 +20,9 @@
         <h1 class="text-4xl lg:text-5xl font-extrabold text-gray-800 text-center mb-16">
             Explore o Mapa de Empresas do Brasil
         </h1>
-        
         <x-directory.empresas.states-section :estados="$estados" />
         <x-directory.empresas.other-explorations :status="$status" :newCompaniesCounts="$newCompaniesCounts" :statusCounts="$statusCounts" />
-        <x-directory.empresas.cnaes-section :topCnaes="$topCnaes" />
-        <x-public-data-notice />
+
     </div>
     
 </div>
