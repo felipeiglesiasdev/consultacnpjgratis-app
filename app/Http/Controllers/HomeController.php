@@ -1,58 +1,53 @@
 <?php
-namespace App\Http\Controllers;
-
-use App\Models\Cnae;
-use App\Models\Estabelecimento;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
+namespace App\Http\Controllers; // NAMESPACE DO CONTROLADOR
+use App\Models\Cnae; // MODEL DE ATIVIDADES ECONÔMICAS
+use App\Models\Estabelecimento; // MODEL DE ESTABELECIMENTOS
+use Illuminate\Support\Facades\Cache; // CACHE PARA OTIMIZAR CONSULTAS
+use Illuminate\Support\Facades\DB; // FACADE PARA CONSULTAS SQL
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $statusCounts = Cache::remember('home_status_counts', now()->addMonths(3), function () {
-            return Estabelecimento::select('situacao_cadastral', DB::raw('count(*) as total'))
-                ->groupBy('situacao_cadastral')
-                ->pluck('total', 'situacao_cadastral')
-                ->toArray();
+        // TOTAL DE EMPRESAS ATIVAS NO BRASIL 
+        $totalAtivas = Cache::remember('total_ativas', now()->addMonths(3), function () {
+            return Estabelecimento::where('situacao_cadastral', 2)->count();
         });
-        $statusCounts = collect(['2', '8', '3', '4', '1'])
-            ->mapWithKeys(fn ($codigo) => [$codigo => $statusCounts[$codigo] ?? 0])
-            ->toArray();
-        $totalAtivas = $statusCounts['2'] ?? 0;
-        $totalEncerradas = collect($statusCounts)->except('2')->sum();
-
-        $statusCounts = collect(['2', '8', '3', '4', '1'])
-            ->mapWithKeys(fn ($codigo) => [$codigo => $statusCounts[$codigo] ?? 0])
-            ->toArray();
-
+        //************************************************************************************************************************
+        //************************************************************************************************************************
+        // TOTAL DE EMPRESAS ENCERRADAS NO BRASIL 
+        $totalEncerradas = Cache::remember('total_encerradas', now()->addMonths(3), function () {
+            return Estabelecimento::where('situacao_cadastral', '!=', 2)->count();
+        });
+        //************************************************************************************************************************
+        //************************************************************************************************************************
+        // EMPRESAS ABERTAS NOS ÚLTIMOS ANOS (2024, 2023, 2022)
         $abertasUltimosAnos = Cache::remember('abertas_3_anos', now()->addMonths(3), function () {
             $anos = ['2024', '2023', '2022'];
             $dados = collect();
-
             foreach ($anos as $ano) {
                 $total = Estabelecimento::whereBetween('data_inicio_atividade', ["{$ano}-01-01", "{$ano}-12-31"])->count();
                 $dados->put($ano, $total);
             }
-
             return $dados;
         });
-
+        //************************************************************************************************************************
+        //************************************************************************************************************************
+        // EMPRESAS FECHADAS NOS ÚLTIMOS ANOS (2024, 2023, 2022)
         $fechadasUltimosAnos = Cache::remember('fechadas_3_anos', now()->addMonths(3), function () {
             $anos = ['2024', '2023', '2022'];
             $dados = collect();
-
             foreach ($anos as $ano) {
                 $total = Estabelecimento::where('situacao_cadastral', '!=', 2)
                     ->whereBetween('data_situacao_cadastral', ["{$ano}-01-01", "{$ano}-12-31"])
                     ->count();
-
                 $dados->put($ano, $total);
             }
-
             return $dados;
         });
-
+        //************************************************************************************************************************
+        //************************************************************************************************************************
+        // TOP 5 CNAES MAIS COMUNS NO BRASIL
         $topCnaes = Cache::remember('home_top_cnaes', now()->addMonths(3), function () {
             return Cnae::withCount(['estabelecimentos as ativos_count' => function ($query) {
                 $query->where('situacao_cadastral', 2);
@@ -61,10 +56,8 @@ class HomeController extends Controller
                 ->limit(5)
                 ->get();
         });
-
-        $totalAtivas = $statusCounts['2'] ?? 0;
-        $totalEncerradas = collect($statusCounts)->except('2')->sum();
-
+        //************************************************************************************************************************
+        //************************************************************************************************************************
         return view('pages.home', [
             'statusCounts'      => $statusCounts,
             'topCnaes'          => $topCnaes,

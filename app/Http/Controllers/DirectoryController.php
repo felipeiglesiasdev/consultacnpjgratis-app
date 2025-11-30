@@ -27,23 +27,23 @@ class DirectoryController extends Controller // CONTROLADOR DO DIRETÓRIO DE EMP
         });
 
         // KPI: TOTAL DE EMPRESAS ATIVAS
-        $totalEmpresasAtivas = Cache::remember('dir_total_ativas', now()->addHours(12), function () {
+        $totalEmpresasAtivas = Cache::remember('dir_total_ativas', now()->addMonths(3), function () {
             return Estabelecimento::where('situacao_cadastral', 2)->count();
         });
 
         // KPI: QUANTOS MUNICÍPIOS POSSUEM EMPRESAS
-        $municipiosComEmpresas = Cache::remember('dir_municipios_com_empresas', now()->addHours(12), function () {
+        $municipiosComEmpresas = Cache::remember('dir_municipios_com_empresas', now()->addMonths(12), function () {
             return Estabelecimento::distinct('municipio')->count('municipio');
         });
 
         // KPI: MÉDIA DE ABERTURAS NOS ÚLTIMOS 12 MESES
-        $aberturasUltimos12Meses = Cache::remember('dir_aberturas_12_meses', now()->addHours(12), function () {
+        $aberturasUltimos12Meses = Cache::remember('dir_aberturas_12_meses', now()->addMonths(12), function () {
             return Estabelecimento::where('data_inicio_atividade', '>=', now()->subYear()->startOfMonth())->count();
         });
         $mediaAberturasMensal = (int) ceil($aberturasUltimos12Meses / 12);
 
         // KPI EXTRA: NOVAS EMPRESAS NO ÚLTIMO TRIMESTRE
-        $novasEmpresasTrimestre = Cache::remember('dir_aberturas_trimestre', now()->addHours(12), function () {
+        $novasEmpresasTrimestre = Cache::remember('dir_aberturas_trimestre', now()->addMonths(12), function () {
             return Estabelecimento::whereBetween('data_inicio_atividade', [
                 now()->subMonths(3)->startOfDay(),
                 now(),
