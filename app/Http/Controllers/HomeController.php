@@ -16,6 +16,11 @@ class HomeController extends Controller
                 ->pluck('total', 'situacao_cadastral')
                 ->toArray();
         });
+        $statusCounts = collect(['2', '8', '3', '4', '1'])
+            ->mapWithKeys(fn ($codigo) => [$codigo => $statusCounts[$codigo] ?? 0])
+            ->toArray();
+        $totalAtivas = $statusCounts['2'] ?? 0;
+        $totalEncerradas = collect($statusCounts)->except('2')->sum();
 
         $statusCounts = collect(['2', '8', '3', '4', '1'])
             ->mapWithKeys(fn ($codigo) => [$codigo => $statusCounts[$codigo] ?? 0])
