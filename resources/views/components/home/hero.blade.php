@@ -16,13 +16,13 @@
                 </p>
 
                 <h1 class="text-4xl md:text-5xl xl:text-6xl font-black tracking-tight leading-tight">
-                    Descubra qualquer empresa brasileira em
+                    Consulte qualquer CNPJ em
                     <span class="text-amber-400">segundos</span>.
                 </h1>
 
                 <p class="text-base md:text-lg text-gray-200 max-w-2xl">
-                    Consulte CNPJs sem limites, visualize quadro societário, endereço, CNAEs
-                    e acompanhe a evolução do mercado com uma interface rápida e agradável.
+                    Consulte CNPJs sem limites, visualize a situação da empresa, capital social, CNAEs
+                    e aumente sua prospcção B2B.
                 </p>
 
                 <form action="{{ route('cnpj.consultar') }}" method="POST" class="max-w-2xl">
@@ -31,12 +31,12 @@
                         <div class="relative flex-1">
                             <label for="cnpj" class="sr-only">CNPJ</label>
                             <input
-                                id="cnpj"
-                                name="cnpj"
-                                type="text"
-                                inputmode="numeric"
-                                autocomplete="off"
-                                placeholder="Digite o CNPJ ou o nome da empresa"
+                                type="tel" 
+                                name="cnpj" 
+                                id="cnpj-input-aside" 
+                                placeholder="Digite o CNPJ 00.000.000/0000-00"
+                                required
+                                aria-label="Número do CNPJ"
                                 class="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3.5 pr-10 text-sm md:text-base text-white placeholder:text-gray-400 shadow-[0_18px_50px_rgba(0,0,0,0.75)] focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
                             >
                             <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-500">
@@ -46,7 +46,7 @@
 
                         <button
                             type="submit"
-                            class="inline-flex items-center justify-center rounded-2xl px-6 md:px-8 py-3.5 text-sm md:text-base font-semibold bg-amber-400 text-[#171717] hover:bg-amber-300 shadow-lg shadow-amber-500/30 transition-transform duration-200 hover:-translate-y-0.5"
+                            class="cursor-pointer inline-flex items-center justify-center rounded-2xl px-6 md:px-8 py-3.5 text-sm md:text-base font-semibold bg-amber-400 text-[#171717] hover:bg-amber-300 shadow-lg shadow-amber-500/30 transition-transform duration-200 hover:-translate-y-0.5"
                         >
                             <i class="bi bi-search mr-2"></i>
                             Consultar agora
@@ -139,3 +139,19 @@
         </div>
     </div>
 </section>
+
+@push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/imask/7.1.3/imask.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const cnpjInput = document.getElementById('cnpj-input-aside');
+        if (cnpjInput) {
+            const mask = IMask(cnpjInput, { mask: '00.000.000/0000-00' });
+            const form = cnpjInput.closest('form');
+            if (form) {
+                form.addEventListener('submit', function() { mask.updateValue(); });
+            }
+        }
+    });
+</script>
+@endpush

@@ -68,7 +68,7 @@
                         <p class="text-xs uppercase tracking-[0.22em] text-amber-300">Atividades em destaque</p>
                         <h3 class="mt-1 text-xl font-semibold text-white">CNAEs com mais empresas ativas</h3>
                     </div>
-                    <a href="{{ route('empresas.cnae.index') }}" class="text-[11px] md:text-xs text-amber-300 hover:text-amber-200 inline-flex items-center gap-1">
+                    <a href="{{ route('empresas.cnae') }}" class="text-[11px] md:text-xs text-amber-300 hover:text-amber-200 inline-flex items-center gap-1">
                         Ver todas as atividades
                         <i class="bi bi-arrow-up-right"></i>
                     </a>

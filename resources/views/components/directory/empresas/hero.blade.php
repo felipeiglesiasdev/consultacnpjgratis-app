@@ -54,7 +54,7 @@
                         <i class="bi bi-geo-alt"></i>
                         Ver todos os estados
                     </a>
-                    <a href="{{ route('empresas.cnae.index') }}"
+                    <a href="{{ route('empresas.cnae') }}"
                        class="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-white/5 border border-white/10 hover:border-amber-400/70 hover:text-amber-200 transition">
                         <i class="bi bi-diagram-3"></i>
                         Explorar por atividade (CNAE)

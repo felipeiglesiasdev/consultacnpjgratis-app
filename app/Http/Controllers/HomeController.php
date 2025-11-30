@@ -48,12 +48,12 @@ class HomeController extends Controller
         //************************************************************************************************************************
         //************************************************************************************************************************
         // TOP 5 CNAES MAIS COMUNS NO BRASIL
-        $topCnaes = Cache::remember('home_top_cnaes', now()->addMonths(3), function () {
+        $topCnaes = Cache::remember('home_top_cnaesv2', now()->addMonths(3), function () {
             return Cnae::withCount(['estabelecimentos as ativos_count' => function ($query) {
                 $query->where('situacao_cadastral', 2);
             }])
                 ->orderByDesc('ativos_count')
-                ->limit(5)
+                ->limit(6)
                 ->get();
         });
         //************************************************************************************************************************
