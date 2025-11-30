@@ -13,7 +13,7 @@ use App\Http\Controllers\DirectoryController;
 |--------------------------------------------------------------------------
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/politica-de-privacidade', [LegalController::class, 'privacy'])->name('privacy.policy');
+Route::get('/politica-de-privacidade', [LegalController::class, 'privacy'])->name('privacidade');
 // #################################################################################################
 /*
 |--------------------------------------------------------------------------

@@ -59,12 +59,11 @@ class HomeController extends Controller
         //************************************************************************************************************************
         //************************************************************************************************************************
         return view('pages.home', [
-            'statusCounts'      => $statusCounts,
-            'topCnaes'          => $topCnaes,
-            'abertasUltimosAnos' => $abertasUltimosAnos,
-            'fechadasUltimosAnos' => $fechadasUltimosAnos,
-            'totalAtivas'        => $totalAtivas,
-            'totalEncerradas'    => $totalEncerradas,
+            'totalAtivas'           => $totalAtivas,
+            'totalEncerradas'       => $totalEncerradas,
+            'topCnaes'              => $topCnaes,
+            'abertasUltimosAnos'    => $abertasUltimosAnos,
+            'fechadasUltimosAnos'   => $fechadasUltimosAnos,
         ]);
     }
 }
