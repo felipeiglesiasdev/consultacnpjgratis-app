@@ -33,12 +33,12 @@
             <div class="col-span-2 md:col-span-4 lg:col-span-3">
                 <a href="{{ route('home') }}" class="flex items-center space-x-3 mb-4">
                     <div class="bg-gray-700 p-2 rounded-full">
-                        <svg class="h-6 w-6 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="h-6 w-6 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </div>
                     <span class="font-bold text-xl text-white">
-                        Consultar CNPJ <span class="text-green-400">Grátis</span>
+                        Consulta CNPJ <span class="text-amber-400">grátis</span>
                     </span>
                 </a>
                 <p class="text-gray-400 text-sm leading-relaxed">
@@ -90,7 +90,7 @@
         {{-- Barra Inferior: Copyright e Aviso --}}
         <div class="mt-12 pt-8 border-t border-gray-700 text-center text-gray-500 text-xs">
             <p class="mb-2">
-                &copy; {{ date('Y') }} Consultar CNPJ Grátis. Todos os direitos reservados.
+                &copy; {{ date('Y') }} Consulta CNPJ grátis. Todos os direitos reservados.
             </p>
             <p>
                 As informações exibidas são dados públicos, em conformidade com a 

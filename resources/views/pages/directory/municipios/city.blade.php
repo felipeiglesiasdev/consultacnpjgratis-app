@@ -30,19 +30,21 @@
 
 @section('content')
 <div class="bg-gray-50/50 mt-16">
-    <div class="container mx-auto px-4 py-12 md:py-16">
+    <div class="container mx-auto px-4 py-12 md:py-16 space-y-10">
 
         {{-- Chama o componente de cabeçalho --}}
-        <x-directory.municipios.header 
+        <x-directory.municipios.header
             :uf="$uf"
             :nomeEstado="$nomeEstado"
             :municipio="$municipio"
             :totalEmpresasAtivas="$totalEmpresasAtivas"
         />
 
+        <x-directory.municipios.top-cnaes :topCnaes="$topCnaes" />
+
         {{-- Chama o componente da lista de empresas --}}
         <x-directory.municipios.company-list :empresas="$empresas" />
-        
+
     </div>
 </div>
 @endsection

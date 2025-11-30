@@ -27,14 +27,14 @@
 
         {{-- Cabeçalho da página --}}
         <div class="mb-12 border-b border-gray-200 pb-8">
-            <span class="text-sm font-semibold text-green-800 bg-green-100 rounded-full px-4 py-1">
+            <span class="text-sm font-semibold text-amber-800 bg-amber-100 rounded-full px-4 py-1">
                 CNAE {{ $cnae->codigo_formatado }}
             </span>
-            <h1 class="mt-4 text-4xl lg:text-5xl font-extrabold text-gray-800 tracking-tight">
+            <h1 class="mt-4 text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight">
                 {{ $cnae->descricao }}
             </h1>
             <p class="mt-4 text-lg text-gray-600 max-w-3xl">
-                Análise do setor: veja os estados com maior concentração e uma amostra de 50 empresas ativas nesta atividade.
+                Análise do setor: veja os cinco estados com maior concentração e uma amostra de 50 empresas ativas nesta atividade.
             </p>
         </div>
 

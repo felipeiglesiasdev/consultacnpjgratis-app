@@ -33,6 +33,8 @@ Route::get('/cnpj/{cnpj}', [CnpjController::class, 'show'])->name('cnpj.show');
 Route::get('/empresas', [DirectoryController::class, 'index'])->name('empresas.index');
 // --- ROTAS ESPECÍFICAS PRIMEIRO ---
 // Estas são as rotas que não têm parâmetros variáveis no segundo segmento da URL.
+Route::get('/empresas/municipios', [DirectoryController::class, 'municipiosIndex'])->name('empresas.municipios.index');
+Route::get('/empresas/municipios/{codigo_municipio}', [DirectoryController::class, 'municipioShow'])->name('empresas.municipios.show');
 Route::get('/empresas/atividades', [DirectoryController::class, 'cnaeIndex'])->name('empresas.cnae.index');
 Route::get('/empresas/atividades/{codigo_cnae}', [DirectoryController::class, 'byCnae'])->name('empresas.cnae.show');
 Route::get('/empresas/status/{status_slug}', [DirectoryController::class, 'byStatus'])->name('empresas.status');
