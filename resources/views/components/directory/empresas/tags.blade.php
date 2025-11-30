@@ -8,7 +8,7 @@
 <meta property="og:url" content="{{ url()->current() }}">
 <meta property="og:title" content="{{ $title }}">
 <meta property="og:description" content="{{ $description }}">
-<meta property="og:site_name" content="Consultar CNPJ Grátis">
+<meta property="og:site_name" content="Consulta CNPJ grátis">
 <meta property="og:locale" content="pt_BR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:url" content="{{ url()->current() }}">

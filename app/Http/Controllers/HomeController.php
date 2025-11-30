@@ -10,7 +10,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // EMPRESAS ATIVAS, NULAS, ENCERRADAS, BAIXADAS E INAPTAS
         $statusCounts = Cache::remember('home_status_counts', now()->addMonths(3), function () {
             return Estabelecimento::select('situacao_cadastral', DB::raw('count(*) as total'))
                 ->groupBy('situacao_cadastral')
@@ -23,23 +22,26 @@ class HomeController extends Controller
         $totalAtivas = $statusCounts['2'] ?? 0;
         $totalEncerradas = collect($statusCounts)->except('2')->sum();
 
+        $statusCounts = collect(['2', '8', '3', '4', '1'])
+            ->mapWithKeys(fn ($codigo) => [$codigo => $statusCounts[$codigo] ?? 0])
+            ->toArray();
 
-        // EMPRESAS ABERTAS NOS ULTIMOS 3 ANOS
         $abertasUltimosAnos = Cache::remember('abertas_3_anos', now()->addMonths(3), function () {
             $anos = ['2024', '2023', '2022'];
             $dados = collect();
+
             foreach ($anos as $ano) {
                 $total = Estabelecimento::whereBetween('data_inicio_atividade', ["{$ano}-01-01", "{$ano}-12-31"])->count();
                 $dados->put($ano, $total);
             }
+
             return $dados;
         });
 
-
-        // EMPRESAS FECHADAS NOS ULTIMOS 3 ANOS
         $fechadasUltimosAnos = Cache::remember('fechadas_3_anos', now()->addMonths(3), function () {
             $anos = ['2024', '2023', '2022'];
             $dados = collect();
+
             foreach ($anos as $ano) {
                 $total = Estabelecimento::where('situacao_cadastral', '!=', 2)
                     ->whereBetween('data_situacao_cadastral', ["{$ano}-01-01", "{$ano}-12-31"])
@@ -47,12 +49,11 @@ class HomeController extends Controller
 
                 $dados->put($ano, $total);
             }
+
             return $dados;
         });
 
-
-        // TOP 5 CNAES COM EMPRESAS ATIVAS
-        $topCnaes = Cache::remember('top_cnaes', now()->addMonths(3), function () {
+        $topCnaes = Cache::remember('home_top_cnaes', now()->addMonths(3), function () {
             return Cnae::withCount(['estabelecimentos as ativos_count' => function ($query) {
                 $query->where('situacao_cadastral', 2);
             }])
@@ -61,7 +62,9 @@ class HomeController extends Controller
                 ->get();
         });
 
-       
+        $totalAtivas = $statusCounts['2'] ?? 0;
+        $totalEncerradas = collect($statusCounts)->except('2')->sum();
+
         return view('pages.home', [
             'statusCounts'      => $statusCounts,
             'topCnaes'          => $topCnaes,
