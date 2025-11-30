@@ -90,81 +90,6 @@ class DirectoryController extends Controller // CONTROLADOR DO DIRETÓRIO DE EMP
 
         // CNAES MAIS POPULARES (ATIVOS)
         $topCnaes = Cache::remember('dir_top_cnaes', now()->addHours(6), function () {
-
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-use App\Models\Cnae;
-use App\Models\Estabelecimento;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
-
-class DirectoryController extends Controller
-{
-    public function index()
-    {
-
-        // TODOS OS ESTADOS
-        $estados = Cache::remember('todos_estados', now()->addMonths(3), function () {
-            return Estabelecimento::select('uf')->where('uf', '!=', 'EX')->distinct()->orderBy('uf')->get();
-        });
-        // ******************************************************************************************************************
-        // ******************************************************************************************************************
-        // ABERTAS ATÉ O MOMENTO EM 2025
-        $abertas2025 = Cache::remember('abertas_2025', now()->addMonths(3), function () {
-            $anos = ['2025'];
-            $dados = collect();
-            foreach ($anos as $ano) {
-                $total = Estabelecimento::whereBetween('data_inicio_atividade', ["{$ano}-01-01", "{$ano}-12-31"])->count();
-                $dados->put($total, $ano);
-            }
-            return $dados;
-        });
-        // ******************************************************************************************************************
-        // ******************************************************************************************************************
-        //FECHADAS ATÉ O MOMENTO EM 2025
-        $fechadas2025 = Cache::remember('fechadas_2025', now()->addMonths(3), function () {
-            $anos = ['2025'];
-            $dados = collect();
-            foreach ($anos as $ano) {
-                $total = Estabelecimento::where('situacao_cadastral', '!=', 2)
-                    ->whereBetween('data_situacao_cadastral', ["{$ano}-01-01", "{$ano}-12-31"])
-                    ->count();
-                $dados->put($ano, $total);
-            }
-            return $dados;
-        });
-        // ******************************************************************************************************************
-        // ******************************************************************************************************************
-        // EMPRESAS ABERTAS NOS ULTIMOS 3 ANOS
-        $abertasUltimosAnos = Cache::remember('abertas_3_anos', now()->addMonths(3), function () {
-            $anos = ['2024', '2023', '2022'];
-            $dados = collect();
-            foreach ($anos as $ano) {
-                $total = Estabelecimento::whereBetween('data_inicio_atividade', ["{$ano}-01-01", "{$ano}-12-31"])->count();
-                $dados->put($ano, $total);
-            }
-            return $dados;
-        });
-        // ******************************************************************************************************************
-        // ******************************************************************************************************************
-        // EMPRESAS FECHADAS NOS ULTIMOS 3 ANOS
-        $fechadasUltimosAnos = Cache::remember('fechadas_3_anos', now()->addMonths(3), function () {
-            $anos = ['2024', '2023', '2022'];
-            $dados = collect();
-            foreach ($anos as $ano) {
-                $total = Estabelecimento::where('situacao_cadastral', '!=', 2)
-                    ->whereBetween('data_situacao_cadastral', ["{$ano}-01-01", "{$ano}-12-31"])
-                    ->count();
-
-                $dados->put($ano, $total);
-            }
-            return $dados;
-        });
-        // ******************************************************************************************************************
-        // ******************************************************************************************************************
-        // TOP 10 CNAES MAIS FREQUENTES
-        $topCnaes = Cache::remember('top_cnaes', now()->addMonths(3), function () {
             return Cnae::withCount(['estabelecimentos as ativos_count' => function ($query) {
                 $query->where('situacao_cadastral', 2);
             }])
@@ -237,7 +162,7 @@ class DirectoryController extends Controller
             ->select('uf', DB::raw('count(*) as total'))
             ->groupBy('uf')
             ->orderByDesc('total')
-            ->limit(10)
+            ->limit(5)
             ->get();
 
         // AMOSTRA DE EMPRESAS NO CNAE
@@ -249,6 +174,117 @@ class DirectoryController extends Controller
             ->get();
 
         return view('pages.directory.atividades.cnae_show', compact('cnae', 'topEstados', 'empresas'));
+    }
+
+    public function municipiosIndex()
+    {
+        // RESUMO GERAL DE MUNICÍPIOS, ESTADOS E EMPRESAS ATIVAS
+        $resumoMunicipios = Cache::remember('dir_municipios_resumo', now()->addHours(6), function () {
+            $totalMunicipios = Municipio::count();
+            $municipiosComEmpresas = Estabelecimento::distinct('municipio')->count('municipio');
+
+            $ufComMaisMunicipios = Municipio::select('uf', DB::raw('count(*) as total'))
+                ->groupBy('uf')
+                ->orderByDesc('total')
+                ->first();
+
+            return [
+                'totalMunicipios' => $totalMunicipios,
+                'municipiosComEmpresas' => $municipiosComEmpresas,
+                'mediaEmpresasPorMunicipio' => (int) ceil(Estabelecimento::count() / max($totalMunicipios, 1)),
+                'ufCampeaoMunicipios' => $ufComMaisMunicipios,
+            ];
+        });
+
+        // TABELA DE MUNICÍPIOS COM PAGINAÇÃO DE 50 ITENS
+        $municipiosPaginados = Estabelecimento::select(
+            'municipio',
+            DB::raw('count(*) as total_empresas'),
+            DB::raw("sum(case when situacao_cadastral = 2 then 1 else 0 end) as total_ativas")
+        )
+            ->groupBy('municipio')
+            ->orderByDesc('total_ativas')
+            ->paginate(50);
+
+        // ENRIQUECE COM NOME E UF DO MUNICÍPIO
+        $municipiosLookup = Municipio::whereIn('codigo', $municipiosPaginados->pluck('municipio'))
+            ->get()
+            ->keyBy('codigo');
+
+        $municipiosPaginados->getCollection()->transform(function ($linha) use ($municipiosLookup) {
+            $municipio = $municipiosLookup[$linha->municipio] ?? null;
+
+            return (object) [
+                'codigo' => $linha->municipio,
+                'nome' => $municipio->descricao ?? 'Município não encontrado',
+                'uf' => $municipio->uf ?? null,
+                'total_empresas' => $linha->total_empresas,
+                'total_ativas' => $linha->total_ativas,
+            ];
+        });
+
+        // FAQ EM PORTUGUÊS
+        $faq = [
+            [
+                'pergunta' => 'Posso filtrar por município específico?',
+                'resposta' => 'Sim, clique no nome da cidade na tabela para ver detalhes e exemplos de empresas ativas.',
+            ],
+            [
+                'pergunta' => 'Quantas empresas são exibidas por município?',
+                'resposta' => 'Mostramos totais consolidados e, ao entrar no município, listamos as últimas empresas ativas.',
+            ],
+            [
+                'pergunta' => 'Qual a diferença entre total e empresas ativas?',
+                'resposta' => 'O total considera todos os CNPJs cadastrados, enquanto empresas ativas incluem apenas situação cadastral 2.',
+            ],
+            [
+                'pergunta' => 'Os dados são atualizados com que frequência?',
+                'resposta' => 'Utilizamos o cache por algumas horas para acelerar a navegação, mas os dados vêm direto da base pública do CNPJ.',
+            ],
+        ];
+
+        return view('pages.directory.municipios.index', [
+            'resumoMunicipios' => $resumoMunicipios,
+            'municipiosPaginados' => $municipiosPaginados,
+            'faq' => $faq,
+        ]);
+    }
+
+    public function municipioShow(string $codigo_municipio)
+    {
+        // DADOS BÁSICOS DO MUNICÍPIO
+        $municipio = Municipio::findOrFail($codigo_municipio);
+
+        // TOTAL DE EMPRESAS ATIVAS NA CIDADE
+        $totalEmpresasAtivas = Estabelecimento::where('municipio', $codigo_municipio)
+            ->where('situacao_cadastral', 2)
+            ->count();
+
+        // LISTA DE EMPRESAS MAIS RECENTES
+        $empresas = Estabelecimento::with('empresa')
+            ->where('municipio', $codigo_municipio)
+            ->where('situacao_cadastral', 2)
+            ->orderByDesc('data_inicio_atividade')
+            ->paginate(25);
+
+        // CNAES MAIS POPULARES NA CIDADE
+        $topCnaes = Cnae::whereHas('estabelecimentos', function ($query) use ($codigo_municipio) {
+            $query->where('municipio', $codigo_municipio)->where('situacao_cadastral', 2);
+        })
+            ->withCount(['estabelecimentos as estabelecimentos_count' => function ($query) use ($codigo_municipio) {
+                $query->where('municipio', $codigo_municipio)->where('situacao_cadastral', 2);
+            }])
+            ->orderByDesc('estabelecimentos_count')
+            ->limit(5)
+            ->get();
+
+        return view('pages.directory.municipios.city', [
+            'municipio' => $municipio,
+            'uf' => $municipio->uf,
+            'totalEmpresasAtivas' => $totalEmpresasAtivas,
+            'empresas' => $empresas,
+            'topCnaes' => $topCnaes,
+        ]);
     }
 
     public function byStatus(string $status_slug)
@@ -317,7 +353,7 @@ class DirectoryController extends Controller
 
     public function byCity(string $uf, string $cidade_slug)
     {
-        // COMO NÃO HÁ IMPLEMENTAÇÃO DE SLUGS, REDIRECIONAMOS PARA O ESTADO
-        return redirect()->route('empresas.state', ['uf' => strtolower($uf)]);
+        // MANTÉM COMPATIBILIDADE REDIRECIONANDO PARA O ÍNDICE DE MUNICÍPIOS
+        return redirect()->route('empresas.municipios.index');
     }
 }

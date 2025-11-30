@@ -32,7 +32,8 @@
 
         {{-- Cabeçalho e Input de Busca --}}
         <div class="text-center mb-12">
-            <h1 class="text-4xl lg:text-5xl font-extrabold text-gray-800">
+            <p class="inline-flex items-center gap-2 bg-amber-50 text-amber-700 px-4 py-1 rounded-full text-sm font-semibold border border-amber-200">Mapa completo de CNAEs</p>
+            <h1 class="text-4xl lg:text-5xl font-extrabold text-gray-900 mt-4">
                 Explore por Atividade Econômica
             </h1>
             <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
@@ -49,22 +50,22 @@
                 {{-- Input controlado pelo Alpine.js --}}
                 <input type="search" x-model.debounce.300ms="searchTerm"
                        placeholder="Pesquise por código ou descrição (Ex: Restaurante)"
-                       class="w-full py-4 pl-14 pr-6 text-lg text-gray-800 placeholder-gray-500 bg-white border-2 border-gray-300 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all">
+                       class="w-full py-4 pl-14 pr-6 text-lg text-gray-800 placeholder-gray-500 bg-white border-2 border-gray-300 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all">
             </div>
         </div>
         
         {{-- SEÇÃO DE RESULTADOS DA BUSCA (aparece quando o usuário digita) --}}
         <div x-show="searchTerm.length >= 2" x-transition class="bg-white rounded-2xl shadow-lg p-6 md:p-8 border border-gray-200">
             <h2 class="text-2xl font-bold text-gray-800 mb-6">
-                Resultados para: <span class="text-green-600" x-text="searchTerm"></span>
+                Resultados para: <span class="text-amber-600" x-text="searchTerm"></span>
             </h2>
             <div class="space-y-4">
                 {{-- Loop através dos resultados filtrados pelo Alpine.js --}}
                 <template x-for="cnae in filteredCnaes.slice(0, 50)" :key="cnae.codigo">
-                    <a :href="`{{ route('empresas.cnae.index') }}/${cnae.codigo}`" class="block p-4 border border-gray-200 rounded-lg hover:border-[#7fdea0] hover:bg-green-50/30 group">
+                    <a :href="`{{ route('empresas.cnae.index') }}/${cnae.codigo}`" class="block p-4 border border-gray-200 rounded-lg hover:border-amber-400 hover:bg-amber-50/50 group">
                         <div class="flex items-center justify-between">
                             <div class="flex-1 pr-4">
-                                <p class="text-base text-gray-800 font-medium" x-html="cnae.descricao.replace(new RegExp(searchTerm, 'gi'), `<span class='bg-yellow-200'>${searchTerm}</span>`)"></p>
+                                <p class="text-base text-gray-800 font-medium" x-html="cnae.descricao.replace(new RegExp(searchTerm, 'gi'), `<span class='bg-amber-200'>${searchTerm}</span>`)"></p>
                                 <span class="text-sm font-semibold text-gray-500" x-text="`CNAE: ${cnae.codigo}`"></span>
                             </div>
                         </div>
@@ -80,17 +81,17 @@
         {{-- SEÇÃO DE DESTAQUES (aparece quando a busca está vazia) --}}
         <div x-show="searchTerm.length < 2" x-transition>
             <div class="text-center mb-10">
-                <h2 class="text-3xl font-bold text-gray-800">Principais Setores em Atividade no Brasil</h2>
+                <h2 class="text-3xl font-bold text-gray-900">Principais setores em atividade</h2>
                 <p class="mt-2 text-gray-600">As 10 atividades econômicas com o maior número de empresas ativas no país.</p>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 @foreach($topCnaes as $cnae)
-                    <a href="{{ route('empresas.cnae.show', ['codigo_cnae' => $cnae->codigo]) }}" 
+                    <a href="{{ route('empresas.cnae.show', ['codigo_cnae' => $cnae->codigo]) }}"
                        class="block bg-white rounded-2xl shadow-lg p-8 border border-gray-200 text-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 group">
-                        <span class="text-sm font-semibold text-green-800 bg-green-100 rounded-full px-4 py-1">CNAE {{ $cnae->codigo_formatado }}</span>
-                        <h3 class="mt-4 text-xl font-bold text-gray-900 group-hover:text-green-600 transition-colors h-24 flex items-center justify-center">{{ $cnae->descricao }}</h3>
+                        <span class="text-sm font-semibold text-amber-800 bg-amber-100 rounded-full px-4 py-1">CNAE {{ $cnae->codigo_formatado }}</span>
+                        <h3 class="mt-4 text-xl font-bold text-gray-900 group-hover:text-amber-600 transition-colors h-24 flex items-center justify-center">{{ $cnae->descricao }}</h3>
                         <div class="mt-6">
-                            <p class="text-4xl font-extrabold text-gray-800">{{ number_format($cnae->estabelecimentos_count, 0, ',', '.') }}</p>
+                            <p class="text-4xl font-extrabold text-gray-900">{{ number_format($cnae->estabelecimentos_count, 0, ',', '.') }}</p>
                             <p class="text-sm text-gray-500 uppercase tracking-wider mt-1">Empresas Ativas</p>
                         </div>
                     </a>
