@@ -6,54 +6,55 @@
                     Perguntas frequentes
                 </p>
                 <h2 class="mt-2 text-2xl md:text-3xl font-black text-[#111827]">
-                    Dúvidas sobre a lista de empresas do município
+                    Dúvidas sobre a consulta de CNAE
                 </h2>
                 <p class="mt-3 text-sm md:text-base text-gray-600">
-                    Algumas respostas rápidas sobre como usar estas informações no dia a dia.
+                    Entenda melhor como usar os códigos CNAE e como esta página pode ajudar
+                    na sua estratégia de negócios.
                 </p>
             </div>
 
             <div class="space-y-4">
                 <div class="rounded-2xl border border-gray-200 bg-white p-4 md:p-5">
                     <h3 class="text-sm md:text-base font-semibold text-[#111827]">
-                        Posso usar esses dados para prospecção comercial?
+                        O que é CNAE?
                     </h3>
                     <p class="mt-2 text-sm text-gray-600">
-                        Sim. Os dados exibidos são públicos e podem servir como base para estratégias
-                        de prospecção B2B, desde que você respeite a legislação vigente (como LGPD)
-                        e boas práticas de contato com empresas.
+                        CNAE é a Classificação Nacional de Atividades Econômicas. Cada código identifica
+                        uma atividade exercida por empresas, permitindo padronizar o enquadramento
+                        tributário e estatístico dos negócios no Brasil.
                     </p>
                 </div>
 
                 <div class="rounded-2xl border border-gray-200 bg-white p-4 md:p-5">
                     <h3 class="text-sm md:text-base font-semibold text-[#111827]">
-                        Todas as empresas do município aparecem aqui?
+                        Posso usar essa lista para segmentar campanhas de marketing?
                     </h3>
                     <p class="mt-2 text-sm text-gray-600">
-                        A listagem considera apenas empresas com situação cadastral ativa na Receita Federal.
-                        Empresas baixadas, suspensas ou inaptas não aparecem na lista.
+                        Sim. Ao focar em um conjunto de CNAEs específicos, você segmenta empresas
+                        que atuam em determinado setor, aumentando a relevância das suas campanhas
+                        de marketing e ações comerciais.
                     </p>
                 </div>
 
                 <div class="rounded-2xl border border-gray-200 bg-white p-4 md:p-5">
                     <h3 class="text-sm md:text-base font-semibold text-[#111827]">
-                        O que significa o capital social exibido?
+                        Todas as empresas de um CNAE aparecem na página da atividade?
                     </h3>
                     <p class="mt-2 text-sm text-gray-600">
-                        O capital social é o valor declarado pelos sócios no ato do registro da empresa.
-                        Ele não representa necessariamente o faturamento, mas pode dar uma noção de porte
-                        e estrutura do negócio.
+                        A listagem considera empresas com situação cadastral ativa na Receita Federal
+                        e que utilizam o CNAE informado como atividade principal ou conforme sua base
+                        de dados. Empresas em situação, por exemplo, baixada ou inapta não são exibidas.
                     </p>
                 </div>
 
                 <div class="rounded-2xl border border-gray-200 bg-white p-4 md:p-5">
                     <h3 class="text-sm md:text-base font-semibold text-[#111827]">
-                        Os dados são atualizados com qual frequência?
+                        Os códigos e descrições de CNAE são oficiais?
                     </h3>
                     <p class="mt-2 text-sm text-gray-600">
-                        As informações são baseadas em dados oficiais da Receita Federal e passam por
-                        atualizações periódicas. Mudanças recentes podem levar alguns dias para aparecer
-                        na plataforma.
+                        Sim. Os códigos e descrições seguem a classificação oficial de CNAE utilizada
+                        pelos órgãos governamentais e pela Receita Federal do Brasil.
                     </p>
                 </div>
             </div>

@@ -1,48 +1,35 @@
 @extends('layouts.app')
 
-@php
-    $title = 'Explorar Empresas por Estado, Cidade e Atividade | Consulta CNPJ grátis';
-    $description = 'Descubra empresas por estado, cidade ou CNAE com um painel visual, dados em tempo real e indicadores recentes.';
-    $keywords = 'consulta cnpj, empresas por estado, empresas por cidade, empresas por cnae, cnpj grátis, lista de empresas, busca de cnpj';
-@endphp
-
 @push('seo')
-    @include('components.directory.empresas.tags', [
-        'title' => $title,
-        'description' => $description,
-        'keywords' => $keywords
-    ])
+    @include('components.directory.empresas.tags')
 @endpush
 
 @section('content')
-<div class="bg-gradient-to-b from-white via-amber-50/40 to-white mt-16">
-    <div class="container mx-auto px-4 py-12 md:py-16 space-y-12">
-        <x-directory.empresas.hero
-            :totalEmpresasAtivas="$totalEmpresasAtivas"
-            :mediaAberturasMensal="$mediaAberturasMensal"
-            :novasEmpresasTrimestre="$novasEmpresasTrimestre"
-        />
+    {{-- Hero focada em explorar estados --}}
+    @include('components.directory.empresas.hero', [
+        'totalEmpresasAtivas' => $totalEmpresasAtivas,
+    ])
 
-        <x-directory.empresas.metric-cards
-            :totalEmpresasAtivas="$totalEmpresasAtivas"
-            :municipiosComEmpresas="$municipiosComEmpresas"
-            :totalCnaesCatalogados="$totalCnaesCatalogados"
-            :mediaAberturasMensal="$mediaAberturasMensal"
-        />
+    {{-- Grid de estados (vem em segundo lugar) --}}
+    @include('components.directory.empresas.estados-grid', [
+        'estados' => $estados,
+    ])
 
-        <x-directory.empresas.geography-highlights
-            :topEstadosAtivos="$topEstadosAtivos"
-            :topCidadesAtivas="$topCidadesAtivas"
-        />
+    {{-- Balanço / KPIs nacionais --}}
+    @include('components.directory.empresas.kpis', [
+        'totalEmpresasAtivas'     => $totalEmpresasAtivas,
+        'municipiosComEmpresas'   => $municipiosComEmpresas,
+        'mediaAberturasMensal'    => $mediaAberturasMensal,
+        'novasEmpresasTrimestre'  => $novasEmpresasTrimestre,
+        'totalCnaesCatalogados'   => $totalCnaesCatalogados,
+    ])
 
-        <x-directory.empresas.states-section id="estados" :estados="$estados" />
+    {{-- Top cidades e CNAEs em destaque --}}
+    @include('components.directory.empresas.top-cidades-cnaes', [
+        'top10CidadesAtivas' => $top10CidadesAtivas,
+        'topCnaes'           => $topCnaes,
+    ])
 
-        <x-directory.empresas.cnaes-section
-            :topCnaes="$topCnaes"
-            :topCnaesRecentes="$topCnaesRecentes"
-        />
-
-        <x-public-data-notice />
-    </div>
-</div>
+    {{-- Call to action final: consulta de CNPJ --}}
+    @include('components.directory.empresas.consulta-footer')
 @endsection

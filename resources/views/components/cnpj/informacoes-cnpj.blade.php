@@ -1,62 +1,88 @@
 @props(['data'])
 
-<div class="bg-white border border-gray-200 rounded-lg shadow-sm mt-8">
-    {{-- Cabeçalho do Card --}}
-    <div class="flex items-center p-4 border-b border-gray-200">
-        <span class="inline-flex items-center justify-center h-10 w-10 rounded-lg bg-gray-100 text-gray-600 mr-3">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 4h5m-5 4h5"></path></svg>
+@php
+    $cnpj       = $data['cnpj_completo'] ?? null;
+    $razao      = $data['razao_social'] ?? null;
+    $fantasia   = $data['nome_fantasia'] ?? null;
+    $natureza   = $data['natureza_juridica'] ?? null;
+    $capital    = $data['capital_social'] ?? null;
+    $porte      = $data['porte'] ?? null;
+    $tipo       = $data['matriz_ou_filial'] ?? null;
+    $dataAbert  = $data['data_abertura'] ?? null;
+
+    $capitalFormatado = $capital !== null
+        ? 'R$ ' . number_format((float) str_replace(',', '.', $capital), 2, ',', '.')
+        : null;
+@endphp
+
+<div class="rounded-2xl border border-gray-200 bg-white shadow-[0_18px_45px_-28px_rgba(15,23,42,0.55)]">
+    <div class="flex items-center gap-3 px-5 py-4 border-b border-gray-100">
+        <span class="inline-flex items-center justify-center h-9 w-9 rounded-2xl bg-gray-900/5 text-gray-700">
+            <i class="bi bi-file-earmark-text text-lg"></i>
         </span>
-        <h2 class="text-lg font-semibold text-gray-800">Informações do CNPJ</h2>
+        <div>
+            <h2 class="text-sm font-semibold text-gray-900">Informações do CNPJ</h2>
+            <p class="text-[11px] text-gray-500">
+                Dados básicos de registro da empresa
+            </p>
+        </div>
     </div>
 
-    {{-- Corpo do Card com as informações em Grid --}}
-    <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-        {{-- CNPJ --}}
-        <div class="flex flex-col">
-            <span class="text-sm font-medium text-gray-500">CNPJ</span>
-            <span class="text-base text-gray-800">{{ $data['cnpj_completo'] }}</span>
-        </div>
+    <div class="px-5 py-5 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-sm">
+        @if($cnpj)
+            <div class="flex flex-col">
+                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">CNPJ</span>
+                <span class="mt-1 font-mono text-gray-900">{{ $cnpj }}</span>
+            </div>
+        @endif
 
-        {{-- Razão Social --}}
-        <div class="flex flex-col">
-            <span class="text-sm font-medium text-gray-500">Razão Social</span>
-            <span class="text-base text-gray-800">{{ $data['razao_social'] }}</span>
-        </div>
+        @if($razao)
+            <div class="flex flex-col">
+                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">Razão social</span>
+                <span class="mt-1 text-gray-900 font-semibold">{{ $razao }}</span>
+            </div>
+        @endif
 
-        {{-- Nome Fantasia --}}
-        <div class="flex flex-col">
-            <span class="text-sm font-medium text-gray-500">Nome Fantasia</span>
-            <span class="text-base text-gray-800">{{ $data['nome_fantasia'] ?? 'Não informado' }}</span>
-        </div>
+        @if($fantasia)
+            <div class="flex flex-col">
+                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">Nome fantasia</span>
+                <span class="mt-1 text-gray-800">{{ $fantasia }}</span>
+            </div>
+        @endif
 
-        {{-- Natureza Jurídica --}}
-        <div class="flex flex-col">
-            <span class="text-sm font-medium text-gray-500">Natureza Jurídica</span>
-            <span class="text-base text-gray-800">{{ $data['natureza_juridica'] }}</span>
-        </div>
+        @if($natureza)
+            <div class="flex flex-col">
+                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">Natureza jurídica</span>
+                <span class="mt-1 text-gray-800">{{ $natureza }}</span>
+            </div>
+        @endif
 
-        {{-- Capital Social --}}
-        <div class="flex flex-col">
-            <span class="text-sm font-medium text-gray-500">Capital Social</span>
-            <span class="text-base text-gray-800">R$ {{ $data['capital_social'] }}</span>
-        </div>
+        @if($capitalFormatado)
+            <div class="flex flex-col">
+                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">Capital social</span>
+                <span class="mt-1 text-gray-800">{{ $capitalFormatado }}</span>
+            </div>
+        @endif
 
-        {{-- Porte da Empresa --}}
-        <div class="flex flex-col">
-            <span class="text-sm font-medium text-gray-500">Porte da Empresa</span>
-            <span class="text-base text-gray-800">{{ $data['porte'] ?? 'Não informado' }}</span>
-        </div>
+        @if($porte)
+            <div class="flex flex-col">
+                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">Porte da empresa</span>
+                <span class="mt-1 text-gray-800">{{ $porte }}</span>
+            </div>
+        @endif
 
-        {{-- Matriz ou Filial --}}
-        <div class="flex flex-col">
-            <span class="text-sm font-medium text-gray-500">Tipo</span>
-            <span class="text-base text-gray-800">{{ $data['matriz_ou_filial'] }}</span>
-        </div>
-        
-        {{-- Data de Abertura --}}
-        <div class="flex flex-col">
-            <span class="text-sm font-medium text-gray-500">Data de Abertura</span>
-            <span class="text-base text-gray-800">{{ $data['data_abertura'] }}</span>
-        </div>
+        @if($tipo)
+            <div class="flex flex-col">
+                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">Tipo</span>
+                <span class="mt-1 text-gray-800">{{ $tipo }}</span>
+            </div>
+        @endif
+
+        @if($dataAbert)
+            <div class="flex flex-col">
+                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">Data de abertura</span>
+                <span class="mt-1 text-gray-800">{{ $dataAbert }}</span>
+            </div>
+        @endif
     </div>
 </div>

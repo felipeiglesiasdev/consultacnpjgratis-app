@@ -1,42 +1,60 @@
 @props(['data'])
 
-<div id="endereco" class="bg-white border border-gray-200 rounded-lg shadow-sm mt-8">
-    {{-- Cabeçalho do Card --}}
-    <div class="flex items-center p-4 border-b border-gray-200">
-        <span class="inline-flex items-center justify-center h-10 w-10 rounded-lg bg-gray-100 text-gray-600 mr-3">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+@php
+    $logradouro  = $data['logradouro']  ?? null;
+    $complemento = $data['complemento'] ?? null;
+    $bairro      = $data['bairro']      ?? null;
+    $cidadeUf    = $data['cidade_uf']   ?? null;
+    $cep         = $data['cep']         ?? null;
+@endphp
+
+<div id="endereco" class="rounded-2xl border border-gray-200 bg-white shadow-[0_18px_45px_-28px_rgba(15,23,42,0.55)]">
+    <div class="flex items-center gap-3 px-5 py-4 border-b border-gray-100">
+        <span class="inline-flex items-center justify-center h-9 w-9 rounded-2xl bg-gray-900/5 text-gray-700">
+            <i class="bi bi-geo-alt text-lg"></i>
         </span>
-        <h2 class="text-lg font-semibold text-gray-800">Endereço</h2>
+        <div>
+            <h2 class="text-sm font-semibold text-gray-900">Endereço</h2>
+            <p class="text-[11px] text-gray-500">
+                Localização do estabelecimento cadastrado
+            </p>
+        </div>
     </div>
 
-    {{-- Corpo do Card --}}
-    <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-        <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
-            {{-- Logradouro --}}
-            <div class="flex flex-col sm:col-span-2">
-                <span class="text-sm font-medium text-gray-500">Logradouro</span>
-                <span class="text-base text-gray-800">{{ $data['logradouro'] }}</span>
-            </div>
-            {{-- Bairro --}}
+    <div class="px-5 py-5 grid grid-cols-1 gap-y-3 text-sm">
+        @if($logradouro)
             <div class="flex flex-col">
-                <span class="text-sm font-medium text-gray-500">Bairro</span>
-                <span class="text-base text-gray-800">{{ $data['bairro'] }}</span>
+                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">Logradouro</span>
+                <span class="mt-1 text-gray-900">{{ $logradouro }}</span>
             </div>
-             {{-- Complemento --}}
+        @endif
+
+        @if($complemento)
             <div class="flex flex-col">
-                <span class="text-sm font-medium text-gray-500">Complemento</span>
-                <span class="text-base text-gray-800">{{ $data['complemento'] ?? 'N/A' }}</span>
+                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">Complemento</span>
+                <span class="mt-1 text-gray-900">{{ $complemento }}</span>
             </div>
-            {{-- Cidade/UF --}}
+        @endif
+
+        @if($bairro)
             <div class="flex flex-col">
-                <span class="text-sm font-medium text-gray-500">Cidade / UF</span>
-                <span class="text-base text-gray-800">{{ $data['cidade_uf'] }}</span>
+                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">Bairro</span>
+                <span class="mt-1 text-gray-900">{{ $bairro }}</span>
             </div>
-            {{-- CEP --}}
+        @endif
+
+        @if($cidadeUf)
             <div class="flex flex-col">
-                <span class="text-sm font-medium text-gray-500">CEP</span>
-                <span class="text-base text-gray-800">{{ $data['cep'] }}</span>
+                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">Cidade / UF</span>
+                <span class="mt-1 text-gray-900">{{ $cidadeUf }}</span>
             </div>
-        </div>
+        @endif
+
+        @if($cep)
+            <div class="flex flex-col">
+                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">CEP</span>
+                <span class="mt-1 text-gray-900">{{ $cep }}</span>
+            </div>
+        @endif
     </div>
 </div>

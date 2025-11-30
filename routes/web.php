@@ -1,43 +1,26 @@
 <?php
-
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LegalController;
 use App\Http\Controllers\CnpjController;
 use App\Http\Controllers\HomeController;
-
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DirectoryController;
 
-/*
-|--------------------------------------------------------------------------
-| Rotas Principais e Legais
-|--------------------------------------------------------------------------
-*/
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/politica-de-privacidade', [LegalController::class, 'privacy'])->name('privacidade');
-// #################################################################################################
-/*
-|--------------------------------------------------------------------------
-| Rotas de Consulta de CNPJ
-|--------------------------------------------------------------------------
-*/
-Route::post('/consultar', [CnpjController::class, 'consultar'])->name('cnpj.consultar');
-// Rota de CNPJ com parâmetro (genérica, pode ficar mais para o final)
-Route::get('/cnpj/{cnpj}', [CnpjController::class, 'show'])->name('cnpj.show');
-// #################################################################################################
-/*
-|--------------------------------------------------------------------------
-| Rotas de Diretório (/empresas)
-|--------------------------------------------------------------------------
-*/
-// Rota principal do diretório
-Route::get('/empresas', [DirectoryController::class, 'index'])->name('empresas.index');
-// --- ROTAS ESPECÍFICAS PRIMEIRO ---
-// Estas são as rotas que não têm parâmetros variáveis no segundo segmento da URL.
-Route::get('/empresas/municipios', [DirectoryController::class, 'municipiosIndex'])->name('empresas.municipios.index');
-Route::get('/empresas/municipios/{codigo_municipio}', [DirectoryController::class, 'municipioShow'])->name('empresas.municipios.show');
-Route::get('/empresas/atividades', [DirectoryController::class, 'cnaeIndex'])->name('empresas.cnae.index');
-Route::get('/empresas/atividades/{codigo_cnae}', [DirectoryController::class, 'byCnae'])->name('empresas.cnae.show');
-Route::get('/empresas/status/{status_slug}', [DirectoryController::class, 'byStatus'])->name('empresas.status');
-// --- ROTAS COM PARÂMETROS (GENÉRICAS) POR ÚLTIMO ---
-Route::get('/empresas/{uf}', [DirectoryController::class, 'byState'])->name('empresas.state');
-Route::get('/empresas/{uf}/{cidade_slug}', [DirectoryController::class, 'byCity'])->name('empresas.city');
+
+// --- ROTAS DE CNPJ ---
+Route::get('/', [HomeController::class, 'index'])->name('home');                                                // PÁGINA PRINCIPAL
+Route::get('/politica-de-privacidade', [LegalController::class, 'privacy'])->name('privacidade');               // PÁGINA POLITICA DE PRIVACIDADE
+//########################################################################################################################
+//########################################################################################################################
+// --- ROTAS DE CNPJ ---
+Route::post('/consultar', [CnpjController::class, 'consultar'])->name('cnpj.consultar');                        // ROTA DO FORMULÁRIO DE CONSULTA
+Route::get('/cnpj/{cnpj}', [CnpjController::class, 'show'])->name('cnpj.show');                                 // ROTA DA PÁGINA DO CNPJ
+//########################################################################################################################
+//########################################################################################################################
+// --- ROTAS DO PORTAL DE EMPRESAS ---
+Route::prefix('empresas')->name('empresas.')->group(function () {
+    Route::get('/', [DirectoryController::class, 'index'])->name('index');                                      // PÁGINA PRINCIPAL DO PORTAL
+    Route::get('/atividades', [DirectoryController::class, 'cnaeIndex'])->name('cnae');                         // INDEX DE ATIVIDADES
+    Route::get('/atividades/{codigo_cnae}', [DirectoryController::class, 'byCnae'])->name('cnae.show');         // PÁGINA DA ATIVIDADE                      
+    Route::get('/{uf}', [DirectoryController::class, 'byState'])->name('state');                                // PÁGINA DO ESTADO (UF)
+    Route::get('/{uf}/{municipio}', [DirectoryController::class, 'byCity'])->name('city');                      // PÁGINA DO MUNICIPIO                                  
+});

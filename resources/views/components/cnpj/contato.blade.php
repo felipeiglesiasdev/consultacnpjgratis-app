@@ -1,37 +1,59 @@
 @props(['data'])
 
-@if (!empty($data['telefone_1']) || !empty($data['telefone_2']) || !empty($data['email']))
-<div id="contato" class="bg-white border border-gray-200 rounded-lg shadow-sm mt-8">
-    {{-- Cabeçalho do Card --}}
-    <div class="flex items-center p-4 border-b border-gray-200">
-        <span class="inline-flex items-center justify-center h-10 w-10 rounded-lg bg-gray-100 text-gray-600 mr-3">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+@php
+    $tel1 = $data['telefone_1'] ?? null;
+    $tel2 = $data['telefone_2'] ?? null;
+    $email = $data['email'] ?? null;
+
+    $sanitize = fn($v) => preg_replace('/\D/', '', $v ?? '');
+@endphp
+
+@if ($tel1 || $tel2 || $email)
+<div id="contato" class="rounded-2xl border border-gray-200 bg-white shadow-[0_18px_45px_-28px_rgba(15,23,42,0.55)]">
+    <div class="flex items-center gap-3 px-5 py-4 border-b border-gray-100">
+        <span class="inline-flex items-center justify-center h-9 w-9 rounded-2xl bg-gray-900/5 text-gray-700">
+            <i class="bi bi-telephone text-lg"></i>
         </span>
-        <h2 class="text-lg font-semibold text-gray-800">Contato</h2>
+        <div>
+            <h2 class="text-sm font-semibold text-gray-900">Contato</h2>
+            <p class="text-[11px] text-gray-500">
+                Canais de contato informados no cadastro
+            </p>
+        </div>
     </div>
 
-    {{-- Corpo do Card --}}
-    <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-        @if($data['telefone_1'])
-        <div class="flex flex-col">
-            <span class="text-sm font-medium text-gray-500">Telefone 1</span>
-            <a href="tel:{{ preg_replace('/\\D/', '', $data['telefone_1']) }}" rel="nofollow" class="text-base text-green-600 hover:underline">{{ $data['telefone_1'] }}</a>
-        </div>
+    <div class="px-5 py-5 grid grid-cols-1 gap-y-3 text-sm">
+        @if($tel1)
+            <div class="flex flex-col">
+                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">Telefone 1</span>
+                <a href="tel:{{ $sanitize($tel1) }}" class="mt-1 text-emerald-700 hover:text-emerald-800 hover:underline">
+                    {{ $tel1 }}
+                </a>
+            </div>
         @endif
 
-        @if($data['telefone_2'])
-        <div class="flex flex-col">
-            <span class="text-sm font-medium text-gray-500">Telefone 2</span>
-            <a href="tel:{{ preg_replace('/\\D/', '', $data['telefone_2']) }}" rel="nofollow" class="text-base text-green-600 hover:underline">{{ $data['telefone_2'] }}</a>
-        </div>
+        @if($tel2)
+            <div class="flex flex-col">
+                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">Telefone 2</span>
+                <a href="tel:{{ $sanitize($tel2) }}" class="mt-1 text-emerald-700 hover:text-emerald-800 hover:underline">
+                    {{ $tel2 }}
+                </a>
+            </div>
         @endif
-        
-        @if($data['email'])
-        <div class="flex flex-col md:col-span-2">
-            <span class="text-sm font-medium text-gray-500">E-mail</span>
-            <a href="mailto:{{ strtolower($data['email']) }}" rel="nofollow" class="text-base text-green-600 hover:underline break-all">{{ strtolower($data['email']) }}</a>
-        </div>
+
+        @if($email)
+            <div class="flex flex-col">
+                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">E-mail</span>
+                <a href="mailto:{!! strtolower($email) !!}" class="mt-1 text-emerald-700 hover:text-emerald-800 hover:underline break-all">
+                    {{ strtolower($email) }}
+                </a>
+            </div>
         @endif
+
+        <p class="mt-2 text-[11px] text-gray-500">
+            Use esses canais com responsabilidade e em conformidade com a legislação vigente (como a LGPD),
+            especialmente em campanhas de prospecção.
+        </p>
     </div>
 </div>
 @endif
