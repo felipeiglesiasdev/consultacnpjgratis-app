@@ -13,9 +13,14 @@ class DirectoryController extends Controller // CONTROLADOR DO DIRETÓRIO DE EMP
 {
     public function index()
     {
-        // LISTA DE ESTADOS COM TOTAL DE EMPRESAS
-        $estados = Cache::remember('dir_estados', now()->addDay(), function () {
-            return Estabelecimento::select('uf', DB::raw('count(*) as total'))
+        // LISTA DE ESTADOS COM RESUMO: EMPRESAS TOTAIS, ATIVAS E MUNICÍPIOS ATENDIDOS
+        $estados = Cache::remember('dir_estados_resumo', now()->addDay(), function () {
+            return Estabelecimento::select(
+                'uf',
+                DB::raw('count(*) as total_empresas'),
+                DB::raw("sum(case when situacao_cadastral = 2 then 1 else 0 end) as total_ativas"),
+                DB::raw('count(distinct municipio) as total_municipios')
+            )
                 ->groupBy('uf')
                 ->orderBy('uf')
                 ->get();

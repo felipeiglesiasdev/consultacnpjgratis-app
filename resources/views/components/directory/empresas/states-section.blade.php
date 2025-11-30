@@ -40,13 +40,32 @@
                         <p class="text-xl font-bold text-[#171717] leading-tight">{{ $estado->uf }}</p>
                     </div>
                     <span class="inline-flex items-center justify-center rounded-full bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1">
-                        {{ number_format($estado->total, 0, ',', '.') }}
+                        {{ number_format($estado->total_empresas, 0, ',', '.') }}
                     </span>
                 </div>
-                <div class="mt-3 flex items-center text-sm text-gray-500 gap-1">
-                    <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
-                    <span>empresas localizadas</span>
-                </div>
+                <dl class="mt-4 grid grid-cols-1 gap-3 text-sm text-gray-600">
+                    <div class="flex items-center justify-between">
+                        <dt class="flex items-center gap-2">
+                            <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                            <span>Empresas ativas</span>
+                        </dt>
+                        <dd class="font-semibold text-[#171717]">{{ number_format($estado->total_ativas, 0, ',', '.') }}</dd>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <dt class="flex items-center gap-2">
+                            <span class="h-1.5 w-1.5 rounded-full bg-amber-300"></span>
+                            <span>Empresas totais</span>
+                        </dt>
+                        <dd class="font-semibold text-[#171717]">{{ number_format($estado->total_empresas, 0, ',', '.') }}</dd>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <dt class="flex items-center gap-2">
+                            <span class="h-1.5 w-1.5 rounded-full bg-amber-700"></span>
+                            <span>Municípios atendidos</span>
+                        </dt>
+                        <dd class="font-semibold text-[#171717]">{{ number_format($estado->total_municipios, 0, ',', '.') }}</dd>
+                    </div>
+                </dl>
                 <div class="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-amber-200 via-amber-400 to-amber-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
             </a>
         @endforeach
