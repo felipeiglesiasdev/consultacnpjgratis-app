@@ -154,10 +154,11 @@ class DirectoryController extends Controller // CONTROLADOR DO DIRETÓRIO DE EMP
     {
         // VARIÁVEIS
         $ufUpper = strtoupper($uf);
-        $ufLower = strtolower($ufUpper); 
+        $ufLower = strtolower($ufUpper);
         $hoje = Carbon::now()->toDateString();
         $inicioAno = Carbon::now()->startOfYear()->toDateString();
         $preposicao = $this->preposicoesEstado[$ufLower];
+        $nomeEstado = $this->estadosBrasileiros[$ufLower] ?? $ufUpper;
         $nomeCapital = $this->capitais[$ufLower];
         //************************************************************************************************************************
         //************************************************************************************************************************
@@ -191,6 +192,22 @@ class DirectoryController extends Controller // CONTROLADOR DO DIRETÓRIO DE EMP
         });
         //************************************************************************************************************************
         //************************************************************************************************************************
+        //**********************************************************************************************************************
+        //**********************************************************************************************************************
+        // TOTAL DE EMPRESAS ATIVAS NA CAPITAL DO ESTADO
+        $codigoCapital = Municipio::whereRaw('LOWER(descricao) = ?', [mb_strtolower($nomeCapital, 'UTF-8')])->value('codigo');
+        $totalCapitalAtivas = Cache::remember("estado_total_capital_ativas_{$uf}", now()->addMonths(2), function () use ($ufUpper, $codigoCapital) {
+            if (!$codigoCapital) {
+                return 0;
+            }
+
+            return Estabelecimento::where('uf', $ufUpper)
+                ->where('municipio', $codigoCapital)
+                ->where('situacao_cadastral', 2)
+                ->count();
+        });
+        //**********************************************************************************************************************
+        //**********************************************************************************************************************
         // TOP 10 CIDADES COM MAIS EMPRESAS ATIVAS NO ESTADO
         $top10Cidades = Cache::remember("estado_top10_cidades_{$uf}", now()->addMonths(2), function () use ($ufUpper, $ufLower) {
             $municipiosPopulares = Estabelecimento::with('municipioRel')
@@ -249,8 +266,10 @@ class DirectoryController extends Controller // CONTROLADOR DO DIRETÓRIO DE EMP
             'topCnaes' => $topCnaes,
             'uf' => $ufUpper,
             'municipios' => $municipios,
-            'nomeCapital' => $nomeCapital, 
-            'preposicao' => $preposicao, 
+            'nomeCapital' => $nomeCapital,
+            'preposicao' => $preposicao,
+            'nomeEstado' => $nomeEstado,
+            'totalCapitalAtivas' => $totalCapitalAtivas,
         ]);
     }
     //#############################################################################################################################

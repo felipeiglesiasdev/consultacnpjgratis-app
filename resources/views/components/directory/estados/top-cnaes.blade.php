@@ -1,6 +1,8 @@
 @props([
     'uf',
     'topCnaes',
+    'preposicao',
+    'nomeEstado',
 ])
 
 <section class="bg-[#050509] text-white py-16 md:py-20">
@@ -10,8 +12,8 @@
                 <p class="text-amber-400 font-semibold uppercase text-xs md:text-sm tracking-[0.24em]">
                     Atividades em destaque no estado
                 </p>
-                <h2 class="mt-2 text-2xl md:text-3xl font-black">
-                    CNAEs com mais empresas ativas em {{ $uf }}
+                <h2 class="mt-2 text-2xl md:text-3xl font-black leading-tight">
+                    CNAEs com mais empresas ativas no estado {{ strtoupper($preposicao) }} {{ $nomeEstado }}
                 </h2>
                 <p class="mt-3 text-sm md:text-base text-gray-300">
                     Veja quais atividades econômicas dominam o estado. Combine essas informações
@@ -31,20 +33,8 @@
         <div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-7 shadow-[0_18px_60px_rgba(0,0,0,0.8)]">
             <div class="space-y-3">
                 @foreach ($topCnaes as $cnae)
-                    @php
-                        $codigo = (string) $cnae->codigo;
-                        if (strlen($codigo) === 7) {
-                            $codigoFormatado = substr($codigo, 0, 2) . '.' .
-                                               substr($codigo, 2, 2) . '-' .
-                                               substr($codigo, 4, 1) . '-' .
-                                               substr($codigo, 5);
-                        } else {
-                            $codigoFormatado = $codigo;
-                        }
-                    @endphp
-
                     <a
-                        href=""
+                        href="{{ route('empresas.cnae.show', $cnae->codigo) }}"
                         class="group flex items-center gap-4 rounded-2xl bg-white/5 border border-white/10 px-4 py-3 hover:border-amber-400/70 hover:bg-white/10 transition-all"
                     >
                         <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500/15 text-amber-200 text-[11px] font-semibold">
@@ -56,7 +46,7 @@
                             </p>
                             <p class="mt-0.5 flex flex-wrap items-center gap-2 text-[11px] text-gray-300">
                                 <span class="inline-flex items-center gap-1 rounded-full bg-white/5 px-2 py-0.5 border border-amber-400/40 font-mono">
-                                    {{ $codigoFormatado }}
+                                    {{ $cnae->codigo_formatado }}
                                 </span>
                                 <span>
                                     {{ number_format($cnae->ativos_count, 0, ',', '.') }} empresas ativas em {{ $uf }}
