@@ -13,7 +13,7 @@
                     Cidades em destaque
                 </p>
                 <h2 class="mt-2 text-2xl md:text-3xl font-black text-[#111827]">
-                    Municípios com mais empresas ativas no estado {{ strtoupper($preposicao) }} {{ $nomeEstado }}
+                    Municípios com mais empresas ativas no estado {{ strtolower($preposicao) }} {{ $nomeEstado }}
                 </h2>
                 <p class="mt-3 text-sm md:text-base text-gray-600">
                     Descubra quais municípios concentram a maior quantidade de empresas ativas

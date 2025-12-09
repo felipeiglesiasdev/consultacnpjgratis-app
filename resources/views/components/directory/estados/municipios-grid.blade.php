@@ -13,7 +13,7 @@
                     Todos os municípios do estado
                 </p>
                 <h2 class="mt-2 text-2xl md:text-3xl font-black text-[#111827] leading-tight">
-                    Empresas ativas por município no estado {{ strtoupper($preposicao) }} {{ $nomeEstado }}
+                    Empresas ativas por município no estado {{ strtolower($preposicao) }} {{ $nomeEstado }}
                 </h2>
                 <p class="mt-3 text-sm md:text-base text-gray-600">
                     Ranking enxuto com todos os municípios do estado, ordenados pelo total de empresas ativas.

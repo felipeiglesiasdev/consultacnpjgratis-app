@@ -17,7 +17,7 @@
                     Balanço das empresas no estado
                 </p>
                 <h2 class="mt-2 text-2xl md:text-3xl font-black text-[#111827]">
-                    Como as empresas se distribuem no estado {{ strtoupper($preposicao) }} {{ $nomeEstado }}
+                Como as empresas se distribuem no estado {{ strtolower($preposicao) }} {{ $nomeEstado }}
                 </h2>
                 <p class="mt-3 text-sm md:text-base text-gray-600">
                     Veja quantas empresas estão ativas hoje, quantas são matrizes ou filiais

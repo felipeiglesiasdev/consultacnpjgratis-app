@@ -13,7 +13,7 @@
                     Atividades em destaque no estado
                 </p>
                 <h2 class="mt-2 text-2xl md:text-3xl font-black leading-tight">
-                    CNAEs com mais empresas ativas no estado {{ strtoupper($preposicao) }} {{ $nomeEstado }}
+                    CNAEs com mais empresas ativas no estado {{ strtolower($preposicao) }} {{ $nomeEstado }}
                 </h2>
                 <p class="mt-3 text-sm md:text-base text-gray-300">
                     Veja quais atividades econômicas dominam o estado. Combine essas informações

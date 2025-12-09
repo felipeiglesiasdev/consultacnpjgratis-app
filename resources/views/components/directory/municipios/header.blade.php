@@ -22,14 +22,14 @@
             <div class="max-w-xl space-y-7">
                 <p class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs md:text-sm font-medium text-amber-200">
                     <span class="h-2 w-2 rounded-full bg-emerald-400 animate-ping"></span>
-                    Diretório de empresas em {{ $nomeCidade }} / {{ $ufReal }}
+                    Diretório de empresas em {{ $nomeCidade }} / {{ $ufReal->uf }}
                 </p>
 
                 <div>
                     <h1 class="text-3xl md:text-4xl xl:text-5xl font-black tracking-tight leading-tight">
                         Empresas de
                         <span class="text-amber-400">{{ $nomeCidade }}</span>,
-                        {{ $ufReal }}.
+                        {{ $ufReal->uf }}.
                     </h1>
                     <p class="mt-3 text-sm md:text-base text-gray-200 max-w-lg">
                         Veja todas as empresas ativas no município, com CNPJ, razão social,
@@ -92,7 +92,7 @@
                             <p class="mt-1 text-sm font-semibold text-white">Empresas em {{ $nomeCidade }}</p>
                         </div>
                         <span class="inline-flex items-center justify-center h-10 px-3 rounded-2xl bg-amber-500/15 border border-amber-400/40 text-xs font-semibold text-amber-200">
-                            {{ $nomeCidade }} • {{ $ufReal }}
+                            {{ $nomeCidade }} • {{ $ufReal->uf }}
                         </span>
                     </div>
 

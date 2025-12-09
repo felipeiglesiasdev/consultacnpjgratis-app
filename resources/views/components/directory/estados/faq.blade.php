@@ -16,7 +16,7 @@
                     Perguntas frequentes
                 </p>
                 <h2 class="mt-2 text-2xl md:text-3xl font-black text-[#111827] leading-tight">
-                    FAQ sobre empresas no estado {{ strtoupper($preposicao) }} {{ $nomeEstado }}
+                    FAQ sobre empresas no estado {{ strtolower($preposicao) }} {{ $nomeEstado }}
                 </h2>
                 <p class="mt-3 text-sm md:text-base text-gray-600">
                     Respostas rápidas para entender o cenário empresarial do estado e usar os números a seu favor.

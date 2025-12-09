@@ -299,13 +299,13 @@ class DirectoryController extends Controller // CONTROLADOR DO DIRETÓRIO DE EMP
         //************************************************************************************************************************
         // TOTAL ABERTAS EM 2025
         
-        $totalAbertas2025 = Cache::remember("municipio_total_abertas_2025_{$ufReal}_{$municipio->descricao}", now()->addMonths(2), function () use ($ufReal, $municipio, $ufUpper, $inicioAno, $hoje) {
+        $totalAbertas2025 = Cache::remember("municipio_total_abertas_2025_{$ufReal->uf}_{$municipio->descricao}", now()->addMonths(2), function () use ($ufReal, $municipio, $ufUpper, $inicioAno, $hoje) {
             return Estabelecimento::where('uf', $ufUpper)->where('municipio', $municipio->codigo)->whereBetween('data_inicio_atividade', [$inicioAno, $hoje])->count();
         });
         //************************************************************************************************************************
         //************************************************************************************************************************
         // TOTAL FECHADAS EM 2025
-        $totalFechadas2025 = Cache::remember("estado_total_fechadas_2025_{$ufReal}_{$municipio->descricao}", now()->addMonths(2), function () use ($ufReal, $municipio, $ufUpper, $inicioAno, $hoje) {
+        $totalFechadas2025 = Cache::remember("estado_total_fechadas_2025_{$ufReal->uf}_{$municipio->descricao}", now()->addMonths(2), function () use ($ufReal, $municipio, $ufUpper, $inicioAno, $hoje) {
             return Estabelecimento::where('uf', $ufUpper)->where('municipio', $municipio->codigo)->where('situacao_cadastral', '!=', 2)->whereBetween('data_situacao_cadastral', [$inicioAno, $hoje])->count();
         });
         //************************************************************************************************************************

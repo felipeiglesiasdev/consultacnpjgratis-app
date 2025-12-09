@@ -13,12 +13,12 @@
             <div class="max-w-xl space-y-7">
                 <p class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs md:text-sm font-medium text-amber-200">
                     <span class="h-2 w-2 rounded-full bg-emerald-400 animate-ping"></span>
-                    Painel empresarial no estado {{ strtoupper($preposicao) }} {{ $nomeEstado }} ({{ $uf }})
+                    Painel empresarial no estado {{ strtolower($preposicao) }} {{ $nomeEstado }} ({{ $uf }})
                 </p>
 
                 <div>
                     <h1 class="text-3xl md:text-4xl xl:text-5xl font-black tracking-tight leading-tight">
-                        Empresas no estado {{ strtoupper($preposicao) }}
+                        Empresas no estado {{ strtolower($preposicao) }}
                         <span class="text-amber-400">{{ $nomeEstado }}</span>
                     </h1>
                     <p class="mt-3 text-sm md:text-base text-gray-200 max-w-lg">

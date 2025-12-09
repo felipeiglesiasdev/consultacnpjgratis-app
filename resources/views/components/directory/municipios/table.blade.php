@@ -16,7 +16,7 @@
                     Lista de empresas
                 </p>
             <h2 class="mt-2 text-2xl md:text-3xl font-black text-[#111827]">
-                    Empresas ativas em {{ $nomeCidade }} / {{ $ufReal }}
+                    Empresas ativas em {{ $nomeCidade }} / {{ $ufReal->uf }}
                 </h2>
                 <p class="mt-3 text-sm md:text-base text-gray-600">
                     Abaixo estão listadas as empresas ativas do município. Cada linha exibe o CNPJ,
