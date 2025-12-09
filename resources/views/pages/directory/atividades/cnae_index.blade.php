@@ -1,8 +1,11 @@
 @extends('layouts.app')
 
 @push('seo')
-    {{-- Crie depois tags específicas se quiser --}}
-    {{-- @include('components.directory.atividades.tags') --}}
+    @include('components.directory.atividades.tags', [
+        'title'       => 'Atividades econômicas com mais empresas ativas no Brasil',
+        'description' => 'Consulte os CNAEs que concentram o maior número de empresas ativas e veja o ranking das atividades em destaque.',
+        'keywords'    => 'CNAE, atividades econômicas, empresas ativas, ranking CNAE'
+    ])
 @endpush
 
 @section('content')

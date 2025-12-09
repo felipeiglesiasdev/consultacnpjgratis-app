@@ -1,18 +1,4 @@
-@props(['uf', 'totalAtivas', 'preposicao'])
-
-@php
-    $nomesEstados = [
-        'AC' => 'Acre', 'AL' => 'Alagoas', 'AM' => 'Amazonas', 'AP' => 'Amapá',
-        'BA' => 'Bahia', 'CE' => 'Ceará', 'DF' => 'Distrito Federal', 'ES' => 'Espírito Santo',
-        'GO' => 'Goiás', 'MA' => 'Maranhão', 'MG' => 'Minas Gerais', 'MS' => 'Mato Grosso do Sul',
-        'MT' => 'Mato Grosso', 'PA' => 'Pará', 'PB' => 'Paraíba', 'PE' => 'Pernambuco',
-        'PI' => 'Piauí', 'PR' => 'Paraná', 'RJ' => 'Rio de Janeiro', 'RN' => 'Rio Grande do Norte',
-        'RO' => 'Rondônia', 'RR' => 'Roraima', 'RS' => 'Rio Grande do Sul', 'SC' => 'Santa Catarina',
-        'SE' => 'Sergipe', 'SP' => 'São Paulo', 'TO' => 'Tocantins',
-    ];
-
-    $nomeEstado = $nomesEstados[$uf] ?? $uf;
-@endphp
+@props(['uf', 'totalAtivas', 'preposicao', 'nomeEstado'])
 
 <section class="relative overflow-hidden bg-gradient-to-b from-[#050509] via-[#050608] to-black text-white">
     {{-- Glows de fundo --}}
@@ -27,12 +13,12 @@
             <div class="max-w-xl space-y-7">
                 <p class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs md:text-sm font-medium text-amber-200">
                     <span class="h-2 w-2 rounded-full bg-emerald-400 animate-ping"></span>
-                    Painel empresarial {{ $preposicao }} {{ $nomeEstado }} ({{ $uf }})
+                    Painel empresarial no estado {{ strtolower($preposicao) }} {{ $nomeEstado }} ({{ $uf }})
                 </p>
 
                 <div>
                     <h1 class="text-3xl md:text-4xl xl:text-5xl font-black tracking-tight leading-tight">
-                        Empresas {{ $preposicao }}
+                        Empresas no estado {{ strtolower($preposicao) }}
                         <span class="text-amber-400">{{ $nomeEstado }}</span>
                     </h1>
                     <p class="mt-3 text-sm md:text-base text-gray-200 max-w-lg">

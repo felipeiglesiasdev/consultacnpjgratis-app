@@ -48,6 +48,7 @@
                     <input
                         type="text"
                         name="cnpj"
+                        id="header-cnpj-desktop"
                         inputmode="numeric"
                         placeholder="Digite um CNPJ..."
                         class="w-40 lg:w-48 bg-transparent text-xs outline-none placeholder:text-gray-500"
@@ -84,6 +85,7 @@
                 <input
                     type="text"
                     name="cnpj"
+                    id="header-cnpj-mobile"
                     inputmode="numeric"
                     placeholder="Digite um CNPJ..."
                     class="w-full bg-transparent text-xs outline-none placeholder:text-gray-500"
@@ -127,3 +129,20 @@
         </div>
     </div>
 </header>
+
+@push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/imask/7.1.3/imask.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const inputs = [document.getElementById('header-cnpj-desktop'), document.getElementById('header-cnpj-mobile')].filter(Boolean);
+
+        inputs.forEach((cnpjInput) => {
+            const mask = IMask(cnpjInput, { mask: '00.000.000/0000-00' });
+            const form = cnpjInput.closest('form');
+            if (form) {
+                form.addEventListener('submit', function() { mask.updateValue(); });
+            }
+        });
+    });
+</script>
+@endpush

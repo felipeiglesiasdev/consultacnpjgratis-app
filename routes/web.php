@@ -4,6 +4,7 @@ use App\Http\Controllers\LegalController;
 use App\Http\Controllers\CnpjController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DirectoryController;
+use App\Http\Controllers\RemovalRequestController;
 
 
 // --- ROTAS DE CNPJ ---
@@ -14,6 +15,8 @@ Route::get('/politica-de-privacidade', [LegalController::class, 'privacy'])->nam
 // --- ROTAS DE CNPJ ---
 Route::post('/consultar', [CnpjController::class, 'consultar'])->name('cnpj.consultar');                        // ROTA DO FORMULÁRIO DE CONSULTA
 Route::get('/cnpj/{cnpj}', [CnpjController::class, 'show'])->name('cnpj.show');                                 // ROTA DA PÁGINA DO CNPJ
+Route::get('/remocao/{cnpj}', [RemovalRequestController::class, 'create'])->name('remocao.show');               // FORMULÁRIO DE REMOÇÃO
+Route::post('/remocao/{cnpj}', [RemovalRequestController::class, 'store'])->name('remocao.store');              // ENVIO DE REMOÇÃO
 //########################################################################################################################
 //########################################################################################################################
 // --- ROTAS DO PORTAL DE EMPRESAS ---

@@ -154,10 +154,11 @@ class DirectoryController extends Controller // CONTROLADOR DO DIRETÓRIO DE EMP
     {
         // VARIÁVEIS
         $ufUpper = strtoupper($uf);
-        $ufLower = strtolower($ufUpper); 
+        $ufLower = strtolower($ufUpper);
         $hoje = Carbon::now()->toDateString();
         $inicioAno = Carbon::now()->startOfYear()->toDateString();
         $preposicao = $this->preposicoesEstado[$ufLower];
+        $nomeEstado = $this->estadosBrasileiros[$ufLower] ?? $ufUpper;
         $nomeCapital = $this->capitais[$ufLower];
         //************************************************************************************************************************
         //************************************************************************************************************************
@@ -191,6 +192,22 @@ class DirectoryController extends Controller // CONTROLADOR DO DIRETÓRIO DE EMP
         });
         //************************************************************************************************************************
         //************************************************************************************************************************
+        //**********************************************************************************************************************
+        //**********************************************************************************************************************
+        // TOTAL DE EMPRESAS ATIVAS NA CAPITAL DO ESTADO
+        $codigoCapital = Municipio::whereRaw('LOWER(descricao) = ?', [mb_strtolower($nomeCapital, 'UTF-8')])->value('codigo');
+        $totalCapitalAtivas = Cache::remember("estado_total_capital_ativas_{$uf}", now()->addMonths(2), function () use ($ufUpper, $codigoCapital) {
+            if (!$codigoCapital) {
+                return 0;
+            }
+
+            return Estabelecimento::where('uf', $ufUpper)
+                ->where('municipio', $codigoCapital)
+                ->where('situacao_cadastral', 2)
+                ->count();
+        });
+        //**********************************************************************************************************************
+        //**********************************************************************************************************************
         // TOP 10 CIDADES COM MAIS EMPRESAS ATIVAS NO ESTADO
         $top10Cidades = Cache::remember("estado_top10_cidades_{$uf}", now()->addMonths(2), function () use ($ufUpper, $ufLower) {
             $municipiosPopulares = Estabelecimento::with('municipioRel')
@@ -249,8 +266,10 @@ class DirectoryController extends Controller // CONTROLADOR DO DIRETÓRIO DE EMP
             'topCnaes' => $topCnaes,
             'uf' => $ufUpper,
             'municipios' => $municipios,
-            'nomeCapital' => $nomeCapital, 
-            'preposicao' => $preposicao, 
+            'nomeCapital' => $nomeCapital,
+            'preposicao' => $preposicao,
+            'nomeEstado' => $nomeEstado,
+            'totalCapitalAtivas' => $totalCapitalAtivas,
         ]);
     }
     //#############################################################################################################################
@@ -280,13 +299,13 @@ class DirectoryController extends Controller // CONTROLADOR DO DIRETÓRIO DE EMP
         //************************************************************************************************************************
         // TOTAL ABERTAS EM 2025
         
-        $totalAbertas2025 = Cache::remember("municipio_total_abertas_2025_{$ufReal}_{$municipio->descricao}", now()->addMonths(2), function () use ($ufReal, $municipio, $ufUpper, $inicioAno, $hoje) {
+        $totalAbertas2025 = Cache::remember("municipio_total_abertas_2025_{$ufReal->uf}_{$municipio->descricao}", now()->addMonths(2), function () use ($ufReal, $municipio, $ufUpper, $inicioAno, $hoje) {
             return Estabelecimento::where('uf', $ufUpper)->where('municipio', $municipio->codigo)->whereBetween('data_inicio_atividade', [$inicioAno, $hoje])->count();
         });
         //************************************************************************************************************************
         //************************************************************************************************************************
         // TOTAL FECHADAS EM 2025
-        $totalFechadas2025 = Cache::remember("estado_total_fechadas_2025_{$ufReal}_{$municipio->descricao}", now()->addMonths(2), function () use ($ufReal, $municipio, $ufUpper, $inicioAno, $hoje) {
+        $totalFechadas2025 = Cache::remember("estado_total_fechadas_2025_{$ufReal->uf}_{$municipio->descricao}", now()->addMonths(2), function () use ($ufReal, $municipio, $ufUpper, $inicioAno, $hoje) {
             return Estabelecimento::where('uf', $ufUpper)->where('municipio', $municipio->codigo)->where('situacao_cadastral', '!=', 2)->whereBetween('data_situacao_cadastral', [$inicioAno, $hoje])->count();
         });
         //************************************************************************************************************************

@@ -28,6 +28,7 @@
                     <x-cnpj.situacao-cadastral :data="$data" />
                     <x-cnpj.contato :data="$data" />
                     <x-cnpj.endereco :data="$data" />
+                    <x-cnpj.removal-alert :data="$data" />
                 </aside>
 
                 {{-- CONTEÚDO PRINCIPAL À DIREITA --}}
@@ -35,6 +36,7 @@
                     <x-cnpj.informacoes-cnpj :data="$data" />
                     <x-cnpj.atividades-economicas :data="$data" />
                     <x-cnpj.qsa :data="$data" />
+                    <x-cnpj.faq :data="$data" />
                     <x-cnpj.empresas-semelhantes :data="$data" />
                     {{-- <x-cnpj.removal-section :data="$data" /> se quiser depois --}}
                 </main>
