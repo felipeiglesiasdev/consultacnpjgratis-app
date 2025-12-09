@@ -71,7 +71,7 @@
                 </div>
 
                 <div class="flex flex-wrap gap-3 pt-4 border-t border-white/5 text-[11px] md:text-xs text-gray-300">
-                    <a href=""
+                    <a href="{{ route('empresas.state', $ufReal->uf) }}"
                        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-amber-400/70 hover:text-amber-200 transition">
                         <i class="bi bi-arrow-left"></i>
                         Voltar para o painel do estado
