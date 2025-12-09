@@ -1,6 +1,8 @@
 @props([
     'uf',
     'top10Cidades',
+    'preposicao',
+    'nomeEstado',
 ])
 
 <section class="bg-gray-50 py-16 md:py-20">
@@ -11,7 +13,7 @@
                     Cidades em destaque
                 </p>
                 <h2 class="mt-2 text-2xl md:text-3xl font-black text-[#111827]">
-                    Municípios com mais empresas ativas em {{ $uf }}
+                    Municípios com mais empresas ativas no estado {{ strtolower($preposicao) }} {{ $nomeEstado }}
                 </h2>
                 <p class="mt-3 text-sm md:text-base text-gray-600">
                     Descubra quais municípios concentram a maior quantidade de empresas ativas
@@ -29,7 +31,7 @@
             <div class="space-y-3">
                 @foreach ($top10Cidades as $index => $cidade)
                     <a
-                        href=""
+                        href="{{ route('empresas.city', [$cidade->uf, $cidade->municipio_slug]) }}"
                         class="group flex items-center gap-4 rounded-2xl bg-gradient-to-r from-white to-gray-50 border border-gray-200 px-4 py-3 hover:border-amber-400 hover:from-amber-50/60 hover:to-white transition-all duration-150 shadow-[0_12px_32px_-24px_rgba(15,23,42,0.7)]"
                     >
                         <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500/10 text-amber-700 text-xs font-semibold">

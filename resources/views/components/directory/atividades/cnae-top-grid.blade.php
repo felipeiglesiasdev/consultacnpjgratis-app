@@ -25,17 +25,6 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-5">
             @foreach ($topCnaes as $index => $cnae)
-                @php
-                    $codigo = (string) $cnae->codigo;
-                    if (strlen($codigo) === 7) {
-                        $codigoFormatado = substr($codigo, 0, 2) . '.' .
-                                           substr($codigo, 2, 2) . '-' .
-                                           substr($codigo, 4, 1) . '-' .
-                                           substr($codigo, 5);
-                    } else {
-                        $codigoFormatado = $codigo;
-                    }
-                @endphp
 
                 <a
                     href="{{ route('empresas.cnae.show', ['codigo_cnae' => $cnae->codigo]) }}"
@@ -55,7 +44,7 @@
                             </p>
                             <p class="mt-1 inline-flex items-center gap-2 text-[11px] md:text-xs text-gray-600">
                                 <span class="font-mono inline-flex items-center gap-1 rounded-full bg-white/80 px-2 py-0.5 border border-amber-100">
-                                    {{ $codigoFormatado }}
+                                    {{ $cnae->codigo_formatado }}
                                 </span>
                             </p>
                         </div>
