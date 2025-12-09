@@ -9,6 +9,7 @@
     @include('components.directory.estados.hero', [
         'uf'           => $uf,
         'totalAtivas'  => $totalAtivas,
+        'preposicao'   => $preposicao
     ])
 
     {{-- 🔹 novo componente: grid com todos os municípios paginados --}}

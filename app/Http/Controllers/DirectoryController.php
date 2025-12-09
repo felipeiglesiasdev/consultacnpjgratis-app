@@ -13,6 +13,41 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class DirectoryController extends Controller // CONTROLADOR DO DIRETÓRIO DE EMPRESAS
 {
+    // MAPA PARA BUSCAR O NOME COMPLETO DO ESTADO PELA SIGLA
+    private $estadosBrasileiros = [
+        'ac' => 'Acre', 'al' => 'Alagoas', 'ap' => 'Amapá', 'am' => 'Amazonas',
+        'ba' => 'Bahia', 'ce' => 'Ceará', 'df' => 'Distrito Federal', 'es' => 'Espírito Santo',
+        'go' => 'Goiás', 'ma' => 'Maranhão', 'mt' => 'Mato Grosso', 'ms' => 'Mato Grosso do Sul',
+        'mg' => 'Minas Gerais', 'pa' => 'Pará', 'pb' => 'Paraíba', 'pr' => 'Paraná',
+        'pe' => 'Pernambuco', 'pi' => 'Piauí', 'rj' => 'Rio de Janeiro', 'rn' => 'Rio Grande do Norte',
+        'rs' => 'Rio Grande do Sul', 'ro' => 'Rondônia', 'rr' => 'Roraima', 'sc' => 'Santa Catarina',
+        'sp' => 'São Paulo', 'se' => 'Sergipe', 'to' => 'Tocantins'
+    ];
+
+    // (NOVO) MAPA DE PREPOSIÇÕES CORRETAS PARA CADA ESTADO
+    private $preposicoesEstado = [
+        'ac' => 'do', 'al' => 'de', 'ap' => 'do', 'am' => 'do',
+        'ba' => 'da', 'ce' => 'do', 'df' => 'do', 'es' => 'do',
+        'go' => 'de', 'ma' => 'do', 'mt' => 'de', 'ms' => 'de',
+        'mg' => 'de', 'pa' => 'do', 'pb' => 'da', 'pr' => 'do',
+        'pe' => 'de', 'pi' => 'do', 'rj' => 'do', 'rn' => 'do',
+        'rs' => 'do', 'ro' => 'de', 'rr' => 'de', 'sc' => 'de',
+        'sp' => 'de', 'se' => 'de', 'to' => 'de'
+    ];
+
+    
+
+    // (NOVO) MAPA DE CAPITAIS
+    private $capitais = [
+        'ac' => 'Rio Branco', 'al' => 'Maceió', 'ap' => 'Macapá', 'am' => 'Manaus',
+        'ba' => 'Salvador', 'ce' => 'Fortaleza', 'df' => 'Brasília', 'es' => 'Vitória',
+        'go' => 'Goiânia', 'ma' => 'São Luís', 'mt' => 'Cuiabá', 'ms' => 'Campo Grande',
+        'mg' => 'Belo Horizonte', 'pa' => 'Belém', 'pb' => 'João Pessoa', 'pr' => 'Curitiba',
+        'pe' => 'Recife', 'pi' => 'Teresina', 'rj' => 'Rio de Janeiro', 'rn' => 'Natal',
+        'rs' => 'Porto Alegre', 'ro' => 'Porto Velho', 'rr' => 'Boa Vista', 'sc' => 'Florianópolis',
+        'sp' => 'São Paulo', 'se' => 'Aracaju', 'to' => 'Palmas'
+    ];
+
     public function index()
     {
         // LISTA DE ESTADOS COM O TOTAL DE MUNICÍPIOS
@@ -122,6 +157,8 @@ class DirectoryController extends Controller // CONTROLADOR DO DIRETÓRIO DE EMP
         $ufLower = strtolower($ufUpper); 
         $hoje = Carbon::now()->toDateString();
         $inicioAno = Carbon::now()->startOfYear()->toDateString();
+        $preposicao = $this->preposicoesEstado[$ufLower];
+        $nomeCapital = $this->capitais[$ufLower];
         //************************************************************************************************************************
         //************************************************************************************************************************
         // TOTAL DE EMPRESAS ATIVAS NO ESTADO
@@ -212,6 +249,8 @@ class DirectoryController extends Controller // CONTROLADOR DO DIRETÓRIO DE EMP
             'topCnaes' => $topCnaes,
             'uf' => $ufUpper,
             'municipios' => $municipios,
+            'nomeCapital' => $nomeCapital, 
+            'preposicao' => $preposicao, 
         ]);
     }
     //#############################################################################################################################
