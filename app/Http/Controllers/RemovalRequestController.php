@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\RemovalRequest;
+use App\Models\Estabelecimento;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class RemovalRequestController extends Controller
@@ -35,23 +34,18 @@ class RemovalRequestController extends Controller
             'entende_prazo_buscas' => ['accepted'],
         ]);
 
-        RemovalRequest::create([
-            'cnpj' => $cnpjNumbers,
-            'nome' => $validated['nome'],
-            'email' => $validated['email'],
-            'vinculo' => $validated['vinculo'],
-            'motivo' => $validated['motivo'],
-            'aceite_lgpd' => $request->boolean('aceite_lgpd'),
-            'confirmacao_responsavel' => $request->boolean('confirmacao_responsavel'),
-            'entende_prazo_buscas' => $request->boolean('entende_prazo_buscas'),
-            'token' => Str::uuid(),
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent(),
-        ]);
+        $cnpjBasico = substr($cnpjNumbers, 0, 8);
+        $cnpjOrdem = substr($cnpjNumbers, 8, 4);
+        $cnpjDv = substr($cnpjNumbers, 12, 2);
+
+        Estabelecimento::where('cnpj_basico', $cnpjBasico)
+            ->where('cnpj_ordem', $cnpjOrdem)
+            ->where('cnpj_dv', $cnpjDv)
+            ->delete();
 
         return redirect()
-            ->route('remocao.show', ['cnpj' => $cnpjNumbers])
-            ->with('success', 'Recebemos sua solicitação. Nossa equipe analisará o pedido e retornará em breve.');
+            ->route('home')
+            ->with('success', 'O CNPJ foi removido. Você pode realizar uma nova consulta na página inicial.');
     }
 
     private function formatCnpj(string $cnpj): string

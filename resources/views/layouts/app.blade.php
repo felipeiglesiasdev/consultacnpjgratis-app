@@ -13,6 +13,7 @@
 </head>
 <body class="font-sans antialiased">
     @include('components.header')
+    <x-flash-message />
     <main class="flex-grow">
         @yield('content')
     </main>
