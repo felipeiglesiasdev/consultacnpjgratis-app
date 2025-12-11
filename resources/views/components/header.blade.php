@@ -64,7 +64,6 @@
                         <i class="bi bi-arrow-right-short text-lg"></i>
                     </button>
                 </form>
-                <span class="text-[10px] text-gray-400">Formato automático: 00.000.000/0000-00</span>
             </div>
 
             {{-- HAMBURGER MOBILE --}}
