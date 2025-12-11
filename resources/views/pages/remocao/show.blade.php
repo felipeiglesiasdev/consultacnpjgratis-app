@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @push('seo')
-    <title>Pedido de remoção do CNPJ {{ $cnpjFormatted }} | Consulta CNPJ Grátis</title>
-    <meta name="description" content="Solicite a remoção ou correção dos dados do CNPJ {{ $cnpjFormatted }} de forma segura e fundamentada em leis de dados abertos.">
+    <title>Remover o CNPJ {{ $cnpjFormatted }} imediatamente | Consulta CNPJ Grátis</title>
+    <meta name="description" content="Remova ou corrija os dados do CNPJ {{ $cnpjFormatted }} de forma imediata, com base legal e transparência sobre o uso de dados públicos.">
     <link rel="canonical" href="{{ route('remocao.show', ['cnpj' => $cnpj]) }}" />
 @endpush
 
@@ -14,23 +14,24 @@
                     <div class="rounded-2xl bg-white shadow-sm border border-gray-200 p-6 space-y-3">
                         <p class="text-sm font-semibold text-amber-600">É dono ou responsável por este CNPJ?</p>
                         <p class="text-sm text-gray-700 leading-relaxed">
-                            Você está na página de remoção do CNPJ <strong>{{ $cnpjFormatted }}</strong>. Caso seja sócio, administrador ou representante legal, clique no botão abaixo e preencha o formulário para solicitar a retirada ou atualização dos dados.
+                            Você está na página de remoção do CNPJ <strong>{{ $cnpjFormatted }}</strong>. Caso seja sócio, administrador ou representante legal, confirme abaixo e o registro será removido imediatamente da nossa base.
                         </p>
                         <div class="space-y-2 text-sm text-gray-700">
-                            <p class="font-semibold text-gray-900">Blindagem jurídica</p>
+                            <p class="font-semibold text-gray-900">Base legal e uso responsável</p>
                             <ul class="list-disc list-inside space-y-1">
                                 <li>Lei 14.129/2021 (Governo Digital) — autoriza a disponibilização de dados públicos em meios digitais.</li>
                                 <li>Lei de Acesso à Informação — dados do CNPJ são públicos e podem ser republicados.</li>
                                 <li>Lei Geral de Proteção de Dados — você pode contestar dados pessoais e solicitar correção ou remoção.</li>
                                 <li>Fonte oficial: Receita Federal (dados públicos) e espelho em <a class="text-amber-600 underline" target="_blank" href="https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj">dados.gov.br</a>.</li>
+                                <li>Respeitamos a privacidade: não exibimos nome completo de sócios, endereços ou contatos, mesmo quando constam na base pública.</li>
                             </ul>
                         </div>
                     </div>
 
                     <div class="rounded-2xl bg-amber-50 border border-amber-200 p-5 text-sm text-amber-900 space-y-2">
                         <p class="font-semibold">Transparência e prazos</p>
-                        <p>Pedidos são avaliados individualmente. Após a retirada, mecanismos de busca (Google, Bing, etc.) podem levar até 7 dias para refletir a alteração.</p>
-                        <p>Em caso de dúvidas, utilize o formulário ao lado descrevendo o cenário com detalhes.</p>
+                        <p>A remoção é processada na hora. Mecanismos de busca (Google, Bing, etc.) podem levar até 7 dias para refletir a alteração.</p>
+                        <p>Use o formulário ao lado apenas para contextualizar o pedido e confirmar que você é a pessoa autorizada.</p>
                     </div>
                 </aside>
 
@@ -38,21 +39,15 @@
                     <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 md:p-8 space-y-6">
                         <div class="flex items-start justify-between gap-4 flex-wrap">
                             <div>
-                                <p class="text-sm uppercase tracking-wide text-gray-400">Solicitação de remoção</p>
-                                <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Remover ou corrigir o CNPJ {{ $cnpjFormatted }}</h1>
-                                <p class="mt-2 text-sm text-gray-600">Estamos republicando dados abertos oficiais. Ainda assim, você pode solicitar ajustes informando o seu vínculo e o motivo.</p>
+                                <p class="text-sm uppercase tracking-wide text-gray-400">Remoção imediata</p>
+                                <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Remover o CNPJ {{ $cnpjFormatted }}</h1>
+                                <p class="mt-2 text-sm text-gray-600">Estamos republicando dados abertos oficiais. Ao confirmar abaixo, removeremos imediatamente este CNPJ da nossa base e mostraremos o aviso de remoção na página inicial.</p>
                             </div>
                             <span class="inline-flex items-center gap-2 rounded-full bg-emerald-50 border border-emerald-200 px-3 py-1 text-sm font-semibold text-emerald-700">
                                 <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
                                 Dados oficiais, base pública
                             </span>
                         </div>
-
-                        @if (session('success'))
-                            <div class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-800">
-                                {{ session('success') }}
-                            </div>
-                        @endif
 
                         @if ($errors->any())
                             <div class="rounded-xl border border-red-200 bg-red-50 p-4 text-red-800 space-y-1">
@@ -112,15 +107,15 @@
 
                             <div class="flex items-center justify-between gap-4 flex-wrap text-xs text-gray-500">
                                 <div>
-                                    <p><strong>Base legal:</strong> Lei 14.129/2021 (Governo Digital) e Lei de Acesso à Informação permitem a republicação de dados públicos do CNPJ.</p>
-                                    <p class="mt-1">Nos casos em que a LGPD se aplica (dados pessoais sensíveis), analisamos ajustes ou remoções pontuais.</p>
-                                </div>
+                                <p><strong>Base legal:</strong> Lei 14.129/2021 (Governo Digital) e Lei de Acesso à Informação permitem a republicação de dados públicos do CNPJ.</p>
+                                <p class="mt-1">Nos casos em que a LGPD se aplica (dados pessoais sensíveis), analisamos ajustes ou remoções pontuais.</p>
+                            </div>
                                 <a href="{{ route('privacidade') }}#remover-cnpj" class="inline-flex items-center gap-2 text-amber-700 font-semibold">Política de privacidade</a>
                             </div>
 
                             <div class="pt-2">
                                 <button type="submit" class="w-full md:w-auto inline-flex items-center justify-center rounded-2xl bg-amber-500 px-6 py-3 text-base font-semibold text-[#111827] hover:bg-amber-400 shadow-lg shadow-amber-500/30 transition">
-                                    Enviar solicitação
+                                    Remover CNPJ agora
                                 </button>
                             </div>
                         </form>

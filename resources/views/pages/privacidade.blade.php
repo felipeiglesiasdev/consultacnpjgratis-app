@@ -29,7 +29,7 @@
         <section id="uso-dos-dados" class="rounded-2xl border border-gray-200 bg-white p-6 md:p-8 space-y-4">
             <h2 class="text-2xl font-bold text-gray-900">2. Como utilizamos e protegemos os dados</h2>
             <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
-                <li>Exibimos informações de identificação empresarial (razão social, CNPJ, endereço, CNAE, quadro societário) tal como publicadas oficialmente.</li>
+                <li>Exibimos dados de identificação empresarial (razão social, CNPJ, CNAE, cidade/UF) e resumos societários, mas evitamos mostrar nome completo de sócios, endereços ou contatos.</li>
                 <li>Não vendemos dados pessoais. O objetivo é facilitar a consulta pública e organizada do acervo governamental.</li>
                 <li>Logs técnicos (IP, user agent) podem ser registrados para prevenção de abuso e para documentar solicitações de remoção.</li>
                 <li>Adotamos criptografia em trânsito (HTTPS) e controles de acesso aos ambientes internos.</li>
@@ -37,17 +37,14 @@
         </section>
 
         <section id="remover-cnpj" class="rounded-2xl border border-amber-200 bg-amber-50 p-6 md:p-8 space-y-4">
-            <div class="flex items-start justify-between gap-4 flex-wrap">
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-900">3. Como remover ou corrigir um CNPJ</h2>
-                    <p class="text-sm text-gray-700 leading-relaxed">Se você é sócio, administrador ou representante legal, pode solicitar a remoção ou correção dos dados republicados.</p>
-                </div>
-                <a href="{{ route('remocao.show', ['cnpj' => '00000000000000']) }}" class="inline-flex items-center gap-2 rounded-full bg-amber-500 px-4 py-2 text-sm font-semibold text-[#111827] hover:bg-amber-400 shadow-lg shadow-amber-500/30">Iniciar pedido</a>
+            <div class="space-y-2">
+                <h2 class="text-2xl font-bold text-gray-900">3. Como remover ou corrigir um CNPJ</h2>
+                <p class="text-sm text-gray-700 leading-relaxed">Se você é sócio, administrador ou representante legal, pode solicitar a remoção ou correção dos dados republicados. Siga o passo a passo:</p>
             </div>
             <ol class="list-decimal list-inside space-y-2 text-sm text-gray-700">
                 <li>Abra a página do CNPJ desejado e clique em “Pedir remoção do CNPJ”.</li>
-                <li>Preencha o formulário informando seu vínculo, motivo e marque as confirmações legais (LGPD e prazos de busca).</li>
-                <li>Após a análise, a retirada local é imediata; motores de busca podem levar até 7 dias para refletir a alteração.</li>
+                <li>Preencha o formulário informando seu vínculo, detalhe o motivo e marque as confirmações legais (LGPD e prazos de buscas).</li>
+                <li>A retirada local é imediata após a análise; motores de busca podem levar até 7 dias para refletir a alteração.</li>
             </ol>
             <p class="text-xs text-amber-900 leading-relaxed">Fundamentação: Lei 14.129/2021 (Governo Digital) e Lei de Acesso à Informação garantem a publicidade dos dados; a LGPD orienta ajustes quando houver dados pessoais sensíveis.</p>
         </section>
