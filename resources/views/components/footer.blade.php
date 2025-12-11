@@ -54,55 +54,40 @@
     };
 @endphp
 
-<footer class="bg-[#050509] text-gray-300 border-t border-white/10">
-    <div class="container mx-auto px-6 md:px-10 xl:px-16 pt-12 pb-8 space-y-10">
-        {{-- TOPO DO FOOTER: TEXTO + CTA --}}
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 rounded-3xl border border-white/10 bg-white/[0.04] px-6 py-5">
-            <div class="space-y-2 max-w-3xl">
-                <p class="text-[11px] md:text-xs uppercase tracking-[0.24em] text-amber-300 font-semibold">Navegação inteligente</p>
-                <h2 class="text-xl md:text-2xl font-black text-white leading-tight">
-                    Explore empresas por CNPJ, estados, capitais e CNAEs sem sair do rodapé.
-                </h2>
-                <p class="text-xs md:text-sm text-gray-400">
-                    Links internos para as capitais brasileiras, diretórios por estado e atividades econômicas mais consultadas.
-                    Use-os para montar listas B2B ou validar rapidamente um cadastro.
-                </p>
-            </div>
-            <div class="flex flex-col sm:flex-row items-stretch gap-3 w-full lg:w-auto">
-                <a href="{{ route('home') }}" class="inline-flex items-center justify-center rounded-2xl bg-amber-400 px-4 py-2 text-sm font-semibold text-[#111827] shadow-[0_10px_30px_rgba(251,191,36,0.28)] hover:bg-amber-300 transition">
-                    <i class="bi bi-search me-2"></i> Consultar um CNPJ agora
-                </a>
-                <a href="{{ route('empresas.index') }}" class="inline-flex items-center justify-center rounded-2xl border border-white/20 px-4 py-2 text-sm font-semibold text-white hover:border-amber-300/80 hover:text-amber-200 transition">
-                    <i class="bi bi-grid me-2"></i> Ver portal de empresas
-                </a>
-            </div>
+<footer class="bg-[#050509] text-gray-300 border-top border-white/10 border-t">
+    <div class="container mx-auto px-6 md:px-10 xl:px-16 pt-10 pb-8 space-y-8">
+        {{-- LOGO E INTRO --}}
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <a href="{{ route('home') }}" class="flex items-center gap-3">
+                <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-amber-500 shadow-[0_0_24px_rgba(251,191,36,0.35)]">
+                    <i class="bi bi-search text-lg text-[#111827]"></i>
+                </div>
+                <div class="flex flex-col leading-tight">
+                    <span class="text-base font-bold text-white">Consulta CNPJ <span class="text-amber-300">Grátis</span></span>
+                    <span class="text-[12px] text-gray-400">Busque por CNPJ, estados, cidades e CNAE.</span>
+                </div>
+            </a>
+            <a href="{{ route('empresas.index') }}" class="inline-flex items-center gap-2 rounded-full border border-white/20 px-3 py-2 text-xs font-semibold text-white hover:border-amber-300/80 hover:text-amber-200 transition">
+                <i class="bi bi-grid"></i> Portal de empresas
+            </a>
         </div>
 
-        {{-- GRID DE LINKS INTERNOS --}}
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 text-sm">
-            {{-- COLUNA 1: CONSULTAS DE CNPJ --}}
-            <div class="space-y-4">
-                <div>
-                    <h3 class="text-xs font-semibold uppercase tracking-[0.22em] text-gray-400 mb-3">Portais principais</h3>
-                    <ul class="space-y-2 text-xs md:text-sm">
-                        <li><a href="{{ route('home') }}" class="text-gray-300 hover:text-amber-300 transition">Consulta de CNPJ gratuito</a></li>
-                        <li><a href="{{ route('empresas.index') }}" class="text-gray-300 hover:text-amber-300 transition">Portal de empresas por estado</a></li>
-                        <li><a href="{{ route('empresas.cnae') }}" class="text-gray-300 hover:text-amber-300 transition">Empresas por atividade econômica (CNAE)</a></li>
-                        <li><a href="{{ url('/politica-de-privacidade') }}" class="text-gray-300 hover:text-amber-300 transition">Política de privacidade</a></li>
-                    </ul>
-                </div>
-
-                <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-3 text-xs text-gray-400">
-                    <p class="font-semibold text-gray-200 mb-1">Termos que o público procura</p>
-                    <p>lista de empresas por cidade, empresas por estado, CNAE, quadro societário, razão social, consulta grátis.</p>
-                </div>
+        <div class="space-y-6 text-sm">
+            {{-- BLOCOS DE LINKS --}}
+            <div class="space-y-3">
+                <h3 class="text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">Portais principais</h3>
+                <ul class="space-y-2 text-xs md:text-sm">
+                    <li><a href="{{ route('home') }}" class="text-gray-300 hover:text-amber-300 transition">Consulta de CNPJ gratuito</a></li>
+                    <li><a href="{{ route('empresas.index') }}" class="text-gray-300 hover:text-amber-300 transition">Portal de empresas por estado</a></li>
+                    <li><a href="{{ route('empresas.cnae') }}" class="text-gray-300 hover:text-amber-300 transition">Empresas por atividade econômica (CNAE)</a></li>
+                    <li><a href="{{ url('/politica-de-privacidade') }}" class="text-gray-300 hover:text-amber-300 transition">Política de privacidade</a></li>
+                </ul>
             </div>
 
-            {{-- COLUNA 2: CAPITAIS --}}
-            <div>
-                <h3 class="text-xs font-semibold uppercase tracking-[0.22em] text-gray-400 mb-3">Capitais brasileiras</h3>
-                <div class="grid grid-cols-2 gap-3 text-xs md:text-sm">
-                    @foreach (array_chunk($capitais, 9) as $bloco)
+            <div class="space-y-3">
+                <h3 class="text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">Capitais brasileiras</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs md:text-sm">
+                    @foreach (array_chunk($capitais, 7) as $bloco)
                         <ul class="space-y-2">
                             @foreach ($bloco as $capital)
                                 <li>
@@ -116,11 +101,10 @@
                 </div>
             </div>
 
-            {{-- COLUNA 3: ESTADOS --}}
-            <div>
-                <h3 class="text-xs font-semibold uppercase tracking-[0.22em] text-gray-400 mb-3">Empresas por estado</h3>
-                <div class="grid grid-cols-2 gap-3 text-xs md:text-sm">
-                    @foreach (array_chunk($estados, 7, true) as $grupo)
+            <div class="space-y-3">
+                <h3 class="text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">Empresas por estado</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 text-xs md:text-sm">
+                    @foreach (array_chunk($estados, 5, true) as $grupo)
                         <ul class="space-y-2">
                             @foreach ($grupo as $uf => $nome)
                                 <li>
@@ -134,9 +118,8 @@
                 </div>
             </div>
 
-            {{-- COLUNA 4: CNAE --}}
-            <div>
-                <h3 class="text-xs font-semibold uppercase tracking-[0.22em] text-gray-400 mb-3">Atividades econômicas</h3>
+            <div class="space-y-3">
+                <h3 class="text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">Atividades econômicas</h3>
                 <ul class="space-y-2 text-xs md:text-sm">
                     @foreach ($cnaesLinks as $cnae)
                         <li>
@@ -155,13 +138,9 @@
         </div>
 
         {{-- RODAPÉ INFERIOR --}}
-        <div class="pt-4 border-t border-white/10 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-            <p class="text-[11px] md:text-xs text-gray-500">
-                © {{ date('Y') }} Consulta CNPJ Grátis — dados públicos da Receita Federal do Brasil com navegação por CNPJ, UF, municípios e CNAE.
-            </p>
-            <p class="text-[10px] md:text-[11px] text-gray-500">
-                Links internos para capitais, estados e atividades econômicas ajudam a montar listas de prospecção rapidamente.
-            </p>
+        <div class="pt-4 border-t border-white/10 space-y-2 text-[11px] md:text-xs text-gray-500">
+            <p>© {{ date('Y') }} Consulta CNPJ Grátis — dados públicos da Receita Federal do Brasil com navegação por CNPJ, UF, municípios e CNAE.</p>
+            <p>Links internos para capitais, estados e atividades econômicas ajudam a montar listas de prospecção rapidamente.</p>
         </div>
     </div>
 </footer>

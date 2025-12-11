@@ -2,7 +2,7 @@
 
 <header class="sticky top-0 z-40 border-b border-white/10 bg-[#050509]/90 backdrop-blur">
     <div class="container mx-auto px-6 md:px-10 xl:px-16">
-        <div class="flex items-center justify-between gap-4 py-3 md:py-4">
+        <div class="flex items-center justify-between gap-4 py-2 md:py-3">
             {{-- LOGO / NOME DO PROJETO --}}
             <a href="{{ route('home') }}" class="flex items-center gap-2 md:gap-3">
                 <div class="flex h-9 w-9 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-amber-500 shadow-[0_0_25px_rgba(251,191,36,0.45)]">
@@ -38,12 +38,11 @@
             </nav>
 
             {{-- BUSCA RÁPIDA DE CNPJ (DESKTOP) --}}
-            <div class="hidden md:flex flex-col items-end gap-2 text-right">
-                <span class="text-[11px] uppercase tracking-[0.18em] text-amber-200">Consulta instantânea</span>
+            <div class="hidden md:flex flex-col items-end gap-1.5 text-right">
                 <form
                     action="{{ route('home') }}"
                     method="GET"
-                    class="flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-white shadow-[0_12px_30px_rgba(0,0,0,0.35)] focus-within:border-amber-400 focus-within:ring-1 focus-within:ring-amber-400/50"
+                    class="flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-sm text-white shadow-[0_8px_18px_rgba(0,0,0,0.32)] focus-within:border-amber-400 focus-within:ring-1 focus-within:ring-amber-400/50"
                 >
                     <i class="bi bi-search text-base text-amber-200"></i>
                     <input
