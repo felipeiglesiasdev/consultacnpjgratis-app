@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Estabelecimento;
+use App\Models\RemovalRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -33,6 +34,15 @@ class RemovalRequestController extends Controller
             'confirmacao_responsavel' => ['accepted'],
             'entende_prazo_buscas' => ['accepted'],
         ]);
+
+        $cnpjBasico = substr($cnpjNumbers, 0, 8);
+        $cnpjOrdem = substr($cnpjNumbers, 8, 4);
+        $cnpjDv = substr($cnpjNumbers, 12, 2);
+
+        Estabelecimento::where('cnpj_basico', $cnpjBasico)
+            ->where('cnpj_ordem', $cnpjOrdem)
+            ->where('cnpj_dv', $cnpjDv)
+            ->delete();
 
         $cnpjBasico = substr($cnpjNumbers, 0, 8);
         $cnpjOrdem = substr($cnpjNumbers, 8, 4);
