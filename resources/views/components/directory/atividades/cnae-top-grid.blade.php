@@ -30,8 +30,8 @@
                     href="{{ route('empresas.cnae.show', ['codigo_cnae' => $cnae->codigo]) }}"
                     class="group relative overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-br from-white to-amber-50/40 p-5 shadow-[0_18px_45px_-28px_rgba(15,23,42,0.55)] hover:border-amber-400 hover:shadow-[0_22px_60px_-28px_rgba(15,23,42,0.75)] hover:-translate-y-0.5 transition-all duration-150"
                 >
-                    <div class="absolute -top-4 -left-2 flex h-8 w-8 items-center justify-center rounded-xl bg-amber-400 text-[11px] font-bold text-[#171717] shadow-lg shadow-amber-400/40">
-                        #{{ $index + 1 }}
+                    <div class="absolute top-4 right-4 inline-flex min-w-[2.5rem] items-center justify-center rounded-full bg-amber-400 px-2 py-1 text-[11px] font-bold text-[#171717] shadow-lg shadow-amber-400/40">
+                        #{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
                     </div>
 
                     <div class="flex items-start gap-3">
