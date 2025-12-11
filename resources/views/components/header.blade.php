@@ -1,8 +1,8 @@
 @props([])
 
 <header class="sticky top-0 z-40 border-b border-white/10 bg-[#050509]/90 backdrop-blur">
-    <div class="container mx-auto px-6 md:px-10 xl:px-16">
-        <div class="flex items-center justify-between gap-4 py-3 md:py-4">
+    <div class="container mx-auto px-5 md:px-8 xl:px-12">
+        <div class="flex items-center justify-between gap-4 py-1.5 md:py-2.5">
             {{-- LOGO / NOME DO PROJETO --}}
             <a href="{{ route('home') }}" class="flex items-center gap-2 md:gap-3">
                 <div class="flex h-9 w-9 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-amber-500 shadow-[0_0_25px_rgba(251,191,36,0.45)]">
@@ -38,26 +38,30 @@
             </nav>
 
             {{-- BUSCA RÁPIDA DE CNPJ (DESKTOP) --}}
-            <div class="hidden md:flex items-center gap-2">
+            <div class="hidden md:flex flex-col items-end gap-1 text-right">
                 <form
-                    action="{{ route('home') }}" {{-- ou url('/') se preferir --}}
+                    action="{{ route('home') }}"
                     method="GET"
-                    class="flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-white focus-within:border-amber-400 focus-within:ring-1 focus-within:ring-amber-400/50"
+                    class="flex items-center gap-2.5 rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-sm text-white shadow-[0_8px_18px_rgba(0,0,0,0.32)] focus-within:border-amber-400 focus-within:ring-1 focus-within:ring-amber-400/50"
                 >
-                    <i class="bi bi-search text-xs text-gray-400"></i>
+                    <i class="bi bi-search text-base text-amber-200"></i>
                     <input
                         type="text"
                         name="cnpj"
                         id="header-cnpj-desktop"
                         inputmode="numeric"
-                        placeholder="Digite um CNPJ..."
-                        class="w-40 lg:w-48 bg-transparent text-xs outline-none placeholder:text-gray-500"
+                        maxlength="18"
+                        aria-label="Digite o número do CNPJ"
+                        placeholder="Digite o CNPJ com ou sem pontuação"
+                        class="w-48 lg:w-60 bg-transparent text-xs md:text-sm outline-none placeholder:text-gray-400"
                     >
                     <button
                         type="submit"
-                        class="hidden sm:inline-flex items-center rounded-full bg-amber-400 px-3 py-1 text-[11px] font-semibold text-black hover:bg-amber-300 transition whitespace-nowrap"
+                        class="inline-flex items-center gap-1.5 rounded-full bg-amber-400 px-3.5 py-1.5 text-[11px] md:text-xs font-semibold text-[#111827] hover:bg-amber-300 transition whitespace-nowrap"
                     >
-                        Consulta grátis
+                        <span class="hidden lg:inline">Consultar</span>
+                        <span class="lg:hidden">OK</span>
+                        <i class="bi bi-arrow-right-short text-lg"></i>
                     </button>
                 </form>
             </div>

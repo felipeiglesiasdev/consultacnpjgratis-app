@@ -26,7 +26,6 @@
                 {{-- SIDEBAR ESQUERDA --}}
                 <aside class="lg:col-span-4 space-y-6">
                     <x-cnpj.situacao-cadastral :data="$data" />
-                    <x-cnpj.contato :data="$data" />
                     <x-cnpj.endereco :data="$data" />
                     <x-cnpj.removal-alert :data="$data" />
                 </aside>
@@ -35,7 +34,6 @@
                 <main class="lg:col-span-8 space-y-6">
                     <x-cnpj.informacoes-cnpj :data="$data" />
                     <x-cnpj.atividades-economicas :data="$data" />
-                    <x-cnpj.qsa :data="$data" />
                     <x-cnpj.faq :data="$data" />
                     <x-cnpj.empresas-semelhantes :data="$data" />
                     {{-- <x-cnpj.removal-section :data="$data" /> se quiser depois --}}
