@@ -17,12 +17,13 @@
                             Você está na página de remoção do CNPJ <strong>{{ $cnpjFormatted }}</strong>. Caso seja sócio, administrador ou representante legal, clique no botão abaixo e preencha o formulário para solicitar a retirada ou atualização dos dados.
                         </p>
                         <div class="space-y-2 text-sm text-gray-700">
-                            <p class="font-semibold text-gray-900">Blindagem jurídica</p>
+                            <p class="font-semibold text-gray-900">Base legal e uso responsável</p>
                             <ul class="list-disc list-inside space-y-1">
                                 <li>Lei 14.129/2021 (Governo Digital) — autoriza a disponibilização de dados públicos em meios digitais.</li>
                                 <li>Lei de Acesso à Informação — dados do CNPJ são públicos e podem ser republicados.</li>
                                 <li>Lei Geral de Proteção de Dados — você pode contestar dados pessoais e solicitar correção ou remoção.</li>
                                 <li>Fonte oficial: Receita Federal (dados públicos) e espelho em <a class="text-amber-600 underline" target="_blank" href="https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj">dados.gov.br</a>.</li>
+                                <li>Respeitamos a privacidade: não exibimos nome completo de sócios, endereços ou contatos, mesmo quando constam na base pública.</li>
                             </ul>
                         </div>
                     </div>
