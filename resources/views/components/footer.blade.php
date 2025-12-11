@@ -128,6 +128,11 @@
                             </a>
                         </li>
                     @endforeach
+                    <li>
+                        <a href="{{ route('empresas.cnae') }}#faq" class="text-gray-300 hover:text-amber-300 transition">
+                            Como funcionam os códigos CNAE?
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
