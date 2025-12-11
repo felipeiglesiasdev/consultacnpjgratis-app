@@ -72,8 +72,7 @@
             const emptyHint   = document.getElementById('cnae-search-empty-hint');
 
             function formatCodigo(codigo) {
-                const str = String(codigo);
-                if (str.length !== 7) return str;
+                const str = String(codigo).padStart(7, '0');
                 // 6201501 -> 62.01-5-01
                 return `${str.slice(0,2)}.${str.slice(2,4)}-${str.slice(4,5)}-${str.slice(5)}`;
             }
@@ -126,10 +125,11 @@
                 }
 
                 const filtered = CNAES.filter((item) => {
-                    const codigoStr = String(item.codigo);
+                    const codigoStr = String(item.codigo).padStart(7, '0');
                     const descricao = (item.descricao || '').toLowerCase();
+                    const numericTerm = term.replace(/\D/g, '');
                     return (
-                        codigoStr.includes(term.replace(/\D/g, '')) ||
+                        codigoStr.includes(numericTerm) ||
                         descricao.includes(term)
                     );
                 }).slice(0, 50); // limita a lista pra não ficar gigante
