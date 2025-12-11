@@ -38,28 +38,34 @@
             </nav>
 
             {{-- BUSCA RÁPIDA DE CNPJ (DESKTOP) --}}
-            <div class="hidden md:flex items-center gap-2">
+            <div class="hidden md:flex flex-col items-end gap-2 text-right">
+                <span class="text-[11px] uppercase tracking-[0.18em] text-amber-200">Consulta instantânea</span>
                 <form
-                    action="{{ route('home') }}" {{-- ou url('/') se preferir --}}
+                    action="{{ route('home') }}"
                     method="GET"
-                    class="flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-white focus-within:border-amber-400 focus-within:ring-1 focus-within:ring-amber-400/50"
+                    class="flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-white shadow-[0_12px_30px_rgba(0,0,0,0.35)] focus-within:border-amber-400 focus-within:ring-1 focus-within:ring-amber-400/50"
                 >
-                    <i class="bi bi-search text-xs text-gray-400"></i>
+                    <i class="bi bi-search text-base text-amber-200"></i>
                     <input
                         type="text"
                         name="cnpj"
                         id="header-cnpj-desktop"
                         inputmode="numeric"
-                        placeholder="Digite um CNPJ..."
-                        class="w-40 lg:w-48 bg-transparent text-xs outline-none placeholder:text-gray-500"
+                        maxlength="18"
+                        aria-label="Digite o número do CNPJ"
+                        placeholder="Digite o CNPJ com ou sem pontuação"
+                        class="w-52 lg:w-64 bg-transparent text-xs md:text-sm outline-none placeholder:text-gray-400"
                     >
                     <button
                         type="submit"
-                        class="hidden sm:inline-flex items-center rounded-full bg-amber-400 px-3 py-1 text-[11px] font-semibold text-black hover:bg-amber-300 transition whitespace-nowrap"
+                        class="inline-flex items-center gap-2 rounded-full bg-amber-400 px-4 py-2 text-[11px] md:text-xs font-semibold text-[#111827] hover:bg-amber-300 transition whitespace-nowrap"
                     >
-                        Consulta grátis
+                        <span class="hidden lg:inline">Consultar</span>
+                        <span class="lg:hidden">OK</span>
+                        <i class="bi bi-arrow-right-short text-lg"></i>
                     </button>
                 </form>
+                <span class="text-[10px] text-gray-400">Formato automático: 00.000.000/0000-00</span>
             </div>
 
             {{-- HAMBURGER MOBILE --}}
