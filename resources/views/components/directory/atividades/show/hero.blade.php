@@ -5,15 +5,12 @@
 ])
 
 @php
-    $codigo = (string) $cnae->codigo;
-    if (strlen($codigo) === 7) {
-        $codigoFormatado = substr($codigo, 0, 2) . '.' .
-                           substr($codigo, 2, 2) . '-' .
-                           substr($codigo, 4, 1) . '-' .
-                           substr($codigo, 5);
-    } else {
-        $codigoFormatado = $codigo;
-    }
+    $codigoNormalizado = str_pad((string) $cnae->codigo, 7, '0', STR_PAD_LEFT);
+    $codigoFormatado = $cnae->codigo_formatado ??
+        substr($codigoNormalizado, 0, 2) . '.' .
+        substr($codigoNormalizado, 2, 2) . '-' .
+        substr($codigoNormalizado, 4, 1) . '-' .
+        substr($codigoNormalizado, 5);
 
     $descricao = $cnae->descricao;
     $amostraEmpresas = $empresas->count();

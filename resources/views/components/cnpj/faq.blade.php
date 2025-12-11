@@ -1,50 +1,54 @@
-<section class="rounded-2xl border border-gray-200 bg-white p-6 md:p-8 shadow-sm space-y-6">
-    <div class="flex items-start justify-between gap-4 flex-wrap">
-        <div>
-            <p class="text-sm uppercase tracking-wide text-gray-400">Perguntas frequentes</p>
-            <h2 class="text-2xl font-bold text-gray-900">FAQ sobre a empresa</h2>
-            <p class="mt-2 text-sm text-gray-600">Detalhes resumidos da ficha cadastral e orientações de atualização.</p>
-        </div>
-        <a href="{{ route('remocao.show', ['cnpj' => preg_replace('/[^0-9]/', '', $data['cnpj_completo'])]) }}" class="inline-flex items-center gap-2 rounded-full bg-amber-50 border border-amber-200 px-3 py-1 text-sm font-semibold text-amber-800">
-            <i class="bi bi-shield-check"></i>
-            Solicitar remoção
-        </a>
-    </div>
+@php
+    $cnpj          = $data['cnpj_completo'] ?? 'este CNPJ';
+    $razao         = $data['razao_social'] ?? 'esta empresa';
+    $cidadeUf      = $data['cidade_uf'] ?? 'Cidade/UF não informadas';
+    $descricaoCnae = $data['cnae_principal']['descricao'] ?? null;
+    $codigoCnae    = $data['cnae_principal']['codigo'] ?? null;
+    $nomeFantasia  = $data['nome_fantasia'] ?? null;
+    $dataAbertura  = $data['data_abertura'] ?? 'Data de abertura não informada';
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-        <div class="p-4 rounded-xl bg-gray-50 border border-gray-200">
-            <p class="text-xs font-semibold text-amber-700">Situação</p>
-            <p class="mt-1 text-lg font-bold text-gray-900">{{ $data['situacao_cadastral'] ?? 'Não informada' }}</p>
-            <p class="text-sm text-gray-600">Atualizada em {{ $data['data_situacao_cadastral'] ?? 'data não informada' }}.</p>
-        </div>
+    $atividadePrincipal = $descricaoCnae
+        ? ($codigoCnae ? $codigoCnae . ' - ' . $descricaoCnae : $descricaoCnae)
+        : ($codigoCnae ?? 'Não informada');
 
-        <div class="p-4 rounded-xl bg-gray-50 border border-gray-200">
-            <p class="text-xs font-semibold text-amber-700">Endereço</p>
-            <p class="mt-1 text-lg font-semibold text-gray-900">{{ $data['logradouro'] ?? 'Endereço não informado' }}</p>
-            <p class="text-sm text-gray-600">{{ $data['cidade_uf'] ?? '' }}</p>
-        </div>
+    $respostaFantasia = $nomeFantasia
+        ? 'O nome fantasia cadastrado é ' . $nomeFantasia . '.'
+        : 'A empresa ' . $razao . ' não possui nome fantasia informado.';
+@endphp
 
-        <div class="p-4 rounded-xl bg-gray-50 border border-gray-200">
-            <p class="text-xs font-semibold text-amber-700">CNAE principal</p>
-            <p class="mt-1 text-lg font-semibold text-gray-900">{{ $data['cnae_principal']['codigo'] ?? '' }}</p>
-            <p class="text-sm text-gray-600">{{ $data['cnae_principal']['descricao'] ?? '' }}</p>
+<section class="bg-gray-50 py-14 md:py-16" id="faq">
+    <div class="container mx-auto px-6 md:px-10 xl:px-16">
+        <div class="max-w-3xl mx-auto text-center mb-10">
+            <p class="text-amber-500 font-semibold uppercase text-xs md:text-sm tracking-[0.24em]">Perguntas frequentes</p>
+            <h2 class="mt-2 text-2xl md:text-3xl font-black text-[#111827]">FAQ sobre este CNPJ</h2>
+            <p class="mt-3 text-sm md:text-base text-gray-600">Respostas diretas e claras sobre o registro consultado.</p>
         </div>
 
-        <div class="p-4 rounded-xl bg-gray-50 border border-gray-200">
-            <p class="text-xs font-semibold text-amber-700">Abertura</p>
-            <p class="mt-1 text-lg font-semibold text-gray-900">{{ $data['data_abertura'] ?? 'Não informada' }}</p>
-            <p class="text-sm text-gray-600">Categoria: {{ $data['porte'] ?? 'Não informado' }}</p>
-        </div>
-    </div>
+        <div class="max-w-3xl mx-auto space-y-4">
+            <div class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 shadow-[0_16px_35px_-28px_rgba(15,23,42,0.35)]">
+                <h3 class="text-base md:text-lg font-semibold text-[#111827]">Qual a razão social do CNPJ {{ $cnpj }}?</h3>
+                <p class="mt-2 text-sm md:text-base text-gray-700">{{ $razao }}</p>
+            </div>
 
-    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div class="p-4 rounded-xl bg-white border border-gray-200">
-            <h3 class="text-base font-semibold text-gray-900">Quais dados são públicos?</h3>
-            <p class="mt-2 text-sm text-gray-600 leading-relaxed">O Cadastro Nacional da Pessoa Jurídica é público, conforme Lei 14.129/2021 (Governo Digital) e Lei de Acesso à Informação. Reutilizamos o mesmo acervo divulgado pela Receita Federal.</p>
-        </div>
-        <div class="p-4 rounded-xl bg-white border border-gray-200">
-            <h3 class="text-base font-semibold text-gray-900">Como pedir remoção ou correção?</h3>
-            <p class="mt-2 text-sm text-gray-600 leading-relaxed">Use o formulário dedicado para informar seu vínculo com o CNPJ, o motivo e aceite os termos de privacidade. Respeitamos a LGPD para analisar ajustes pontuais.</p>
+            <div class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 shadow-[0_16px_35px_-28px_rgba(15,23,42,0.35)]">
+                <h3 class="text-base md:text-lg font-semibold text-[#111827]">Em qual cidade se encontra a empresa {{ $razao }}?</h3>
+                <p class="mt-2 text-sm md:text-base text-gray-700">{{ $cidadeUf }}</p>
+            </div>
+
+            <div class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 shadow-[0_16px_35px_-28px_rgba(15,23,42,0.35)]">
+                <h3 class="text-base md:text-lg font-semibold text-[#111827]">Qual a atividade principal da empresa {{ $razao }}?</h3>
+                <p class="mt-2 text-sm md:text-base text-gray-700">{{ $atividadePrincipal }}</p>
+            </div>
+
+            <div class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 shadow-[0_16px_35px_-28px_rgba(15,23,42,0.35)]">
+                <h3 class="text-base md:text-lg font-semibold text-[#111827]">Qual o nome fantasia do CNPJ {{ $cnpj }}?</h3>
+                <p class="mt-2 text-sm md:text-base text-gray-700">{{ $respostaFantasia }}</p>
+            </div>
+
+            <div class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 shadow-[0_16px_35px_-28px_rgba(15,23,42,0.35)]">
+                <h3 class="text-base md:text-lg font-semibold text-[#111827]">Qual a data de abertura do CNPJ {{ $cnpj }}?</h3>
+                <p class="mt-2 text-sm md:text-base text-gray-700">{{ $dataAbertura }}</p>
+            </div>
         </div>
     </div>
 </section>

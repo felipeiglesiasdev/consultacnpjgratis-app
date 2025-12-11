@@ -1,11 +1,7 @@
 @props(['data'])
 
 @php
-    $logradouro  = $data['logradouro']  ?? null;
-    $complemento = $data['complemento'] ?? null;
-    $bairro      = $data['bairro']      ?? null;
     $cidadeUf    = $data['cidade_uf']   ?? null;
-    $cep         = $data['cep']         ?? null;
 @endphp
 
 <div id="endereco" class="rounded-2xl border border-gray-200 bg-white shadow-[0_18px_45px_-28px_rgba(15,23,42,0.55)]">
@@ -22,39 +18,9 @@
     </div>
 
     <div class="px-5 py-5 grid grid-cols-1 gap-y-3 text-sm">
-        @if($logradouro)
-            <div class="flex flex-col">
-                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">Logradouro</span>
-                <span class="mt-1 text-gray-900">{{ $logradouro }}</span>
-            </div>
-        @endif
-
-        @if($complemento)
-            <div class="flex flex-col">
-                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">Complemento</span>
-                <span class="mt-1 text-gray-900">{{ $complemento }}</span>
-            </div>
-        @endif
-
-        @if($bairro)
-            <div class="flex flex-col">
-                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">Bairro</span>
-                <span class="mt-1 text-gray-900">{{ $bairro }}</span>
-            </div>
-        @endif
-
-        @if($cidadeUf)
-            <div class="flex flex-col">
-                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">Cidade / UF</span>
-                <span class="mt-1 text-gray-900">{{ $cidadeUf }}</span>
-            </div>
-        @endif
-
-        @if($cep)
-            <div class="flex flex-col">
-                <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">CEP</span>
-                <span class="mt-1 text-gray-900">{{ $cep }}</span>
-            </div>
-        @endif
+        <div class="flex flex-col">
+            <span class="text-[11px] font-medium text-gray-500 uppercase tracking-[0.18em]">Cidade / UF</span>
+            <span class="mt-1 text-gray-900">{{ $cidadeUf ?? 'Localização não informada' }}</span>
+        </div>
     </div>
 </div>
