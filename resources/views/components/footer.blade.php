@@ -128,11 +128,6 @@
                             </a>
                         </li>
                     @endforeach
-                    <li>
-                        <a href="{{ route('empresas.cnae') }}#faq" class="text-gray-300 hover:text-amber-300 transition">
-                            Como funcionam os códigos CNAE?
-                        </a>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -141,6 +136,7 @@
         <div class="pt-4 border-t border-white/10 space-y-1.5 text-[10px] md:text-[11px] text-gray-500">
             <p>© {{ date('Y') }} Consulta CNPJ Grátis — dados públicos da Receita Federal do Brasil com navegação por CNPJ, UF, municípios e CNAE.</p>
             <p>Links internos para capitais, estados e atividades econômicas ajudam a montar listas de prospecção rapidamente.</p>
+            <p>© {{ date('Y') }} Consulta CNPJ Grátis — dados públicos da Receita Federal do Brasil.</p>
         </div>
     </div>
 </footer>
