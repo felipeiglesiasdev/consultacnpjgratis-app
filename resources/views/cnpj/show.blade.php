@@ -21,24 +21,14 @@
     {{-- CONTEÚDO PRINCIPAL --}}
     <section class="bg-gray-50 py-12 md:py-16">
         <div class="container mx-auto px-6 md:px-10 xl:px-16">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
-
-                {{-- SIDEBAR ESQUERDA --}}
-                <aside class="lg:col-span-4 space-y-6">
-                    <x-cnpj.situacao-cadastral :data="$data" />
-                    <x-cnpj.endereco :data="$data" />
-                    <x-cnpj.removal-alert :data="$data" />
-                </aside>
-
-                {{-- CONTEÚDO PRINCIPAL À DIREITA --}}
-                <main class="lg:col-span-8 space-y-6">
-                    <x-cnpj.informacoes-cnpj :data="$data" />
-                    <x-cnpj.atividades-economicas :data="$data" />
-                    <x-cnpj.faq :data="$data" />
-                    <x-cnpj.empresas-semelhantes :data="$data" />
-                    {{-- <x-cnpj.removal-section :data="$data" /> se quiser depois --}}
-                </main>
-
+            <div class="max-w-4xl mx-auto space-y-6">
+                <x-cnpj.situacao-cadastral :data="$data" />
+                <x-cnpj.informacoes-cnpj :data="$data" />
+                <x-cnpj.atividades-economicas :data="$data" />
+                <x-cnpj.endereco :data="$data" />
+                <x-cnpj.faq :data="$data" />
+                <x-cnpj.empresas-semelhantes :data="$data" />
+                <x-cnpj.removal-alert :data="$data" />
             </div>
         </div>
     </section>
