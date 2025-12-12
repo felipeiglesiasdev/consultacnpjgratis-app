@@ -7,7 +7,6 @@ use App\Models\RemovalRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class RemovalRequestController extends Controller
