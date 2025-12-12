@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Estabelecimento;
 use App\Models\RemovalRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -35,23 +36,30 @@ class RemovalRequestController extends Controller
             'entende_prazo_buscas' => ['accepted'],
         ]);
 
-        $cnpjBasico = substr($cnpjNumbers, 0, 8);
-        $cnpjOrdem = substr($cnpjNumbers, 8, 4);
-        $cnpjDv = substr($cnpjNumbers, 12, 2);
+        DB::transaction(function () use ($cnpjNumbers, $validated, $request) {
+            RemovalRequest::create([
+                'cnpj' => $cnpjNumbers,
+                'nome' => $validated['nome'],
+                'email' => $validated['email'],
+                'vinculo' => $validated['vinculo'],
+                'motivo' => $validated['motivo'],
+                'aceite_lgpd' => $request->boolean('aceite_lgpd'),
+                'confirmacao_responsavel' => $request->boolean('confirmacao_responsavel'),
+                'entende_prazo_buscas' => $request->boolean('entende_prazo_buscas'),
+                'token' => Str::uuid(),
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
 
-        Estabelecimento::where('cnpj_basico', $cnpjBasico)
-            ->where('cnpj_ordem', $cnpjOrdem)
-            ->where('cnpj_dv', $cnpjDv)
-            ->delete();
+            $cnpjBasico = substr($cnpjNumbers, 0, 8);
+            $cnpjOrdem = substr($cnpjNumbers, 8, 4);
+            $cnpjDv = substr($cnpjNumbers, 12, 2);
 
-        $cnpjBasico = substr($cnpjNumbers, 0, 8);
-        $cnpjOrdem = substr($cnpjNumbers, 8, 4);
-        $cnpjDv = substr($cnpjNumbers, 12, 2);
-
-        Estabelecimento::where('cnpj_basico', $cnpjBasico)
-            ->where('cnpj_ordem', $cnpjOrdem)
-            ->where('cnpj_dv', $cnpjDv)
-            ->delete();
+            Estabelecimento::where('cnpj_basico', $cnpjBasico)
+                ->where('cnpj_ordem', $cnpjOrdem)
+                ->where('cnpj_dv', $cnpjDv)
+                ->delete();
+        });
 
         return redirect()
             ->route('home')
