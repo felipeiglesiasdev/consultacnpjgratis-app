@@ -24,10 +24,6 @@
                 </p>
             </div>
 
-            <div class="text-xs md:text-sm text-gray-500 max-w-xs">
-                <p class="font-medium text-gray-700 mb-1">Navegação:</p>
-                <p>Use a paginação para ver mais empresas. Você também pode usar a busca do navegador (Ctrl+F) para localizar um nome específico.</p>
-            </div>
         </div>
 
         <div class="overflow-x-auto rounded-2xl border border-gray-200 bg-white shadow-[0_18px_45px_-28px_rgba(15,23,42,0.55)]">

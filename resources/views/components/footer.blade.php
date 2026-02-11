@@ -39,19 +39,6 @@
         'RO' => 'Rondônia', 'RR' => 'Roraima', 'SC' => 'Santa Catarina', 'SP' => 'São Paulo', 'SE' => 'Sergipe', 'TO' => 'Tocantins'
     ];
 
-    $cnaesLinks = [
-        ['codigo' => '4711301', 'descricao' => 'Comércio varejista de mercadorias em geral, com predominância de produtos alimentícios'],
-        ['codigo' => '6201501', 'descricao' => 'Desenvolvimento de programas de computador sob encomenda'],
-        ['codigo' => '8610101', 'descricao' => 'Atividades de atendimento hospitalar'],
-        ['codigo' => '4511100', 'descricao' => 'Comércio a varejo de automóveis, camionetas e utilitários novos'],
-        ['codigo' => '5611201', 'descricao' => 'Restaurantes e similares'],
-        ['codigo' => '4712100', 'descricao' => 'Comércio varejista de minimercados, mercearias e armazéns'],
-    ];
-
-    $formatarCnae = function (string $codigo): string {
-        $codigo = str_pad($codigo, 7, '0', STR_PAD_LEFT);
-        return substr($codigo, 0, 2) . '.' . substr($codigo, 2, 2) . '-' . substr($codigo, 4, 1) . '/' . substr($codigo, 5);
-    };
 @endphp
 
 <footer class="bg-[#050509] text-gray-300 border-top border-white/10 border-t">
@@ -79,7 +66,6 @@
                 <ul class="space-y-2">
                     <li><a href="{{ route('home') }}" class="text-gray-300 hover:text-amber-300 transition">Consulta de CNPJ gratuito</a></li>
                     <li><a href="{{ route('empresas.index') }}" class="text-gray-300 hover:text-amber-300 transition">Portal de empresas por estado</a></li>
-                    <li><a href="{{ route('empresas.cnae') }}" class="text-gray-300 hover:text-amber-300 transition">Empresas por atividade econômica (CNAE)</a></li>
                     <li><a href="{{ url('/politica-de-privacidade') }}" class="text-gray-300 hover:text-amber-300 transition">Política de privacidade</a></li>
                 </ul>
             </div>
@@ -118,23 +104,6 @@
                 </div>
             </div>
 
-            <div class="space-y-3">
-                <h3 class="text-[10px] font-semibold uppercase tracking-[0.22em] text-gray-400">Atividades econômicas</h3>
-                <ul class="space-y-2">
-                    @foreach ($cnaesLinks as $cnae)
-                        <li>
-                            <a href="{{ route('empresas.cnae.show', ['codigo_cnae' => $cnae['codigo']]) }}" class="text-gray-300 hover:text-amber-300 transition">
-                                CNAE {{ $formatarCnae($cnae['codigo']) }} — {{ $cnae['descricao'] }}
-                            </a>
-                        </li>
-                    @endforeach
-                    <li>
-                        <a href="{{ route('empresas.cnae') }}#faq" class="text-gray-300 hover:text-amber-300 transition">
-                            Como funcionam os códigos CNAE?
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
 
         {{-- RODAPÉ INFERIOR --}}

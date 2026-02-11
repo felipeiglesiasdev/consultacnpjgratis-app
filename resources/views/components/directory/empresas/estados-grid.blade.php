@@ -1,7 +1,7 @@
 {{-- resources/views/components/directory/estados-grid.blade.php --}}
 @props(['estados'])
 
-<section class="bg-gradient-to-b from-[#050509] via-[#050608] to-black text-white py-16 md:py-20">
+<section id="estados" class="bg-gradient-to-b from-[#050509] via-[#050608] to-black text-white py-16 md:py-20">
     <div class="container mx-auto px-6 md:px-10 xl:px-16">
         {{-- Cabeçalho --}}
         <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">

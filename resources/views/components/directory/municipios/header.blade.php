@@ -32,8 +32,8 @@
                         {{ $ufReal->uf }}.
                     </h1>
                     <p class="mt-3 text-sm md:text-base text-gray-200 max-w-lg">
-                        Veja todas as empresas ativas no município, com CNPJ, razão social,
-                        capital social e CEP. Use essa visão para prospecção B2B, análise de mercado
+                        Veja todas as empresas ativas no município, com CNPJ, razão social e
+                        capital social. Use essa visão para prospecção B2B, análise de mercado
                         e estudos regionais.
                     </p>
                 </div>
@@ -101,8 +101,7 @@
                             <p class="text-[11px] uppercase tracking-[0.16em] text-gray-400">Como usar</p>
                             <p class="mt-1 text-gray-100">
                                 Abaixo você encontra uma lista paginada com todas as empresas ativas
-                                do município. Use filtros do navegador (Ctrl+F) ou a paginação para
-                                navegar pelos registros.
+                                do município. 
                             </p>
                         </div>
                         <div class="rounded-2xl border border-white/10 bg-black/40 px-4 py-3">

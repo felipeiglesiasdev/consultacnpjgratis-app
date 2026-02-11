@@ -2,9 +2,9 @@
 
 @push('seo')
     @include('components.directory.municipios.tags', [
-        'title' => "Empresas em {$municipio->descricao} ({$ufReal->uf}) - Diretório completo",
+        'title' => "Empresas em {$municipio->descricao} ({$ufReal}) - Diretório completo",
         'description' => "Veja todas as empresas ativas em {$municipio->descricao}, quantas abriram ou encerraram em 2025 e consulte a lista paginada de CNPJs da cidade.",
-        'keywords' => "empresas {$municipio->descricao}, CNPJ {$ufReal->uf}, empresas ativas {$municipio->descricao}"
+        'keywords' => "empresas {$municipio->descricao}, CNPJ {$ufReal}, empresas ativas {$municipio->descricao}"
     ])
 @endpush
 

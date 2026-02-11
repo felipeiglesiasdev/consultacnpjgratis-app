@@ -1,69 +1,42 @@
 <?php
-namespace App\Http\Controllers; // NAMESPACE DO CONTROLADOR
-use App\Models\Cnae; // MODEL DE ATIVIDADES ECONÔMICAS
-use App\Models\Estabelecimento; // MODEL DE ESTABELECIMENTOS
-use Illuminate\Support\Facades\Cache; // CACHE PARA OTIMIZAR CONSULTAS
-use Illuminate\Support\Facades\DB; // FACADE PARA CONSULTAS SQL
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        // TOTAL DE EMPRESAS ATIVAS NO BRASIL 
-        $totalAtivas = Cache::remember('total_ativas', now()->addMonths(3), function () {
-            return Estabelecimento::where('situacao_cadastral', 2)->count();
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        // TOTAL DE EMPRESAS ENCERRADAS NO BRASIL 
-        $totalEncerradas = Cache::remember('total_encerradas', now()->addMonths(3), function () {
-            return Estabelecimento::where('situacao_cadastral', '!=', 2)->count();
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        // EMPRESAS ABERTAS NOS ÚLTIMOS ANOS (2024, 2023, 2022)
-        $abertasUltimosAnos = Cache::remember('abertas_3_anos', now()->addMonths(3), function () {
-            $anos = ['2024', '2023', '2022'];
-            $dados = collect();
-            foreach ($anos as $ano) {
-                $total = Estabelecimento::whereBetween('data_inicio_atividade', ["{$ano}-01-01", "{$ano}-12-31"])->count();
-                $dados->put($ano, $total);
-            }
-            return $dados;
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        // EMPRESAS FECHADAS NOS ÚLTIMOS ANOS (2024, 2023, 2022)
-        $fechadasUltimosAnos = Cache::remember('fechadas_3_anos', now()->addMonths(3), function () {
-            $anos = ['2024', '2023', '2022'];
-            $dados = collect();
-            foreach ($anos as $ano) {
-                $total = Estabelecimento::where('situacao_cadastral', '!=', 2)
-                    ->whereBetween('data_situacao_cadastral', ["{$ano}-01-01", "{$ano}-12-31"])
-                    ->count();
-                $dados->put($ano, $total);
-            }
-            return $dados;
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        // TOP 5 CNAES MAIS COMUNS NO BRASIL
-        $topCnaes = Cache::remember('home_top_cnaesv2', now()->addMonths(3), function () {
-            return Cnae::withCount(['estabelecimentos as ativos_count' => function ($query) {
-                $query->where('situacao_cadastral', 2);
-            }])
-                ->orderByDesc('ativos_count')
-                ->limit(6)
-                ->get();
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        return view('pages.home', [
-            'totalAtivas'           => $totalAtivas,
-            'totalEncerradas'       => $totalEncerradas,
-            'topCnaes'              => $topCnaes,
-            'abertasUltimosAnos'    => $abertasUltimosAnos,
-            'fechadasUltimosAnos'   => $fechadasUltimosAnos,
-        ]);
+        // ************************************************************************************************************************
+        // RECUPERA OS TOTAIS DO CACHE (GERADOS PELO JOB)
+        // SE NÃO EXISTIR NO CACHE, RETORNA 0 COMO PADRÃO
+        // ************************************************************************************************************************
+        $totalAtivas = Cache::get('total_ativas', 0);
+        $totalEncerradas = Cache::get('total_encerradas', 0);
+
+        // ************************************************************************************************************************
+        // RECUPERA OS DADOS DOS GRÁFICOS (ABERTAS E ENCERRADAS NOS ÚLTIMOS ANOS)
+        // SE NÃO EXISTIR, RETORNA UMA COLLECTION VAZIA
+        // ************************************************************************************************************************
+        $abertasUltimosAnos = Cache::get('abertas_3_anos', collect());
+        $fechadasUltimosAnos = Cache::get('fechadas_3_anos', collect());
+
+        // ************************************************************************************************************************
+        // RECUPERA O TOP CNAES
+        // ************************************************************************************************************************
+        $topCnaes = Cache::get('home_top_cnaes', collect());
+
+        // ************************************************************************************************************************
+        // RETORNA A VIEW COM OS DADOS CARREGADOS
+        // ************************************************************************************************************************
+        return view('pages.home', compact(
+            'totalAtivas', 
+            'totalEncerradas', 
+            'abertasUltimosAnos', 
+            'fechadasUltimosAnos', 
+            'topCnaes'
+        ));
     }
 }

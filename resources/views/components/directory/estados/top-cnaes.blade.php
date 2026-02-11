@@ -49,7 +49,7 @@
                                     {{ $cnae->codigo_formatado }}
                                 </span>
                                 <span>
-                                    {{ number_format($cnae->ativos_count, 0, ',', '.') }} empresas ativas em {{ $uf }}
+                                    {{ number_format($cnae->ativos_count, 0, ',', '.') }} empresas ativas no estado {{ ($preposicao) }} {{ $nomeEstado }}
                                 </span>
                             </p>
                         </div>

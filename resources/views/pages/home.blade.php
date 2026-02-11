@@ -8,6 +8,5 @@
     <x-home.cenario-brasil :totalAtivas="$totalAtivas" :totalEncerradas="$totalEncerradas" />
     <x-home.grid-beneficios />
     <x-home.abertas-encerradas-3-anos :abertasUltimosAnos="$abertasUltimosAnos" :fechadasUltimosAnos="$fechadasUltimosAnos" />
-    <x-home.top-cnaes :topCnaes="$topCnaes" />
     <x-home.outras-secoes />
 @endsection

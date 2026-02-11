@@ -108,7 +108,7 @@
                         <div class="grid grid-cols-2 gap-3">
                             <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
                                 <p class="text-[11px] uppercase tracking-[0.18em] text-gray-400">CNAE principal</p>
-                                <p class="mt-1 text-xs font-semibold text-gray-100">62.01-5-01 • Desenvolvimento de sistemas</p>
+                                <p class="mt-1 text-xs font-semibold text-gray-100">62.01-5/01 • Desenvolvimento de sistemas</p>
                             </div>
                             <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
                                 <p class="text-[11px] uppercase tracking-[0.18em] text-gray-400">UF</p>

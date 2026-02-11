@@ -50,93 +50,40 @@ class DirectoryController extends Controller // CONTROLADOR DO DIRETÓRIO DE EMP
 
     public function index()
     {
-        // LISTA DE ESTADOS COM O TOTAL DE MUNICÍPIOS
-        $estados = Cache::remember('dir_estados_resumo2', now()->addDay(), function () {
-            return Estabelecimento::select( 'uf', DB::raw('count(distinct municipio) as total_municipios'))
-                ->where('uf', '!=', 'EX')
-                ->groupBy('uf')
-                ->orderBy('uf')
-                ->get();
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        // KPI: TOTAL DE EMPRESAS ATIVAS
-        $totalEmpresasAtivas = Cache::remember('dir_total_ativas', now()->addMonths(3), function () {
-            return Estabelecimento::where('situacao_cadastral', 2)->count();
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        // KPI: QUANTOS MUNICÍPIOS POSSUEM EMPRESAS
-        $municipiosComEmpresas = Cache::remember('dir_municipios_com_empresas', now()->addMonths(12), function () {
-            return Estabelecimento::distinct('municipio')->count('municipio');
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        // KPI: MÉDIA DE ABERTURAS NOS ÚLTIMOS 12 MESES
-        $aberturasUltimos12Meses = Cache::remember('dir_aberturas_12_meses', now()->addMonths(12), function () {
-            return Estabelecimento::where('data_inicio_atividade', '>=', now()->subYear()->startOfMonth())->count();
-        });
-        $mediaAberturasMensal = (int) ceil($aberturasUltimos12Meses / 12);
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        // KPI EXTRA: NOVAS EMPRESAS NO ÚLTIMO TRIMESTRE
-        $novasEmpresasTrimestre = Cache::remember('dir_aberturas_trimestre', now()->addMonths(12), function () {
-            return Estabelecimento::whereBetween('data_inicio_atividade', [
-                now()->subMonths(3)->startOfDay(),
-                now(),
-            ])->count();
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        // KPI EXTRA: TOTAL DE CNAES DISPONÍVEIS
-        $totalCnaesCatalogados = Cache::remember('dir_total_cnaes', now()->addDay(), function () {
-            return Cnae::count();
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        // TOP ESTADOS COM MAIS EMPRESAS ATIVAS
-        $topEstadosAtivos = Cache::remember('dir_top_estados2', now()->addHours(6), function () {
-            return Estabelecimento::where('situacao_cadastral', 2)
-                ->select('uf', DB::raw('count(*) as total'))
-                ->groupBy('uf')
-                ->orderByDesc('total')
-                ->limit(10)
-                ->get();
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        // TOP 10 CIDADES COM MAIS EMPRESAS ATIVAS
-        $top10CidadesBrutas = Cache::remember('dir_top_cidades', now()->addHours(6), function () {
-            return Estabelecimento::with('municipioRel')
-                ->where('situacao_cadastral', 2)
-                ->select('municipio', 'uf', DB::raw('count(*) as total'))
-                ->groupBy('municipio', 'uf')
-                ->orderBy('total', 'desc')
-                ->limit(10)
-                ->get();
-        });
-        $top10CidadesAtivas = $top10CidadesBrutas->map(function ($item) {
-            $nome = $item->municipioRel->descricao ?? 'Não encontrado';
-            return (object) [
-                'nome' => $nome,
-                'uf' => $item->uf,
-                'total' => $item->total,
-                'municipio_slug' => Str::slug($nome),
-            ];
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        // CNAES MAIS POPULARES (ATIVOS)
-        $topCnaes = Cache::remember('dir_top_cnaes', now()->addHours(6), function () {
-            return Cnae::withCount(['estabelecimentos as ativos_count' => function ($query) {
-                $query->where('situacao_cadastral', 2);
-            }])
-                ->orderByDesc('ativos_count')
-                ->limit(6)
-                ->get();
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
+         // ************************************************************************************************************************
+        // DADOS CARREGADOS DO CACHE (Gerados pelo Job: GenerateDirectoryIndexCacheJob)
+        // ************************************************************************************************************************
+
+        // 1. Lista de estados com total de municípios
+        $estados = Cache::get('dir_estados_resumo', collect());
+
+        // 2. Total de empresas ativas
+        $totalEmpresasAtivas = Cache::get('dir_total_ativas', 0);
+
+        // 3. Quantos municípios possuem empresas
+        $municipiosComEmpresas = Cache::get('dir_municipios_com_empresas', 0);
+
+        // 4. Média de aberturas (Já calculado no Job)
+        $mediaAberturasMensal = Cache::get('dir_media_aberturas_mensal_calculated', 0);
+
+        // 5. Novas empresas no último trimestre
+        $novasEmpresasTrimestre = Cache::get('dir_aberturas_trimestre', 0);
+
+        // 6. Total CNAEs catalogados
+        $totalCnaesCatalogados = Cache::get('dir_total_cnaes', 0);
+
+        // 7. Top Estados Ativos (Se usar na view, adicionei aqui, mas não estava no array de retorno original, mas calculei no job caso precise)
+        // $topEstadosAtivos = Cache::get('dir_top_estados_ativos_chart', collect());
+
+        // 8. Top 10 Cidades Ativas (Já vem formatado com slug e nomes)
+        $top10CidadesAtivas = Cache::get('dir_top_cidades_ativas_formatted', collect());
+
+        // 9. CNAEs mais populares
+        $topCnaes = Cache::get('dir_top_cnaes', collect());
+
+        // ************************************************************************************************************************
+        // RETORNA VIEW
+        // ************************************************************************************************************************
         return view('pages.directory.empresas.index', [
             'estados' => $estados,
             'top10CidadesAtivas' => $top10CidadesAtivas,
@@ -152,110 +99,51 @@ class DirectoryController extends Controller // CONTROLADOR DO DIRETÓRIO DE EMP
     //#############################################################################################################################
     public function byState(Request $request, string $uf)
     {
-        // VARIÁVEIS
+        // VARIÁVEIS BÁSICAS
         $ufUpper = strtoupper($uf);
         $ufLower = strtolower($ufUpper);
-        $hoje = Carbon::now()->toDateString();
-        $inicioAno = Carbon::now()->startOfYear()->toDateString();
-        $preposicao = $this->preposicoesEstado[$ufLower];
+        $preposicao = $this->preposicoesEstado[$ufLower] ?? 'de';
         $nomeEstado = $this->estadosBrasileiros[$ufLower] ?? $ufUpper;
-        $nomeCapital = $this->capitais[$ufLower];
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        // TOTAL DE EMPRESAS ATIVAS NO ESTADO
-        $totalAtivas = Cache::remember("estado_total_ativas_{$uf}", now()->addMonths(2), function () use ($ufUpper) {
-            return Estabelecimento::where('uf', $ufUpper)->where('situacao_cadastral', 2)->count();
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        // TOTAL DE MATRIZES NO ESTADO
-        $totalMatrizes = Cache::remember("estado_total_matrizes_{$uf}", now()->addMonths(2), function () use ($ufUpper) {
-            return Estabelecimento::where('uf', $ufUpper)->where('situacao_cadastral', 2)->where('identificador_matriz_filial', 1)->count();
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        // TOTAL DE FILIAIS NO ESTADO
-        $totalfiliais = Cache::remember("estado_total_filiais_{$uf}", now()->addMonths(2), function () use ($ufUpper) {
-            return Estabelecimento::where('uf', $ufUpper)->where('situacao_cadastral', 2)->where('identificador_matriz_filial', 2)->count();
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        // TOTAL DE EMPRESAS ABERTAS EM 2025 NO ESTADO
-        $totalAbertas2025 = Cache::remember("estado_total_abertas_2025_{$uf}", now()->addMonths(2), function () use ($ufUpper, $inicioAno, $hoje) {
-            return Estabelecimento::where('uf', $ufUpper)->whereBetween('data_inicio_atividade', [$inicioAno, $hoje])->count();
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        // TOTAL DE EMPRESAS FECHADAS EM 2025 NO ESTADO
-        $totalFechadas2025 = Cache::remember("estado_total_fechadas_2025_{$uf}", now()->addMonths(2), function () use ($ufUpper, $inicioAno, $hoje) {
-            return Estabelecimento::where('uf', $ufUpper)->where('situacao_cadastral', '!=', 2)->whereBetween('data_situacao_cadastral', [$inicioAno, $hoje])->count();
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        //**********************************************************************************************************************
-        //**********************************************************************************************************************
-        // TOTAL DE EMPRESAS ATIVAS NA CAPITAL DO ESTADO
-        $codigoCapital = Municipio::whereRaw('LOWER(descricao) = ?', [mb_strtolower($nomeCapital, 'UTF-8')])->value('codigo');
-        $totalCapitalAtivas = Cache::remember("estado_total_capital_ativas_{$uf}", now()->addMonths(2), function () use ($ufUpper, $codigoCapital) {
-            if (!$codigoCapital) {
-                return 0;
-            }
+        $nomeCapital = $this->capitais[$ufLower] ?? '';
 
-            return Estabelecimento::where('uf', $ufUpper)
-                ->where('municipio', $codigoCapital)
-                ->where('situacao_cadastral', 2)
-                ->count();
-        });
-        //**********************************************************************************************************************
-        //**********************************************************************************************************************
-        // TOP 10 CIDADES COM MAIS EMPRESAS ATIVAS NO ESTADO
-        $top10Cidades = Cache::remember("estado_top10_cidades_{$uf}", now()->addMonths(2), function () use ($ufUpper, $ufLower) {
-            $municipiosPopulares = Estabelecimento::with('municipioRel')
-                ->select('municipio', DB::raw('count(*) as total'))
-                ->where('uf', $ufUpper)
-                ->where('situacao_cadastral', 2)
-                ->groupBy('municipio')
-                ->orderBy('total', 'desc')
-                ->limit(10)
-                ->get();
-            return $municipiosPopulares->map(function ($item) use ($ufLower) {
-                $item->nome = $item->municipioRel->descricao ?? 'N/A';
-                $item->municipio_slug = Str::slug($item->nome);
-                $item->uf = $ufLower;
-                return $item;
-            });
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        // TOP 10 ATIVIDADES MAIS COMUNS NO ESTADO
-        $topCnaes = Cache::remember("estado_top10_cnaes_{$uf}", now()->addMonths(2), function () use ($ufUpper){
-            return Cnae::withCount(['estabelecimentos as ativos_count' => function ($query) use ($ufUpper){
-                $query->where('uf', $ufUpper)->where('situacao_cadastral', 2);
-            }])
-                ->orderByDesc('ativos_count')
-                ->limit(10)
-                ->get();
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
-        // TODOS OS MUNICIPIOS COM PAGINAÇÃO
+        // ************************************************************************************************************************
+        // RECUPERA DADOS DO CACHE (GERADOS PELO JOB GenerateStateCacheJob)
+        // Usamos Cache::get() com um valor padrão seguro (0 ou collect)
+        // ************************************************************************************************************************
+
+        // KPIs
+        $totalAtivas = Cache::get("estado_total_ativas_{$ufUpper}", 0);
+        $totalMatrizes = Cache::get("estado_total_matrizes_{$ufUpper}", 0);
+        $totalfiliais = Cache::get("estado_total_filiais_{$ufUpper}", 0);
+        $totalAbertas2025 = Cache::get("estado_total_abertas_2025_{$ufUpper}", 0);
+        $totalFechadas2025 = Cache::get("estado_total_fechadas_2025_{$ufUpper}", 0);
+        $totalCapitalAtivas = Cache::get("estado_total_capital_ativas_{$ufUpper}", 0);
+
+        // TOPS (Listas)
+        $top10Cidades = Cache::get("estado_top10_cidades_{$ufUpper}", collect());
+        $topCnaes = Cache::get("estado_top10_cnaes_{$ufUpper}", collect());
+
+        // ************************************************************************************************************************
+        // PAGINAÇÃO MANUAL DOS MUNICÍPIOS (USANDO DADOS EM CACHE)
+        // O Job salva a lista COMPLETA de municípios ordenada. Aqui nós paginamos em memória.
+        // ************************************************************************************************************************
+        $allMunicipios = Cache::get("estado_all_municipios_{$ufUpper}", collect());
         
-        // TODOS OS MUNICIPIOS DO ESTADO COM PAGINAÇÃO
-        $municipiosQuery = Estabelecimento::with('municipioRel')
-            ->select('municipio', DB::raw('count(*) as total_empresas'))
-            ->where('uf', $ufUpper)
-            ->where('situacao_cadastral', 2)
-            ->groupBy('municipio')
-            ->orderBy('total_empresas', 'desc');
+        $page = $request->get('page', 1); // Pega a página atual da URL
+        $perPage = 20; // Itens por página
 
-        $municipios = $municipiosQuery->paginate(20)->through(function ($item) use ($ufLower) {
-            $item->nome = $item->municipioRel->descricao ?? 'N/A';
-            $item->municipio_slug = Str::slug($item->nome);
-            $item->uf = $ufLower;
-            return $item;
-        });
-        //************************************************************************************************************************
-        //************************************************************************************************************************
+        // Cria a instância de paginação manual
+        $municipios = new LengthAwarePaginator(
+            $allMunicipios->forPage($page, $perPage), // Fatia os dados para a página atual
+            $allMunicipios->count(), // Total de itens
+            $perPage,
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()] // Mantém a URL correta
+        );
+
+        // ************************************************************************************************************************
+        // RETORNA VIEW
+        // ************************************************************************************************************************
         return view('pages.directory.estados.state', [
             'totalAtivas' => $totalAtivas,
             'totalMatrizes' => $totalMatrizes,
@@ -265,7 +153,7 @@ class DirectoryController extends Controller // CONTROLADOR DO DIRETÓRIO DE EMP
             'top10Cidades' => $top10Cidades,
             'topCnaes' => $topCnaes,
             'uf' => $ufUpper,
-            'municipios' => $municipios,
+            'municipios' => $municipios, // Passa o objeto paginado
             'nomeCapital' => $nomeCapital,
             'preposicao' => $preposicao,
             'nomeEstado' => $nomeEstado,
@@ -280,12 +168,20 @@ class DirectoryController extends Controller // CONTROLADOR DO DIRETÓRIO DE EMP
         $ufUpper = strtoupper($uf);
         $ufLower = strtolower($ufUpper); 
         $hoje = Carbon::now()->toDateString();
-        $inicioAno = Carbon::now()->startOfYear()->toDateString();
+        $inicioAno = Carbon::createFromDate(2025, 1, 1)->toDateString();
         
-        // Busca o município pelo slug
-        $municipio = Municipio::whereRaw('LOWER(REPLACE(descricao, " ", "-")) = ?', [$cidade_slug])->first();
+        // Busca o município pelo slug E pela UF
+        $municipio = Municipio::whereRaw('LOWER(REPLACE(descricao, " ", "-")) = ?', [$cidade_slug])
+            ->whereHas('estabelecimentos', function ($query) use ($ufUpper) {
+                $query->where('uf', $ufUpper);
+            })
+            ->first();
+
         // Descobre a UF real (garantindo consistência)
         $ufReal = Estabelecimento::where('municipio', $municipio->codigo)->select('uf')->first();
+        
+
+
         //************************************************************************************************************************
         //************************************************************************************************************************
         // TOTAL DE EMPRESAS ATIVAS NO MUNICIPIO
@@ -299,13 +195,13 @@ class DirectoryController extends Controller // CONTROLADOR DO DIRETÓRIO DE EMP
         //************************************************************************************************************************
         // TOTAL ABERTAS EM 2025
         
-        $totalAbertas2025 = Cache::remember("municipio_total_abertas_2025_{$ufReal->uf}_{$municipio->descricao}", now()->addMonths(2), function () use ($ufReal, $municipio, $ufUpper, $inicioAno, $hoje) {
+        $totalAbertas2025 = Cache::remember("remunicipio_total_abertas_2025_{$ufReal->uf}_{$municipio->descricao}", now()->addMonths(2), function () use ($ufReal, $municipio, $ufUpper, $inicioAno, $hoje) {
             return Estabelecimento::where('uf', $ufUpper)->where('municipio', $municipio->codigo)->whereBetween('data_inicio_atividade', [$inicioAno, $hoje])->count();
         });
         //************************************************************************************************************************
         //************************************************************************************************************************
         // TOTAL FECHADAS EM 2025
-        $totalFechadas2025 = Cache::remember("estado_total_fechadas_2025_{$ufReal->uf}_{$municipio->descricao}", now()->addMonths(2), function () use ($ufReal, $municipio, $ufUpper, $inicioAno, $hoje) {
+        $totalFechadas2025 = Cache::remember("reestado_total_fechadas_2025_{$ufReal->uf}_{$municipio->descricao}", now()->addMonths(2), function () use ($ufReal, $municipio, $ufUpper, $inicioAno, $hoje) {
             return Estabelecimento::where('uf', $ufUpper)->where('municipio', $municipio->codigo)->where('situacao_cadastral', '!=', 2)->whereBetween('data_situacao_cadastral', [$inicioAno, $hoje])->count();
         });
         //************************************************************************************************************************
