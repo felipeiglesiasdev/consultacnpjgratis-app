@@ -18,15 +18,4 @@ class Pais extends Model // DEFINIÇÃO DA CLASSE PAIS
         'descricao', // COLUNA
     ]; // FIM DO ARRAY
 
-    // RELACIONAMENTO 1-N
-    public function estabelecimentos(): HasMany
-    {
-        return $this->hasMany(Estabelecimento::class, 'pais', 'codigo'); // RETORNA O RELACIONAMENTO
-    }
-
-    // RELACIONAMENTO 1-N
-    public function socios(): HasMany
-    {
-        return $this->hasMany(Socio::class, 'pais', 'codigo'); // RETORNA O RELACIONAMENTO
-    }
 }

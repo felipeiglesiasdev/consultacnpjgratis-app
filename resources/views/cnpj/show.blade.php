@@ -24,7 +24,7 @@
             <div class="max-w-4xl mx-auto space-y-6">
                 <x-cnpj.situacao-cadastral :data="$data" />
                 <x-cnpj.informacoes-cnpj :data="$data" />
-                <x-cnpj.atividades-economicas :data="$data" />
+                
                 <x-cnpj.endereco :data="$data" />
                 <x-cnpj.faq :data="$data" />
                 <x-cnpj.empresas-semelhantes :data="$data" />

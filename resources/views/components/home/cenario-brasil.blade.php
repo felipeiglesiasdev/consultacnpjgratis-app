@@ -1,76 +1,112 @@
 @props(['totalAtivas', 'totalEncerradas'])
 
-<section class="bg-white py-16 md:py-20">
-    <div class="container mx-auto px-6 md:px-10 xl:px-16">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-10">
-            <div class="max-w-2xl">
-                <p class="text-amber-500 font-semibold uppercase text-xs md:text-sm tracking-[0.24em]">
-                    Panorama em tempo real
-                </p>
-                <h2 class="mt-2 text-3xl md:text-4xl font-black text-[#111827]">
-                    O Brasil empresarial em números
+<section class="relative bg-white py-24 lg:py-32 overflow-hidden">
+    
+    {{-- Background Pattern Sutil --}}
+    <div class="absolute inset-0 z-0 opacity-40" 
+         style="background-image: radial-gradient(#171717 1px, transparent 1px); background-size: 32px 32px;">
+    </div>
+
+    <div class="container mx-auto px-6 md:px-10 xl:px-16 relative z-10">
+        
+        {{-- Header da Seção --}}
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16">
+            <div class="max-w-3xl">
+                <div class="inline-flex items-center gap-2 mb-4">
+                    <span class="h-px w-8 bg-amber-500"></span>
+                    <span class="text-amber-600 font-bold uppercase text-xs tracking-[0.2em]">Panorama em tempo real</span>
+                </div>
+                {{-- Fonte Aumentada e Cor #171717 --}}
+                <h2 class="text-4xl md:text-5xl font-black text-[#171717] leading-tight tracking-tight">
+                    O Brasil empresarial <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#171717] via-gray-800 to-gray-600">em números precisos</span>.
                 </h2>
-                <p class="mt-3 text-sm md:text-base text-gray-600">
-                    Acompanhe quantas empresas estão ativas, quantas foram encerradas
-                    e tenha uma visão clara do cenário de negócios no país.
+                {{-- Fonte Texto #171717 --}}
+                <p class="mt-6 text-lg text-[#171717] leading-relaxed max-w-2xl">
+                    Acompanhe quantas empresas estão ativas, quantas foram encerradas e tenha uma visão clara e analítica do cenário de negócios no país.
                 </p>
             </div>
 
-            <a href="{{ route('home') }}#consultar"
-               class="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-xs md:text-sm font-medium text-amber-700 shadow-sm hover:bg-amber-100 hover:-translate-y-0.5 transition-all duration-200">
-                Fazer nova consulta
-                <i class="bi bi-arrow-right"></i>
-            </a>
+            <div class="flex-shrink-0">
+                <a href="{{ route('home') }}#consultar" 
+                   class="group inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gray-50 border border-gray-200 text-[#171717] font-semibold text-sm hover:bg-gray-100 hover:border-amber-500/30 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                    <span>Fazer nova consulta</span>
+                    <div class="h-6 w-6 rounded-full bg-amber-500 text-white flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i class="bi bi-search text-xs"></i>
+                    </div>
+                </a>
+            </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {{-- Empresas ativas --}}
-            <div class="group relative overflow-hidden rounded-2xl border border-emerald-100 bg-gradient-to-b from-white to-emerald-50/70 shadow-[0_18px_45px_-28px_rgba(15,23,42,0.55)]">
-                <div class="absolute inset-x-0 -top-1 h-1 bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-400 opacity-80"></div>
-                <div class="p-6 md:p-7">
-                    <p class="text-[11px] md:text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700">
-                        Empresas ativas
-                    </p>
-                    <p class="mt-2 text-3xl md:text-4xl font-black text-[#111827]">
+        {{-- Grid de Cards --}}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            {{-- Card 1: Empresas Ativas --}}
+            <div class="group relative bg-white rounded-[2rem] p-8 border border-gray-100 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.15)] hover:border-emerald-500/20 transition-all duration-500">
+                <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 group-hover:scale-110 transition-all duration-500">
+                    <i class="bi bi-graph-up-arrow text-6xl text-emerald-600"></i>
+                </div>
+                
+                <div class="relative z-10">
+                    <div class="h-12 w-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-6 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300 shadow-sm">
+                        <i class="bi bi-check-lg text-2xl"></i>
+                    </div>
+                    
+                    <p class="text-xs font-bold uppercase tracking-widest text-emerald-600 mb-2">Empresas Ativas</p>
+                    <h3 class="text-4xl lg:text-5xl font-black text-[#171717] tracking-tighter mb-4">
                         {{ number_format($totalAtivas, 0, ',', '.') }}
-                    </p>
-                    <p class="mt-3 text-sm text-gray-600">
-                        CNPJs em situação regular na Receita Federal, prontos para fazer negócios.
+                    </h3>
+                    <p class="text-base text-[#171717] leading-relaxed">
+                        CNPJs em situação regular na Receita Federal, prontos para fazer negócios e movimentar a economia.
                     </p>
                 </div>
+                <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-b-[2rem]"></div>
             </div>
 
-            {{-- Empresas encerradas --}}
-            <div class="group relative overflow-hidden rounded-2xl border border-rose-100 bg-gradient-to-b from-white to-rose-50/70 shadow-[0_18px_45px_-28px_rgba(15,23,42,0.55)]">
-                <div class="absolute inset-x-0 -top-1 h-1 bg-gradient-to-r from-rose-400 via-amber-400 to-rose-500 opacity-80"></div>
-                <div class="p-6 md:p-7">
-                    <p class="text-[11px] md:text-xs font-semibold uppercase tracking-[0.22em] text-rose-700">
-                        Empresas encerradas
-                    </p>
-                    <p class="mt-2 text-3xl md:text-4xl font-black text-[#111827]">
+            {{-- Card 2: Empresas Encerradas --}}
+            <div class="group relative bg-white rounded-[2rem] p-8 border border-gray-100 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-15px_rgba(244,63,94,0.15)] hover:border-rose-500/20 transition-all duration-500">
+                <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 group-hover:scale-110 transition-all duration-500">
+                    <i class="bi bi-x-circle text-6xl text-rose-600"></i>
+                </div>
+                
+                <div class="relative z-10">
+                    <div class="h-12 w-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mb-6 group-hover:bg-rose-500 group-hover:text-white transition-colors duration-300 shadow-sm">
+                        <i class="bi bi-archive text-2xl"></i>
+                    </div>
+                    
+                    <p class="text-xs font-bold uppercase tracking-widest text-rose-600 mb-2">Empresas Encerradas</p>
+                    <h3 class="text-4xl lg:text-5xl font-black text-[#171717] tracking-tighter mb-4">
                         {{ number_format($totalEncerradas, 0, ',', '.') }}
-                    </p>
-                    <p class="mt-3 text-sm text-gray-600">
-                        Negócios baixados, suspensos ou inaptos — importante para evitar riscos na prospecção.
+                    </h3>
+                    <p class="text-base text-[#171717] leading-relaxed">
+                        Negócios baixados, suspensos ou inaptos. Dado crucial para análise de risco e higienização de base.
                     </p>
                 </div>
+                <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-rose-400 to-rose-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-b-[2rem]"></div>
             </div>
 
-            {{-- Cobertura nacional --}}
-            <div class="group relative overflow-hidden rounded-2xl border border-amber-100 bg-gradient-to-b from-white to-amber-50/70 shadow-[0_18px_45px_-28px_rgba(15,23,42,0.55)]">
-                <div class="absolute inset-x-0 -top-1 h-1 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400 opacity-80"></div>
-                <div class="p-6 md:p-7">
-                    <p class="text-[11px] md:text-xs font-semibold uppercase tracking-[0.22em] text-amber-700">
-                        Cobertura nacional
-                    </p>
-                    <p class="mt-2 text-3xl md:text-4xl font-black text-[#111827]">
+            {{-- Card 3: Cobertura Nacional --}}
+            <div class="group relative bg-white rounded-[2rem] p-8 border border-gray-100 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-15px_rgba(245,158,11,0.15)] hover:border-amber-500/20 transition-all duration-500">
+                <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 group-hover:scale-110 transition-all duration-500">
+                    <i class="bi bi-globe-americas text-6xl text-amber-600"></i>
+                </div>
+                
+                <div class="relative z-10">
+                    <div class="h-12 w-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-6 group-hover:bg-amber-500 group-hover:text-white transition-colors duration-300 shadow-sm">
+                        <i class="bi bi-database-check text-2xl"></i>
+                    </div>
+                    
+                    <p class="text-xs font-bold uppercase tracking-widest text-amber-600 mb-2">Cobertura Nacional</p>
+                    <h3 class="text-4xl lg:text-5xl font-black text-[#171717] tracking-tighter mb-4">
                         100%
-                    </p>
-                    <p class="mt-3 text-sm text-gray-600">
-                        Consulta rápida de qualquer CNPJ, em todos os estados e atividades econômicas (CNAEs).
+                    </h3>
+                    <p class="text-base text-[#171717] leading-relaxed">
+                        Base completa com todos os estados e atividades econômicas (CNAEs). Dados oficiais e públicos.
                     </p>
                 </div>
+                <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-amber-400 to-amber-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-b-[2rem]"></div>
             </div>
+
         </div>
     </div>
 </section>

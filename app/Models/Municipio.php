@@ -18,9 +18,4 @@ class Municipio extends Model // DEFINIÇÃO DA CLASSE MUNICIPIO
         'descricao', // COLUNA
     ]; // FIM DO ARRAY
 
-    // RELACIONAMENTO 1-N
-    public function estabelecimentos(): HasMany
-    {
-        return $this->hasMany(Estabelecimento::class, 'municipio', 'codigo'); // RETORNA O RELACIONAMENTO
-    }
 }

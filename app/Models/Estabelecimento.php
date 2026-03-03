@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo; // TIPO DE RELACIONAMENTO
 class Estabelecimento extends Model // DEFINIÇÃO DA CLASSE ESTABELECIMENTO
 {
     protected $connection = 'mysql_dados';
-    protected $table = 'estabelecimentos'; // NOME DA TABELA
+    protected $table = 'estabelecimentos_geral'; // NOME DA TABELA
     protected $primaryKey = null; // CHAVE PRIMÁRIA NULA DEVIDO A SER COMPOSTA
     public $incrementing = false; // DESATIVA O AUTOINCREMENTO
     public $timestamps = false; // DESATIVA TIMESTAMPS
@@ -47,39 +47,14 @@ class Estabelecimento extends Model // DEFINIÇÃO DA CLASSE ESTABELECIMENTO
         'data_situacao_especial', // COLUNA
     ]; // FIM DO ARRAY
 
-    // RELACIONAMENTO N-1
-    public function empresa(): BelongsTo
-    {
-        return $this->belongsTo(Empresa::class, 'cnpj_basico', 'cnpj_basico'); // RETORNA O RELACIONAMENTO
-    }
 
-    // RELACIONAMENTO N-1
-    public function paisRel(): BelongsTo
-    {
-        return $this->belongsTo(Pais::class, 'pais', 'codigo'); // RETORNA O RELACIONAMENTO
-    }
-
-    // RELACIONAMENTO N-1
-    public function municipioRel(): BelongsTo
-    {
-        return $this->belongsTo(Municipio::class, 'municipio', 'codigo'); // RETORNA O RELACIONAMENTO
-    }
-
-    // RELACIONAMENTO N-1
-    public function cnaePrincipal(): BelongsTo
-    {
-        return $this->belongsTo(Cnae::class, 'cnae_fiscal_principal', 'codigo'); // RETORNA O RELACIONAMENTO
-    }
-    
     // Accessor para o CNPJ completo (para a URL)
     public function getCnpjCompletoAttribute(): string
     {
         // CORREÇÃO APLICADA AQUI:
-        // Preenche cada parte com zeros à esquerda para garantir o tamanho correto.
         $base = str_pad($this->cnpj_basico, 8, '0', STR_PAD_LEFT);
         $ordem = str_pad($this->cnpj_ordem, 4, '0', STR_PAD_LEFT);
         $dv = str_pad($this->cnpj_dv, 2, '0', STR_PAD_LEFT);
-
         return $base . $ordem . $dv;
     }
 
@@ -87,11 +62,9 @@ class Estabelecimento extends Model // DEFINIÇÃO DA CLASSE ESTABELECIMENTO
     public function getCnpjCompletoFormatadoAttribute(): string
     {
         $cnpj = $this->getCnpjCompletoAttribute(); // Usa o método de cima
-        
         if (strlen($cnpj) !== 14) {
             return $cnpj; // Retorna o CNPJ sem formatação se não tiver 14 dígitos
         }
-
         return sprintf('%s.%s.%s/%s-%s',
             substr($cnpj, 0, 2),
             substr($cnpj, 2, 3),

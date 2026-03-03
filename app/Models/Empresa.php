@@ -26,11 +26,6 @@ class Empresa extends Model // DEFINIÇÃO DA CLASSE EMPRESA
         'ente_federativo_responsavel', // COLUNA
     ]; // FIM DO ARRAY
 
-    // RELACIONAMENTO 1-N
-    public function estabelecimentos(): HasMany
-    {
-        return $this->hasMany(Estabelecimento::class, 'cnpj_basico', 'cnpj_basico'); // RETORNA O RELACIONAMENTO
-    }
 
     // RELACIONAMENTO 1-1
     public function simples(): HasOne

@@ -13,7 +13,6 @@ class Simples extends Model // DEFINIÇÃO DA CLASSE SIMPLES
     protected $keyType = 'string'; // TIPO DA CHAVE PRIMÁRIA
     public $incrementing = false; // CHAVE PRIMÁRIA NÃO É AUTOINCREMENTAL
     public $timestamps = false; // DESATIVA TIMESTAMPS
-
     protected $fillable = [ // ATRIBUTOS PREENCHÍVEIS
         'cnpj_basico', // COLUNA
         'opcao_pelo_simples', // COLUNA

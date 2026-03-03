@@ -30,7 +30,6 @@ class Socio extends Model // DEFINIÇÃO DA CLASSE SOCIO
     {
         return $this->belongsTo(Empresa::class, 'cnpj_basico', 'cnpj_basico'); // RETORNA O RELACIONAMENTO
     }
-
     // RELACIONAMENTO N-1
     public function qualificacao(): BelongsTo
     {
@@ -43,9 +42,4 @@ class Socio extends Model // DEFINIÇÃO DA CLASSE SOCIO
         return $this->belongsTo(QualificacaoSocio::class, 'qualificacao_representante_legal', 'codigo'); // RETORNA O RELACIONAMENTO
     }
 
-    // RELACIONAMENTO N-1
-    public function paisRel(): BelongsTo
-    {
-        return $this->belongsTo(Pais::class, 'pais', 'codigo'); // RETORNA O RELACIONAMENTO
-    }
 }

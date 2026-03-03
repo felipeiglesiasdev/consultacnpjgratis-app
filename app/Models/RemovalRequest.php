@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class RemovalRequest extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'cnpj',
         'nome',

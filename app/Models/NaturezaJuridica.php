@@ -12,7 +12,6 @@ class NaturezaJuridica extends Model // DEFINIÇÃO DA CLASSE NATUREZA JURÍDICA
     protected $primaryKey = 'codigo'; // CHAVE PRIMÁRIA
     public $incrementing = false; // CHAVE PRIMÁRIA NÃO É AUTOINCREMENTAL
     public $timestamps = false; // DESATIVA TIMESTAMPS
-
     protected $fillable = [ // ATRIBUTOS PREENCHÍVEIS
         'codigo', // COLUNA
         'descricao', // COLUNA
