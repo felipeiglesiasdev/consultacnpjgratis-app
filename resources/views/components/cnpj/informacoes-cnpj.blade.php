@@ -1,18 +1,19 @@
 @props(['data'])
 
 @php
+    // Chaves atualizadas para bater EXATAMENTE com o que vem do CnpjController
     $statusClasses = [
-        'green'  => 'bg-emerald-50 text-emerald-800 border-emerald-200',
-        'red'    => 'bg-red-50 text-red-800 border-red-200',
-        'yellow' => 'bg-amber-50 text-amber-800 border-amber-200',
-        'gray'   => 'bg-gray-50 text-gray-800 border-gray-200',
+        'status-active'    => 'bg-emerald-50 text-emerald-800 border-emerald-200',
+        'status-inactive'  => 'bg-red-50 text-red-800 border-red-200',
+        'status-suspended' => 'bg-amber-50 text-amber-800 border-amber-200',
+        'gray'             => 'bg-gray-50 text-gray-800 border-gray-200',
     ];
 
     $chipClasses = [
-        'green'  => 'bg-emerald-500 text-white',
-        'red'    => 'bg-red-500 text-white',
-        'yellow' => 'bg-amber-500 text-white',
-        'gray'   => 'bg-gray-500 text-white',
+        'status-active'    => 'bg-emerald-500 text-white',
+        'status-inactive'  => 'bg-red-500 text-white',
+        'status-suspended' => 'bg-amber-500 text-white',
+        'gray'             => 'bg-gray-500 text-white',
     ];
 
     $classe      = $data['situacao_cadastral_classe'] ?? 'gray';
