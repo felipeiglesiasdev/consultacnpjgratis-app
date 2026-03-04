@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('seo')
+    @include('components.consulta-avancada.tags')
+@endpush
+
 @section('content')
 <div class="min-h-screen bg-[#050509] text-white py-12 relative">
     <div class="pointer-events-none absolute inset-0 z-0">
