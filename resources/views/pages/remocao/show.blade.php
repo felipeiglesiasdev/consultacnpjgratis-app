@@ -4,6 +4,7 @@
     <title>Remover o CNPJ {{ $cnpjFormatted }} imediatamente | Consulta CNPJ Grátis</title>
     <meta name="description" content="Remova ou corrija os dados do CNPJ {{ $cnpjFormatted }} de forma imediata, com base legal e transparência sobre o uso de dados públicos.">
     <link rel="canonical" href="{{ route('remocao.show', ['cnpj' => $cnpj]) }}" />
+    <meta name="robots" content="noindex, nofollow" />
 @endpush
 
 @section('content')

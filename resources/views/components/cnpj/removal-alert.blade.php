@@ -13,8 +13,8 @@
         Nossa plataforma consolida apenas informações públicas da Receita Federal. Caso prefira manter a privacidade, você pode solicitar a ocultação desta página específica no nosso buscador.
     </p>
     
-    {{-- A URL usa apenas os números do CNPJ --}}
-    <a href="{{ route('remocao.show', ['cnpj' => preg_replace('/[^0-9]/', '', $data['cnpj_completo'])]) }}" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white border border-gray-300 px-4 py-3 text-xs font-bold text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors shadow-sm">
+    {{-- A URL usa apenas os números do CNPJ e possui nofollow para não ser indexada --}}
+    <a href="{{ route('remocao.show', ['cnpj' => preg_replace('/[^0-9]/', '', $data['cnpj_completo'])]) }}" rel="nofollow" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white border border-gray-300 px-4 py-3 text-xs font-bold text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors shadow-sm">
         <i class="bi bi-shield-lock"></i>
         Solicitar Ocultação
     </a>

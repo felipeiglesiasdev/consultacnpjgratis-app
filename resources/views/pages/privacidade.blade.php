@@ -3,6 +3,7 @@
     <title>Política de Privacidade | Consulta CNPJ Grátis</title>
     <meta name="description" content="Saiba como tratamos dados públicos do CNPJ, sua base legal (Lei 14.129/2021, LAI e LGPD) e como solicitar remoção de informações.">
     <link rel="canonical" href="{{ route('privacidade') }}" />
+    <meta name="robots" content="noindex, nofollow" />
 @endpush
 
 @section('content')
