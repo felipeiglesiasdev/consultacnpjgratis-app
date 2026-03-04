@@ -62,39 +62,6 @@
                         <span>Consulta Avançada</span>
                     </a>
                 </nav>
-
-                <!-- 3. BUSCA & AÇÕES -->
-                <div class="flex items-center justify-end gap-3 flex-1 lg:flex-none ml-auto">
-                    
-                    <!-- Form Desktop -->
-                    <form action="{{ route('cnpj.consultar') }}" method="POST" class="relative group hidden sm:block w-full lg:w-[380px]">
-                        @csrf
-                        <input 
-                            id="header-cnpj-desktop"
-                            type="search" 
-                            name="cnpj" 
-                            class="block w-full rounded-full border border-white/10 bg-white/5 py-2.5 pl-5 pr-[140px] text-sm text-white placeholder-gray-500 shadow-sm transition-all duration-300 focus:border-amber-500/50 focus:bg-white/10 focus:ring-2 focus:ring-amber-500/20 hover:bg-white/10" 
-                            placeholder="00.000.000/0000-00" 
-                            required 
-                            minlength="3"
-                            autocomplete="off"
-                            @keydown.enter="$el.closest('form').submit()"
-                        >
-                        <button type="submit" class="absolute right-1.5 top-1.5 bottom-1.5 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 px-4 text-xs font-bold uppercase tracking-wide text-white hover:from-amber-400 hover:to-amber-500 transition-all shadow-lg shadow-amber-500/20 flex items-center gap-2 group/btn">
-                            <span>Buscar CNPJ</span>
-                            <i class="bi bi-arrow-right transition-transform group-hover/btn:translate-x-1"></i>
-                        </button>
-                    </form>
-
-                    <!-- Mobile Toggle Button -->
-                    <button 
-                        @click="mobileMenuOpen = true" 
-                        class="lg:hidden relative p-2 text-gray-400 transition-colors hover:text-amber-400 focus:outline-none"
-                        aria-label="Open menu"
-                    >
-                        <i class="bi bi-list text-3xl"></i>
-                    </button>
-                </div>
             </div>
         </div>
     </header>
@@ -163,26 +130,6 @@
                 <!-- Conteúdo -->
                 <div class="flex-1 overflow-y-auto p-6 space-y-8 bg-[#050509]">
                     
-                    <!-- Busca Mobile -->
-                    <div class="space-y-3">
-                        <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider ml-1">Consultar</label>
-                        <form action="{{ route('cnpj.consultar') }}" method="POST" class="relative group">
-                            @csrf
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-amber-500">
-                                <i class="bi bi-search text-lg"></i>
-                            </div>
-                            <input 
-                                id="header-cnpj-mobile"
-                                type="search" 
-                                name="cnpj" 
-                                class="block w-full rounded-2xl border border-white/10 bg-white/5 py-4 pl-12 pr-14 text-base text-white placeholder-gray-500 focus:border-amber-500 focus:bg-white/[0.07] focus:outline-none focus:ring-1 focus:ring-amber-500 transition-all" 
-                                placeholder="00.000.000/0000-00" 
-                            >
-                            <button type="submit" class="absolute right-2 top-2 bottom-2 aspect-square bg-amber-500 text-black flex items-center justify-center rounded-xl hover:bg-amber-400 transition-colors shadow-lg shadow-amber-500/20">
-                                <i class="bi bi-arrow-right text-lg"></i>
-                            </button>
-                        </form>
-                    </div>
 
                     <!-- Links -->
                     <nav class="flex flex-col space-y-2">
@@ -224,19 +171,3 @@
         </div>
     </template>
 </div>
-
-@push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/imask/7.1.3/imask.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const inputs = [document.getElementById('header-cnpj-desktop'), document.getElementById('header-cnpj-mobile')].filter(Boolean);
-        inputs.forEach((cnpjInput) => {
-            const mask = IMask(cnpjInput, { mask: '00.000.000/0000-00' });
-            const form = cnpjInput.closest('form');
-            if (form) {
-                form.addEventListener('submit', function() { mask.updateValue(); });
-            }
-        });
-    });
-</script>
-@endpush

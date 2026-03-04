@@ -2,6 +2,10 @@
 
 @if($resultados->count() > 0)
     <div id="resultsArea" class="mt-16 scroll-mt-24">
+        <div class="mb-6 flex items-center gap-3 rounded-xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-200/90">
+                <i class="bi bi-info-circle text-amber-500"></i>
+                <p>A exibição de qualquer pesquisa nesta ferramenta é limitada a <strong>10 resultados</strong>. Refine seus filtros caso necessário.</p>
+            </div>
         <div class="flex items-center justify-between mb-8">
             <h2 class="text-2xl font-bold text-white flex items-center gap-3">
                 <i class="bi bi-list-check text-amber-500"></i>
@@ -9,7 +13,7 @@
             </h2>
             <span class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-gray-400">
                 {{ $resultados->count() }} empresas
-            </span>
+            </span>            
         </div>
 
         <div class="grid gap-4">

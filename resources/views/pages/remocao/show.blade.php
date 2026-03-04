@@ -115,7 +115,7 @@
                             </div>
 
                             <div class="pt-2">
-                                <button type="submit" class="w-full md:w-auto inline-flex items-center justify-center rounded-2xl bg-amber-500 px-6 py-3 text-base font-semibold text-[#111827] hover:bg-amber-400 shadow-lg shadow-amber-500/30 transition">
+                                <button type="submit" class="cursor-pointer w-full md:w-auto inline-flex items-center justify-center rounded-2xl bg-amber-500 px-6 py-3 text-base font-semibold text-[#111827] hover:bg-amber-400 shadow-lg shadow-amber-500/30 transition">
                                     Remover CNPJ agora
                                 </button>
                             </div>
