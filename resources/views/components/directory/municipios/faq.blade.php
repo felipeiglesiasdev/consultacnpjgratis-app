@@ -64,7 +64,7 @@
                         Como posso usar a tabela de empresas acima?
                     </h3>
                     <p class="mt-3 text-sm text-gray-600 leading-relaxed pl-6">
-                        A tabela paginada é ideal para criar bases de prospecção. Você pode anotar a Razão Social e o número do CNPJ das empresas que considerar potenciais clientes, clicar no botão "Consultar" e ter acesso completo aos dados de contato, QSA (sócios) e endereço da empresa de forma gratuita.
+                        A tabela paginada é ideal para criar bases de prospecção. Você pode anotar a Razão Social e o número do CNPJ das empresas que considerar potenciais clientes, clicar no botão "Consultar" e ter acesso a mais dados.
                     </p>
                 </div>
 

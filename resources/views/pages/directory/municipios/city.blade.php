@@ -1,10 +1,14 @@
 @extends('layouts.app')
 
+@php
+    $nomeCidade = Str::title($municipio->descricao);
+@endphp
+
 @push('seo')
     @include('components.directory.municipios.tags', [
-        'title' => "Empresas em {$nomeEstado} ({$ufReal}) - Diretório completo",
-        'description' => "Veja todas as empresas ativas em {$nomeEstado}, acompanhe novas aberturas neste ano e consulte a lista completa de CNPJs da cidade.",
-        'keywords' => "empresas {$nomeEstado}, CNPJ {$ufReal}, empresas ativas {$nomeEstado}, diretório empresas {$nomeEstado}"
+        'title' => "Empresas em {$nomeCidade} - ({$ufReal}) - Consulta CNPJ Gratis",
+        'description' => "Veja todas as empresas ativas em {$nomeCidade}, acompanhe novas aberturas neste ano e consulte a lista completa de CNPJs da cidade.",
+        'keywords' => "empresas {$municipio->descricao}, CNPJs no {$ufReal}, empresas ativas {$nomeEstado}, empresas em {$nomeEstado}"
     ])
 @endpush
 

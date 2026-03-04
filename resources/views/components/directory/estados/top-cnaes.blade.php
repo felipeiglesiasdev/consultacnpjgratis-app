@@ -23,9 +23,8 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
             @foreach($topCnaes as $index => $cnae)
                 @php
-                    // Formatação manual do código CNAE (Ex: de 6204000 para 62.04-0-00)
-                    $cod = str_pad($cnae->codigo, 7, '0', STR_PAD_LEFT);
-                    $codigoFormatado = substr($cod, 0, 2) . '.' . substr($cod, 2, 2) . '-' . substr($cod, 4, 1) . '-' . substr($cod, 5, 2);
+                    $cod = $cnae->codigo;
+                    $codigoFormatado = substr($cod, 0, 4) . '-' . substr($cod, 4, 1) . '/' . substr($cod, 5, 2);
                 @endphp
 
                 {{-- Substituído 'a' por 'div' para remover o link --}}
