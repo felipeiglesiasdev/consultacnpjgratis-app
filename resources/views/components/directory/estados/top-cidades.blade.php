@@ -5,50 +5,46 @@
     'nomeEstado',
 ])
 
-<section class="bg-gray-50 py-16 md:py-20">
+<section class="bg-gray-50 py-20 relative border-t border-gray-200">
     <div class="container mx-auto px-6 md:px-10 xl:px-16">
-        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
-            <div class="max-w-xl">
-                <p class="text-amber-500 font-semibold uppercase text-xs md:text-sm tracking-[0.24em]">
-                    Cidades em destaque
-                </p>
-                <h2 class="mt-2 text-2xl md:text-3xl font-black text-[#111827]">
-                    Municípios com mais empresas ativas no estado {{ strtolower($preposicao) }} {{ $nomeEstado }}
-                </h2>
-                <p class="mt-3 text-sm md:text-base text-gray-600">
-                    Descubra quais municípios concentram a maior quantidade de empresas ativas
-                    no estado. Excelente ponto de partida para prospecção regional.
-                </p>
-            </div>
-
-            <div class="text-xs md:text-sm text-gray-500 max-w-sm">
-                <p class="font-medium text-gray-700 mb-1">Como usar:</p>
-                <p>• Clique em um município para ver o diretório de empresas daquela cidade.</p>
-            </div>
+        
+        <div class="max-w-3xl mb-12">
+            <p class="text-amber-600 font-bold uppercase text-xs tracking-[0.2em]">
+                Cidades em Destaque
+            </p>
+            <h2 class="mt-2 text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+                Top 10 polos de {{ $nomeEstado }}
+            </h2>
+            <p class="mt-4 text-base text-gray-600">
+                Os municípios que mais movimentam a economia local. Utilize esta lista como um excelente ponto de partida para montar suas campanhas de marketing ou prospecção regional.
+            </p>
         </div>
 
-        <div class="rounded-3xl border border-gray-200 bg-white p-6 md:p-7 shadow-[0_18px_45px_-28px_rgba(15,23,42,0.55)]">
-            <div class="space-y-3">
-                @foreach ($top10Cidades as $index => $cidade)
-                    <a
-                        href="{{ route('empresas.city', [$cidade->uf, $cidade->municipio_slug]) }}"
-                        class="group flex items-center gap-4 rounded-2xl bg-gradient-to-r from-white to-gray-50 border border-gray-200 px-4 py-3 hover:border-amber-400 hover:from-amber-50/60 hover:to-white transition-all duration-150 shadow-[0_12px_32px_-24px_rgba(15,23,42,0.7)]"
-                    >
-                        <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500/10 text-amber-700 text-xs font-semibold">
-                            {{ $index + 1 }}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+            @foreach ($top10Cidades as $index => $cidade)
+                <a
+                    href="{{ route('empresas.city', ['uf' => strtolower($cidade->uf), 'municipio' => $cidade->municipio_slug]) }}"
+                    class="group flex flex-col justify-between rounded-2xl bg-white border border-gray-200 p-5 hover:border-amber-400 hover:shadow-md transition-all duration-200"
+                >
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-100 text-amber-700 text-xs font-black">
+                            {{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm font-semibold text-[#111827] truncate">
-                                {{ $cidade->nome }} • {{ strtoupper($cidade->uf) }}
-                            </p>
-                            <p class="text-[11px] text-gray-500">
-                                {{ number_format($cidade->total, 0, ',', '.') }} empresas ativas
+                            <p class="text-sm font-bold text-gray-900 truncate">
+                                {{ Str::title($cidade->nome) }}
                             </p>
                         </div>
-                        <i class="bi bi-arrow-right-short text-xl text-gray-400 group-hover:text-amber-500"></i>
-                    </a>
-                @endforeach
-            </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-100 pt-3">
+                        <p class="text-[11px] text-gray-500 font-medium">
+                            {{ number_format($cidade->total, 0, ',', '.') }} empresas ativas
+                        </p>
+                    </div>
+                </a>
+            @endforeach
         </div>
+
     </div>
 </section>

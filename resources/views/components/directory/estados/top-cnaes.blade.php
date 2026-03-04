@@ -5,63 +5,55 @@
     'nomeEstado',
 ])
 
-<section class="bg-[#050509] text-white py-16 md:py-20">
+<section class="bg-[#050509] text-white py-20 relative border-t border-white/5">
     <div class="container mx-auto px-6 md:px-10 xl:px-16">
-        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
-            <div class="max-w-xl">
-                <p class="text-amber-400 font-semibold uppercase text-xs md:text-sm tracking-[0.24em]">
-                    Atividades em destaque no estado
-                </p>
-                <h2 class="mt-2 text-2xl md:text-3xl font-black leading-tight">
-                    CNAEs com mais empresas ativas no estado {{ strtolower($preposicao) }} {{ $nomeEstado }}
-                </h2>
-                <p class="mt-3 text-sm md:text-base text-gray-300">
-                    Veja quais atividades econômicas dominam o estado. Combine essas informações
-                    com as cidades em destaque para montar listas de prospecção B2B altamente
-                    segmentadas.
-                </p>
-            </div>
-
-            <div class="inline-flex flex-wrap gap-2 text-[11px] md:text-xs text-gray-300">
-                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white/5 border border-white/10">
-                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
-                    Considera apenas empresas em situação ativa
-                </span>
-            </div>
-        </div>
-
-        <div class="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-7 shadow-[0_18px_60px_rgba(0,0,0,0.8)]">
-            <div class="space-y-3">
-                @foreach ($topCnaes as $cnae)
-                    <a
-                        href="{{ route('empresas.cnae.show', $cnae->codigo) }}"
-                        class="group flex items-center gap-4 rounded-2xl bg-white/5 border border-white/10 px-4 py-3 hover:border-amber-400/70 hover:bg-white/10 transition-all"
-                    >
-                        <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500/15 text-amber-200 text-[11px] font-semibold">
-                            CNAE
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <p class="text-sm font-semibold text-white truncate">
-                                {{ $cnae->descricao }}
-                            </p>
-                            <p class="mt-0.5 flex flex-wrap items-center gap-2 text-[11px] text-gray-300">
-                                <span class="inline-flex items-center gap-1 rounded-full bg-white/5 px-2 py-0.5 border border-amber-400/40 font-mono">
-                                    {{ $cnae->codigo_formatado }}
-                                </span>
-                                <span>
-                                    {{ number_format($cnae->ativos_count, 0, ',', '.') }} empresas ativas no estado {{ ($preposicao) }} {{ $nomeEstado }}
-                                </span>
-                            </p>
-                        </div>
-                        <i class="bi bi-arrow-right-short text-xl text-gray-400 group-hover:text-amber-300"></i>
-                    </a>
-                @endforeach
-            </div>
-
-            <p class="mt-5 text-[11px] text-gray-400">
-                Combine este ranking com as cidades em destaque para montar listas de potenciais clientes
-                por região e segmento dentro do estado.
+        
+        <div class="max-w-3xl mb-12">
+            <p class="text-amber-400 font-semibold uppercase text-xs tracking-[0.2em]">
+                Atividades em Destaque
+            </p>
+            <h2 class="mt-2 text-3xl md:text-4xl font-black tracking-tight">
+                As áreas que dominam {{ $nomeEstado }}
+            </h2>
+            <p class="mt-4 text-sm md:text-base text-gray-400">
+                Descubra quais são os setores e CNAEs com a maior concentração de empresas ativas. Esses dados são valiosos para entender a vocação econômica do estado.
             </p>
         </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            @foreach($topCnaes as $index => $cnae)
+                @php
+                    // Formatação manual do código CNAE (Ex: de 6204000 para 62.04-0-00)
+                    $cod = str_pad($cnae->codigo, 7, '0', STR_PAD_LEFT);
+                    $codigoFormatado = substr($cod, 0, 2) . '.' . substr($cod, 2, 2) . '-' . substr($cod, 4, 1) . '-' . substr($cod, 5, 2);
+                @endphp
+
+                {{-- Substituído 'a' por 'div' para remover o link --}}
+                <div class="group flex items-start sm:items-center gap-4 rounded-2xl border border-white/5 bg-white/[0.02] p-5 hover:bg-white/[0.04] transition-colors">
+                    
+                    {{-- Badge Numérica --}}
+                    <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-black/50 border border-white/5 text-emerald-500/80 font-mono text-sm font-bold group-hover:text-emerald-400 transition-colors">
+                        {{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
+                    </div>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-2 mb-1.5">
+                            <span class="inline-flex w-fit items-center rounded bg-emerald-500/10 px-2 py-0.5 text-[10px] font-mono font-bold text-emerald-300 border border-emerald-500/20">
+                                CNAE {{ $codigoFormatado }}
+                            </span>
+                            <span class="text-[11px] font-bold text-amber-200">
+                                {{ number_format($cnae->ativos_count, 0, ',', '.') }} empresas
+                            </span>
+                        </div>
+                        
+                        <p class="text-sm font-bold text-gray-100 leading-snug group-hover:text-white transition-colors">
+                            {{ $cnae->descricao }}
+                        </p>
+                    </div>
+
+                </div>
+            @endforeach
+        </div>
+
     </div>
 </section>

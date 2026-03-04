@@ -7,64 +7,67 @@
 ])
 
 @php
-    $nomeCidade = ucwords(mb_strtolower($municipio->descricao, 'UTF-8'));
+    $nomeCidade = Str::title($municipio->descricao);
 @endphp
 
-<section class="bg-gray-50 py-16 md:py-20">
+<section class="bg-white py-20 relative">
     <div class="container mx-auto px-6 md:px-10 xl:px-16">
         <div class="max-w-3xl mx-auto">
-            <div class="text-center mb-10">
-                <p class="text-amber-500 font-semibold uppercase text-xs md:text-sm tracking-[0.24em]">
-                    Perguntas frequentes
+            
+            <div class="text-center mb-12">
+                <p class="text-blue-600 font-bold uppercase text-xs tracking-[0.2em]">
+                    Dados e Curiosidades
                 </p>
-                <h2 class="mt-2 text-2xl md:text-3xl font-black text-[#111827]">
-                    FAQ sobre empresas em {{ $nomeCidade }} / {{ $ufReal->uf }}
+                <h2 class="mt-2 text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+                    FAQ Econômico de {{ $nomeCidade }}
                 </h2>
-                <p class="mt-3 text-sm md:text-base text-gray-600">
-                    Dúvidas rápidas para interpretar os números do município e planejar ações locais.
+                <p class="mt-4 text-base text-gray-600">
+                    Principais métricas e respostas rápidas para você interpretar o momento e a força comercial da cidade.
                 </p>
             </div>
 
             <div class="space-y-4">
-                <div class="rounded-2xl border border-gray-200 bg-white p-4 md:p-5">
-                    <h3 class="text-sm md:text-base font-semibold text-[#111827]">
-                        Quantas empresas ativas existem em {{ $nomeCidade }}?
+                
+                <div class="rounded-2xl border border-gray-100 bg-gray-50 p-6">
+                    <h3 class="text-base font-bold text-gray-900 flex items-center gap-2">
+                        <i class="bi bi-info-circle-fill text-blue-500"></i>
+                        Quantos CNPJs estão ativos em {{ $nomeCidade }}?
                     </h3>
-                    <p class="mt-2 text-sm text-gray-600">
-                        São {{ number_format($totalAtivas, 0, ',', '.') }} empresas com situação cadastral ativa na Receita Federal.
-                        A lista acima reúne todas elas, incluindo matrizes e filiais.
+                    <p class="mt-3 text-sm text-gray-600 leading-relaxed pl-6">
+                        Com base nos dados mais recentes da Receita Federal, o município de {{ $nomeCidade }} possui atualmente <strong>{{ number_format($totalAtivas, 0, ',', '.') }} empresas ativas</strong>. Este número reflete desde MEIs a grandes corporações baseadas na cidade.
                     </p>
                 </div>
 
-                <div class="rounded-2xl border border-gray-200 bg-white p-4 md:p-5">
-                    <h3 class="text-sm md:text-base font-semibold text-[#111827]">
-                        Quantas empresas foram abertas em {{ $nomeCidade }} em 2025?
+                <div class="rounded-2xl border border-gray-100 bg-gray-50 p-6">
+                    <h3 class="text-base font-bold text-gray-900 flex items-center gap-2">
+                        <i class="bi bi-info-circle-fill text-blue-500"></i>
+                        Quantas empresas foram abertas neste ano?
                     </h3>
-                    <p class="mt-2 text-sm text-gray-600">
-                        O município registrou {{ number_format($totalAbertas2025, 0, ',', '.') }} novas empresas neste ano. O número ajuda a
-                        medir o ritmo de crescimento local e oportunidades para novos negócios.
+                    <p class="mt-3 text-sm text-gray-600 leading-relaxed pl-6">
+                        O clima empreendedor na região resultou no registro de <strong>{{ number_format($totalAbertas2025, 0, ',', '.') }} novos CNPJs</strong> apenas no ano atual. Esse indicador ajuda a medir o ritmo de desenvolvimento da economia local.
                     </p>
                 </div>
 
-                <div class="rounded-2xl border border-gray-200 bg-white p-4 md:p-5">
-                    <h3 class="text-sm md:text-base font-semibold text-[#111827]">
-                        Quantas empresas encerraram as atividades em 2025?
+                <div class="rounded-2xl border border-gray-100 bg-gray-50 p-6">
+                    <h3 class="text-base font-bold text-gray-900 flex items-center gap-2">
+                        <i class="bi bi-info-circle-fill text-blue-500"></i>
+                        Como está o saldo entre aberturas e encerramentos?
                     </h3>
-                    <p class="mt-2 text-sm text-gray-600">
-                        Foram {{ number_format($totalFechadas2025, 0, ',', '.') }} empresas com alteração de situação cadastral no ano corrente. Cruzar esse
-                        dado com as aberturas mostra o saldo empresarial da cidade.
+                    <p class="mt-3 text-sm text-gray-600 leading-relaxed pl-6">
+                        Enquanto {{ number_format($totalAbertas2025, 0, ',', '.') }} empresas abriram suas portas, outras <strong>{{ number_format($totalFechadas2025, 0, ',', '.') }} alteraram sua situação para baixada/encerrada</strong>. Cruzar estes dados permite entender se o município está em expansão ou retração comercial.
                     </p>
                 </div>
 
-                <div class="rounded-2xl border border-gray-200 bg-white p-4 md:p-5">
-                    <h3 class="text-sm md:text-base font-semibold text-[#111827]">
-                        Posso usar esses dados para prospecção comercial?
+                <div class="rounded-2xl border border-gray-100 bg-gray-50 p-6">
+                    <h3 class="text-base font-bold text-gray-900 flex items-center gap-2">
+                        <i class="bi bi-info-circle-fill text-blue-500"></i>
+                        Como posso usar a tabela de empresas acima?
                     </h3>
-                    <p class="mt-2 text-sm text-gray-600">
-                        Sim. Os dados exibidos são públicos e podem apoiar estratégias de prospecção B2B, pesquisas de mercado e rotas comerciais,
-                        sempre respeitando a legislação vigente e as boas práticas de contato com empresas.
+                    <p class="mt-3 text-sm text-gray-600 leading-relaxed pl-6">
+                        A tabela paginada é ideal para criar bases de prospecção. Você pode anotar a Razão Social e o número do CNPJ das empresas que considerar potenciais clientes, clicar no botão "Consultar" e ter acesso completo aos dados de contato, QSA (sócios) e endereço da empresa de forma gratuita.
                     </p>
                 </div>
+
             </div>
         </div>
     </div>

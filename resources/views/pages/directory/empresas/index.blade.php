@@ -5,29 +5,29 @@
 @endpush
 
 @section('content')
-    {{-- Hero focada em explorar estados --}}
+    {{-- Hero focada em explorar estados e cidades --}}
     @include('components.directory.empresas.hero', [
         'totalEmpresasAtivas' => $totalEmpresasAtivas,
     ])
 
-    {{-- Grid de estados (vem em segundo lugar) --}}
+    {{-- Grid de estados (vem em segundo lugar para conversão rápida) --}}
     @include('components.directory.empresas.estados-grid', [
         'estados' => $estados,
     ])
 
-    {{-- Balanço / KPIs nacionais --}}
+    {{-- Balanço / KPIs nacionais (Fundo Claro para contraste) --}}
     @include('components.directory.empresas.kpis', [
-        'totalEmpresasAtivas'     => $totalEmpresasAtivas,
-        'municipiosComEmpresas'   => $municipiosComEmpresas,
-        'mediaAberturasMensal'    => $mediaAberturasMensal,
-        'novasEmpresasTrimestre'  => $novasEmpresasTrimestre,
-        'totalCnaesCatalogados'   => $totalCnaesCatalogados,
+        'totalEmpresasAtivas'    => $totalEmpresasAtivas,
+        'municipiosComEmpresas'  => $municipiosComEmpresas,
+        'mediaAberturasMensal'   => $mediaAberturasMensal,
+        'novasEmpresasTrimestre' => $novasEmpresasTrimestre,
+        'totalCnaesCatalogados'  => $totalCnaesCatalogados,
     ])
 
-    {{-- Top cidades e CNAEs em destaque --}}
-    @include('components.directory.empresas.top-cidades-cnaes', [
+    {{-- Top cidades e Top Estados em destaque (Substitui os antigos CNAEs) --}}
+    @include('components.directory.empresas.top-locations', [
         'top10CidadesAtivas' => $top10CidadesAtivas,
-        'topCnaes'           => $topCnaes,
+        'topEstadosAtivos'   => $topEstadosAtivos,
     ])
 
     {{-- Call to action final: consulta de CNPJ --}}

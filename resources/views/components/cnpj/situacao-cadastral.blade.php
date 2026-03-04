@@ -1,69 +1,41 @@
 @props(['data'])
 
 @php
-    $statusClasses = [
-        'green'  => 'bg-emerald-50 text-emerald-800 border-emerald-200',
-        'red'    => 'bg-red-50 text-red-800 border-red-200',
-        'yellow' => 'bg-amber-50 text-amber-800 border-amber-200',
-        'gray'   => 'bg-gray-50 text-gray-800 border-gray-200',
+    $classe = $data['situacao_cadastral_classe'] ?? 'gray';
+    
+    // Paleta de cores dinâmica baseada no status
+    $temas = [
+        'green'  => ['bg' => 'bg-emerald-50', 'border' => 'border-emerald-200', 'text' => 'text-emerald-800', 'icon' => 'text-emerald-500', 'icone' => 'bi-check-circle-fill', 'pulse' => 'bg-emerald-500'],
+        'red'    => ['bg' => 'bg-red-50', 'border' => 'border-red-200', 'text' => 'text-red-800', 'icon' => 'text-red-500', 'icone' => 'bi-x-circle-fill', 'pulse' => 'bg-red-500'],
+        'yellow' => ['bg' => 'bg-amber-50', 'border' => 'border-amber-200', 'text' => 'text-amber-800', 'icon' => 'text-amber-500', 'icone' => 'bi-exclamation-circle-fill', 'pulse' => 'bg-amber-500'],
+        'gray'   => ['bg' => 'bg-gray-50', 'border' => 'border-gray-200', 'text' => 'text-gray-800', 'icon' => 'text-gray-500', 'icone' => 'bi-info-circle-fill', 'pulse' => 'bg-gray-500'],
     ];
 
-    $chipClasses = [
-        'green'  => 'bg-emerald-100 text-emerald-800',
-        'red'    => 'bg-red-100 text-red-800',
-        'yellow' => 'bg-amber-100 text-amber-800',
-        'gray'   => 'bg-gray-100 text-gray-800',
-    ];
-
-    $classe      = $data['situacao_cadastral_classe'] ?? 'gray';
-    $cardClass   = $statusClasses[$classe] ?? $statusClasses['gray'];
-    $badgeClass  = $chipClasses[$classe] ?? $chipClasses['gray'];
-    $situacao    = $data['situacao_cadastral'] ?? 'Não informada';
-    $dataSit     = $data['data_situacao_cadastral'] ?? 'Não informada';
+    $tema = $temas[$classe] ?? $temas['gray'];
 @endphp
 
-<div id="situacao-cadastral" class="rounded-2xl border bg-white shadow-[0_18px_45px_-28px_rgba(15,23,42,0.55)]">
-    <div class="flex items-center gap-3 px-4 py-3 border-b border-gray-100">
-        <span class="inline-flex items-center justify-center h-9 w-9 rounded-2xl bg-gray-900/5 text-gray-700">
-            <i class="bi bi-shield-check text-lg"></i>
-        </span>
-        <div>
-            <h2 class="text-sm font-semibold text-gray-900">Situação cadastral</h2>
-            <p class="text-[11px] text-gray-500">
-                Status oficial deste CNPJ na Receita Federal
-            </p>
-        </div>
-    </div>
+<div class="rounded-3xl border {{ $tema['border'] }} {{ $tema['bg'] }} p-6 shadow-sm relative overflow-hidden">
+    {{-- Detalhe visual de fundo --}}
+    <i class="bi {{ $tema['icone'] }} absolute -bottom-6 -right-6 text-[120px] opacity-[0.03]"></i>
 
-    <div class="p-4 space-y-4">
-        <div class="rounded-2xl border {{ $cardClass }} px-4 py-3">
-            <span class="text-[11px] uppercase tracking-[0.18em] block mb-1">
-                Situação atual
-            </span>
-            <span class="inline-flex items-center gap-2">
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold {{ $badgeClass }}">
-                    {{ $situacao }}
-                </span>
-            </span>
-            <p class="mt-2 text-[11px] text-gray-700">
-                A situação cadastral é um dos principais indicadores de risco em consultas de CNPJ.
-            </p>
-        </div>
-
-        <div class="flex items-center justify-between text-xs text-gray-600">
-            <div>
-                <p class="text-[11px] uppercase tracking-[0.18em] text-gray-400">
-                    Data da situação
-                </p>
-                <p class="mt-0.5 font-medium text-gray-800">
-                    {{ $dataSit }}
-                </p>
-            </div>
-        </div>
-
-        <p class="text-[11px] text-gray-500 leading-relaxed">
-            Utilize esta informação para evitar negócios com empresas baixadas, inaptas ou com
-            pendências cadastrais, reduzindo riscos em contratos e operações comerciais.
+    <div class="relative z-10">
+        <p class="text-[11px] uppercase tracking-[0.2em] font-bold text-gray-500 mb-4">
+            Status na Receita Federal
         </p>
+        
+        <div class="flex items-center gap-3 mb-6">
+            <span class="relative flex h-4 w-4">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full {{ $tema['pulse'] }} opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-4 w-4 {{ $tema['pulse'] }}"></span>
+            </span>
+            <p class="text-2xl font-black uppercase {{ $tema['text'] }}">
+                {{ $data['situacao_cadastral'] }}
+            </p>
+        </div>
+
+        <div class="border-t {{ $tema['border'] }} pt-4 opacity-80">
+            <p class="text-[11px] uppercase tracking-wider font-bold text-gray-500 mb-1">Data da Situação</p>
+            <p class="text-sm font-semibold {{ $tema['text'] }}">{{ $data['data_situacao_cadastral'] }}</p>
+        </div>
     </div>
 </div>

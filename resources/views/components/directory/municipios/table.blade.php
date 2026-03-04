@@ -5,97 +5,110 @@
 ])
 
 @php
-    $nomeCidade = ucwords(mb_strtolower($municipio->descricao, 'UTF-8'));
+    $nomeCidade = Str::title($municipio->descricao);
 @endphp
 
-<section class="bg-white py-16 md:py-20">
-    <div class="container mx-auto px-6 md:px-10 xl:px-16">
-        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-6">
-            <div>
-                <p class="text-amber-500 font-semibold uppercase text-xs md:text-sm tracking-[0.24em]">
-                    Lista de empresas
-                </p>
-            <h2 class="mt-2 text-2xl md:text-3xl font-black text-[#111827]">
-                    Empresas ativas em {{ $nomeCidade }} / {{ $ufReal->uf }}
-                </h2>
-                <p class="mt-3 text-sm md:text-base text-gray-600">
-                    Abaixo estão listadas as empresas ativas do município. Cada linha exibe o CNPJ,
-                    razão social, capital social e um atalho para acessar a página completa do CNPJ.
-                </p>
+<section id="tabela-empresas" class="bg-gray-50 py-20 relative border-t border-gray-200">
+    <div class="container mx-auto px-4 md:px-10 xl:px-16">
+        
+        <div class="max-w-3xl mb-10">
+            <p class="text-amber-600 font-bold uppercase text-xs tracking-[0.2em]">
+                Catálogo de CNPJs
+            </p>
+            <h2 class="mt-2 text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+                Empresas em {{ $nomeCidade }}
+            </h2>
+            <p class="mt-4 text-base text-gray-600">
+                Navegue pelas empresas ativas do município. Cada registro contém informações públicas oficiais. Clique no CNPJ para acessar a ficha completa da empresa.
+            </p>
+        </div>
+
+        {{-- Container da Tabela --}}
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left whitespace-nowrap border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50/80 border-b border-gray-200 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                            <th scope="col" class="px-6 py-4">Dados da Empresa</th>
+                            <th scope="col" class="px-6 py-4">Data de Abertura</th>
+                            <th scope="col" class="px-6 py-4 text-right">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        @forelse($empresas as $empresa)
+                            @php
+                                $cnpjCompleto = $empresa->cnpj_basico . $empresa->cnpj_ordem . $empresa->cnpj_dv;
+                                $cnpjFormatado = substr($cnpjCompleto, 0, 2) . '.' . substr($cnpjCompleto, 2, 3) . '.' . substr($cnpjCompleto, 5, 3) . '/' . substr($cnpjCompleto, 8, 4) . '-' . substr($cnpjCompleto, 12, 2);
+                                $razaoSocial = $empresa->razao_social ?? 'Razão social não informada';
+                                $nomeFantasia = $empresa->nome_fantasia ? Str::title($empresa->nome_fantasia) : null;
+                                $dataInicio = $empresa->data_inicio_atividade ? \Carbon\Carbon::parse($empresa->data_inicio_atividade)->format('d/m/Y') : 'N/I';
+                            @endphp
+                            
+                            <tr class="hover:bg-gray-50/50 transition-colors group">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-start gap-3">
+                                        <div class="mt-1 h-10 w-10 flex-shrink-0 rounded-lg bg-gray-100 flex items-center justify-center border border-gray-200 group-hover:border-amber-300 group-hover:bg-amber-50 transition-colors">
+                                            <i class="bi bi-building text-gray-400 group-hover:text-amber-600"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-bold text-gray-900 line-clamp-2 pr-4 max-w-md">
+                                                {{ Str::limit($razaoSocial, 60) }}
+                                            </p>
+                                            @if($nomeFantasia)
+                                                <p class="text-[11px] text-gray-500 mt-0.5 truncate max-w-xs">
+                                                    Fantasia: {{ $nomeFantasia }}
+                                                </p>
+                                            @endif
+                                            <div class="flex items-center gap-3 mt-2 text-[11px] font-medium">
+                                                <span class="text-gray-700 bg-gray-100 px-2 py-0.5 rounded font-mono">
+                                                    {{ $cnpjFormatado }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                
+                                <td class="px-6 py-4 align-top">
+                                    <div class="space-y-1 mt-1 text-sm text-gray-600">
+                                        <p class="flex items-center gap-1.5 text-xs text-gray-500">
+                                            <i class="bi bi-calendar3 text-gray-400"></i>
+                                            Desde: {{ $dataInicio }}
+                                        </p>
+                                    </div>
+                                </td>
+                                
+                                <td class="px-6 py-4 align-middle text-right">
+                                    <a 
+                                        href="{{ route('cnpj.show', $cnpjCompleto) }}" 
+                                        class="inline-flex items-center justify-center gap-1.5 rounded-lg border border-gray-200 bg-white px-4 py-2 text-xs font-bold text-gray-700 hover:border-amber-400 hover:bg-amber-50 hover:text-amber-800 transition-all shadow-sm"
+                                    >
+                                        Consultar
+                                        <i class="bi bi-arrow-right"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="px-6 py-12 text-center">
+                                    <div class="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                        <i class="bi bi-inbox text-2xl text-gray-400"></i>
+                                    </div>
+                                    <h3 class="text-base font-bold text-gray-900 mb-1">Nenhum registro encontrado</h3>
+                                    <p class="text-sm text-gray-500">Não há empresas ativas listadas para esta região no momento.</p>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
-
+            
+            {{-- Paginação (O design Tailwind é aplicado automaticamente pelo Laravel se configurado no AppServiceProvider) --}}
+            @if($empresas->hasPages())
+                <div class="border-t border-gray-200 px-6 py-4 bg-gray-50">
+                    {{ $empresas->links() }}
+                </div>
+            @endif
         </div>
 
-        <div class="overflow-x-auto rounded-2xl border border-gray-200 bg-white shadow-[0_18px_45px_-28px_rgba(15,23,42,0.55)]">
-            <table class="min-w-full text-left text-sm text-gray-700">
-                <thead class="bg-gray-50 border-b border-gray-200 text-xs uppercase tracking-[0.18em] text-gray-500">
-                    <tr>
-                        <th class="px-4 md:px-6 py-3">CNPJ</th>
-                        <th class="px-4 md:px-6 py-3">Razão social</th>
-                        <th class="px-4 md:px-6 py-3">Capital social</th>
-                        <th class="px-4 md:px-6 py-3 text-right">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($empresas as $empresa)
-                        @php
-                            $cnpjLimpo = $empresa->cnpj_basico . $empresa->cnpj_ordem . $empresa->cnpj_dv;
-
-                            if (strlen($cnpjLimpo) === 14) {
-                                $cnpjFormatado =
-                                    substr($cnpjLimpo, 0, 2) . '.' .
-                                    substr($cnpjLimpo, 2, 3) . '.' .
-                                    substr($cnpjLimpo, 5, 3) . '/' .
-                                    substr($cnpjLimpo, 8, 4) . '-' .
-                                    substr($cnpjLimpo, 12);
-                            } else {
-                                $cnpjFormatado = $cnpjLimpo;
-                            }
-
-                            $capital = $empresa->empresa->capital_social ?? null;
-                            $capitalFormatado = $capital !== null
-                                ? 'R$ ' . number_format($capital, 2, ',', '.')
-                                : '—';
-
-                            // URL da página do CNPJ (ajusta se tiver uma named route específica)
-                            $urlCnpj = url('/cnpj/' . $cnpjLimpo);
-                        @endphp
-
-                        <tr class="border-b border-gray-100 hover:bg-amber-50/60 transition-colors">
-                            <td class="px-4 md:px-6 py-3 align-top font-mono text-[13px] text-gray-900">
-                                {{ $cnpjFormatado }}
-                            </td>
-                            <td class="px-4 md:px-6 py-3 align-top">
-                                <p class="font-semibold text-gray-900 text-sm">
-                                    {{ $empresa->empresa->razao_social ?? 'Razão social não informada' }}
-                                </p>
-                            </td>
-                            <td class="px-4 md:px-6 py-3 align-top text-sm text-gray-700">
-                                {{ $capitalFormatado }}
-                            </td>
-                            <td class="px-4 md:px-6 py-3 align-top text-right">
-                                <a
-                                    href="{{ $urlCnpj }}"
-                                    class="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50 px-3 py-1.5 text-[11px] md:text-xs font-medium text-amber-800 hover:bg-amber-100 hover:border-amber-400 transition"
-                                >
-                                    <i class="bi bi-box-arrow-up-right text-xs"></i>
-                                    Ver CNPJ
-                                </a>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="px-4 md:px-6 py-6 text-center text-sm text-gray-500">
-                                Nenhuma empresa ativa encontrada para este município.
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-
-        <div class="mt-6">
-            {{ $empresas->links() }}
-        </div>
     </div>
 </section>

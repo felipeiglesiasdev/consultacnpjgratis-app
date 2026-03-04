@@ -1,20 +1,19 @@
 @props(['data'])
-
+@php
+    $titulo = "{$data['razao_social']} - {$data['cnpj_completo']}";
+    $url = "https://www.consultacnpjgratis.com/cnpj/{$data['cnpj_desformatado']}";
+    $descricao = "Consulte os dados públicos de {$data['razao_social']}. Empresa localizada em {$data['cidade']}/{$data['uf']}. Dados estruturados e em total conformidade com a LGPD.";
+    $keywords = "cnpj {$data['cnpj_completo']}, {$data['cnpj_completo']}, {$data['cnpj_desformatado']}, cnpj {$data['cnpj_desformatado']}, consulta cnpj gratuito, consulta empresas, consulta cnpj gratis, consultar cnpj";
+@endphp
 @push('seo')
-{{-- Este bloco inteiro será "empurrado" para o @stack('seo') no <head> --}}
-
-<title>{{ $data['og_data']['og:title'] }}</title>
-<meta name="description" content="{{ $data['meta_data']['description'] }}">
-<meta name="keywords" content="{{ $data['meta_data']['keywords'] }}">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="{{ url()->current() }}" />
-
-@foreach($data['og_data'] as $property => $content)
-<meta property="{{ $property }}" content="{{ $content }}">
-@endforeach
-
-<script type="application/ld+json">
-@json($data['structured_data'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)
-</script>
-
+    <title>{{ $titulo }} | Consulta CNPJ Grátis</title>
+    <meta name="description" content="{{ $descricao }}">
+    <meta name="keywords" content="{{ $keywords }}">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ $titulo }}">
+    <meta property="og:description" content="{{ $descricao }}">
+    <meta property="og:url" content="{{ $url }}">
+    <meta property="og:site_name" content="Consulta CNPJ Grátis">
+    <link rel="canonical" href="{{ $url }}" />
 @endpush

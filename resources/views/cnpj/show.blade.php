@@ -1,34 +1,34 @@
 @extends('layouts.app')
-
 @section('seo')
     <x-cnpj.tags :data="$data" />
 @endsection
-
 @section('content')
-    {{-- HERO / CABEÇALHO DO CNPJ --}}
-    <section class="relative overflow-hidden bg-gradient-to-b from-[#050509] via-[#050608] to-black text-white pt-20 pb-12">
-        <div class="pointer-events-none absolute inset-0">
-            <div class="absolute -left-32 -top-32 h-72 w-72 rounded-full bg-amber-500/10 blur-3xl"></div>
-            <div class="absolute right-[-140px] top-1/3 h-96 w-96 rounded-full bg-amber-400/5 blur-3xl"></div>
-            <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
-        </div>
-
-        <div class="relative container mx-auto px-6 md:px-10 xl:px-16">
-            <x-cnpj.intro-text :data="$data" />
-        </div>
-    </section>
-
-    {{-- CONTEÚDO PRINCIPAL --}}
-    <section class="bg-gray-50 py-12 md:py-16">
+    <x-cnpj.intro-text :data="$data" />
+    <section class="bg-[#F8FAFC] py-12 md:py-20 relative">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
         <div class="container mx-auto px-6 md:px-10 xl:px-16">
-            <div class="max-w-4xl mx-auto space-y-6">
-                <x-cnpj.situacao-cadastral :data="$data" />
-                <x-cnpj.informacoes-cnpj :data="$data" />
-                
-                <x-cnpj.endereco :data="$data" />
-                <x-cnpj.faq :data="$data" />
-                <x-cnpj.empresas-semelhantes :data="$data" />
-                <x-cnpj.removal-alert :data="$data" />
+            <div class="flex flex-col lg:flex-row gap-8 items-start">
+                <div class="w-full lg:w-2/3 space-y-6">
+                    <x-cnpj.informacoes-cnpj :data="$data" />
+                    <x-cnpj.atividades-economicas :data="$data" />
+                    <x-cnpj.endereco :data="$data" />
+                    <x-cnpj.faq :data="$data" />
+                    <x-cnpj.removal-alert :data="$data" />
+                    <x-cnpj.empresas-semelhantes :data="$data" />
+                </div>
+                <div class="w-full lg:w-1/3 space-y-6 sticky top-24">
+                    <div class="rounded-3xl border border-gray-200 bg-white p-6 text-center shadow-sm">
+                        <div class="h-12 w-12 mx-auto bg-amber-50 rounded-full flex items-center justify-center text-amber-500 mb-4">
+                            <i class="bi bi-search text-xl"></i>
+                        </div>
+                        <h3 class="text-sm font-bold text-gray-900 mb-2">Consultar outro CNPJ</h3>
+                        <p class="text-xs text-gray-500 mb-4">Faça uma nova busca gratuita em nossa base oficial.</p>
+                        <a href="{{ route('empresas.index') }}" class="inline-block w-full rounded-xl bg-gray-900 px-4 py-3 text-xs font-bold text-white hover:bg-gray-800 transition-colors">
+                            Ir para a Busca
+                        </a>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>

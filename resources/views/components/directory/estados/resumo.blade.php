@@ -9,92 +9,86 @@
     'nomeEstado',
 ])
 
-<section class="bg-white py-16 md:py-20">
+<section class="bg-gray-50 py-20 relative border-b border-gray-200">
     <div class="container mx-auto px-6 md:px-10 xl:px-16">
-        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
-            <div class="max-w-xl">
-                <p class="text-amber-500 font-semibold uppercase text-xs md:text-sm tracking-[0.24em]">
-                    Balanço das empresas no estado
-                </p>
-                <h2 class="mt-2 text-2xl md:text-3xl font-black text-[#111827]">
-                Como as empresas se distribuem no estado {{ strtolower($preposicao) }} {{ $nomeEstado }}
-                </h2>
-                <p class="mt-3 text-sm md:text-base text-gray-600">
-                    Veja quantas empresas estão ativas hoje, quantas são matrizes ou filiais
-                    e como o ano atual se comporta em termos de aberturas e encerramentos.
-                </p>
-            </div>
-
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-100 text-xs md:text-sm text-amber-800">
-                <span class="h-2 w-2 rounded-full bg-amber-400"></span>
-                Dados consolidados a partir de CNPJs do estado
-            </div>
+        
+        <div class="max-w-3xl mb-12">
+            <p class="text-amber-600 font-bold uppercase text-xs tracking-[0.2em]">
+                Termômetro Estadual
+            </p>
+            <h2 class="mt-2 text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+                Balanço Oficial de Empresas
+            </h2>
+            <p class="mt-4 text-base text-gray-600">
+                Veja como o estado {{ strtolower($preposicao) }} {{ $nomeEstado }} se comporta hoje. Entenda a proporção entre matrizes e filiais e acompanhe o fluxo de aberturas e encerramentos ao longo do ano atual.
+            </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
-            {{-- Total ativas --}}
-            <div class="rounded-2xl border border-gray-200 bg-gradient-to-b from-white to-amber-50/40 p-5 shadow-[0_18px_45px_-30px_rgba(15,23,42,0.55)]">
-                <p class="text-[11px] uppercase tracking-[0.22em] text-amber-700 font-semibold">
-                    Empresas ativas no estado
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 xl:gap-6">
+            
+            {{-- KPI 1 --}}
+            <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                <div class="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">
+                    <i class="bi bi-building-check text-xl"></i>
+                </div>
+                <p class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1">
+                    Ativas no Estado
                 </p>
-                <p class="mt-3 text-2xl md:text-3xl font-extrabold text-[#111827]">
+                <p class="text-3xl font-black text-gray-900">
                     {{ number_format($totalAtivas, 0, ',', '.') }}
                 </p>
-                <p class="mt-2 text-xs md:text-sm text-gray-600">
-                    Total de CNPJs com situação cadastral ativa em {{ $uf }}.
-                </p>
             </div>
 
-            {{-- Matrizes --}}
-            <div class="rounded-2xl border border-gray-200 bg-gradient-to-b from-white to-emerald-50/40 p-5 shadow-[0_18px_45px_-30px_rgba(15,23,42,0.55)]">
-                <p class="text-[11px] uppercase tracking-[0.22em] text-emerald-700 font-semibold">
-                    Matrizes
-                </p>
-                <p class="mt-3 text-2xl md:text-3xl font-extrabold text-[#111827]">
-                    {{ number_format($totalMatrizes, 0, ',', '.') }}
-                </p>
-                <p class="mt-2 text-xs md:text-sm text-gray-600">
-                    Empresas matriz, onde a gestão principal do CNPJ é realizada.
-                </p>
-            </div>
-
-            {{-- Filiais --}}
-            <div class="rounded-2xl border border-gray-200 bg-gradient-to-b from-white to-sky-50/40 p-5 shadow-[0_18px_45px_-30px_rgba(15,23,42,0.55)]">
-                <p class="text-[11px] uppercase tracking-[0.22em] text-sky-700 font-semibold">
-                    Filiais
-                </p>
-                <p class="mt-3 text-2xl md:text-3xl font-extrabold text-[#111827]">
-                    {{ number_format($totalfiliais, 0, ',', '.') }}
-                </p>
-                <p class="mt-2 text-xs md:text-sm text-gray-600">
-                    Pontos adicionais de atuação das empresas dentro ou fora do estado.
-                </p>
-            </div>
-
-            {{-- Abertas x fechadas em 2025 --}}
-            <div class="rounded-2xl border border-gray-200 bg-gradient-to-b from-white to-purple-50/40 p-5 shadow-[0_18px_45px_-30px_rgba(15,23,42,0.55)] flex flex-col gap-3">
+            {{-- KPI 2 --}}
+            <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
                 <div>
-                    <p class="text-[11px] uppercase tracking-[0.22em] text-purple-700 font-semibold">
-                        Abertas em 2025
+                    <div class="h-10 w-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
+                        <i class="bi bi-diagram-3 text-xl"></i>
+                    </div>
+                    <p class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1">
+                        Matrizes vs Filiais
                     </p>
-                    <p class="mt-2 text-xl md:text-2xl font-extrabold text-[#111827]">
-                        {{ number_format($totalAbertas2025, 0, ',', '.') }}
+                    <p class="text-2xl font-black text-gray-900">
+                        {{ number_format($totalMatrizes, 0, ',', '.') }} <span class="text-sm font-medium text-gray-400">matrizes</span>
                     </p>
-                </div>
-                <div class="h-px bg-gradient-to-r from-purple-200 via-purple-300 to-amber-300"></div>
-                <div>
-                    <p class="text-[11px] uppercase tracking-[0.22em] text-purple-700 font-semibold">
-                        Encerradas em 2025
-                    </p>
-                    <p class="mt-2 text-xl md:text-2xl font-extrabold text-[#111827]">
-                        {{ number_format($totalFechadas2025, 0, ',', '.') }}
-                    </p>
-                    <p class="mt-1 text-xs md:text-sm text-gray-600">
-                        Empresas que mudaram de situação cadastral no ano corrente,
-                        indicando o ritmo de renovações e encerramentos no estado.
+                    <p class="text-lg font-bold text-gray-600 mt-1">
+                        {{ number_format($totalfiliais, 0, ',', '.') }} <span class="text-sm font-medium text-gray-400">filiais</span>
                     </p>
                 </div>
             </div>
+
+            {{-- KPI 3 --}}
+            <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                <div class="h-10 w-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4">
+                    <i class="bi bi-door-open text-xl"></i>
+                </div>
+                <p class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1">
+                    Aberturas no Ano
+                </p>
+                <p class="text-3xl font-black text-gray-900">
+                    +{{ number_format($totalAbertas2025, 0, ',', '.') }}
+                </p>
+                <p class="text-[11px] text-gray-400 mt-2 font-medium">
+                    Registradas neste ano
+                </p>
+            </div>
+
+            {{-- KPI 4 --}}
+            <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                <div class="h-10 w-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center mb-4">
+                    <i class="bi bi-door-closed text-xl"></i>
+                </div>
+                <p class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1">
+                    Encerramentos no Ano
+                </p>
+                <p class="text-3xl font-black text-gray-900">
+                    -{{ number_format($totalFechadas2025, 0, ',', '.') }}
+                </p>
+                <p class="text-[11px] text-gray-400 mt-2 font-medium">
+                    Baixadas neste ano
+                </p>
+            </div>
+
         </div>
     </div>
 </section>
