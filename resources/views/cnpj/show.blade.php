@@ -12,7 +12,6 @@
                     <x-cnpj.informacoes-cnpj :data="$data" />
                     <x-cnpj.atividades-economicas :data="$data" />
                     <x-cnpj.endereco :data="$data" />
-                    <x-cnpj.faq :data="$data" />
                     <x-cnpj.removal-alert :data="$data" />
                     <x-cnpj.empresas-semelhantes :data="$data" />
                 </div>
